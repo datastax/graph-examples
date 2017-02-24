@@ -1,12 +1,17 @@
 config create_schema: true, load_new: false
 
-def inputpath = '/advanced-graph-training/northwind/data/';
+// If the user specifies an inputpath on the command-line, use that.
+// Otherwise check the data directory from the data directory from where the loader is run.
+if (hasProperty('inputpath'))
+    path = inputpath + '/'
+else 
+    path = new java.io.File('.').getCanonicalPath() + '/data/'
 
-def fbMembersInput = File.csv(inputpath + 'facebook_members.csv').delimiter('|')
-def identitiesInput = File.csv(inputpath + 'identity_c2fb.csv').delimiter('|')
-def isFriendsWithInput = File.csv(inputpath + 'isFriendsWith.csv').delimiter('|')
-def isRelatedToInput = File.csv(inputpath + 'isRelatedTo.csv').delimiter('|')
-def ratedInput = File.csv(inputpath + 'rated.csv').delimiter('|')
+def fbMembersInput = File.csv(path + 'facebook_members.csv').delimiter('|')
+def identitiesInput = File.csv(path + 'identity_c2fb.csv').delimiter('|')
+def isFriendsWithInput = File.csv(path + 'isFriendsWith.csv').delimiter('|')
+def isRelatedToInput = File.csv(path + 'isRelatedTo.csv').delimiter('|')
+def ratedInput = File.csv(path + 'rated.csv').delimiter('|')
 
 //Specifies what data source to load using which mapper
 load(fbMembersInput).asVertices {

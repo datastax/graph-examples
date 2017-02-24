@@ -1,11 +1,16 @@
 //Configures the data loader to create the schema
 config create_schema: true, load_new: true
 
-def inputpath = '/Users/jeremy/advanced-graph-training/northwind/data/';
-def inputfile = inputpath + 'northwind.kryo';
+inputfile = 'northwind.kryo'
 
-//Defines the data input source (a file which is specified via command line arguments)
-source = Graph.file(inputfile).gryo()
+// If the user specifies an inputpath on the command-line, use that.
+// Otherwise check the data directory from the data directory from where the loader is run.
+if (hasProperty('inputpath'))
+    path = inputpath + '/'
+else 
+    path = new java.io.File('.').getCanonicalPath() + '/data/'
+
+def source = Graph.file(path + inputfile).gryo()
 
 //Specifies what data source to load using which mapper
 load(source.vertices()).asVertices {
