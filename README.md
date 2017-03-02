@@ -6,6 +6,8 @@ To download DSE Graph, Studio, and the DSE Graph Loader, you'll want to head ove
 
 For any questions, you can use the following resources:
 
+- DataStax Enterprise Graph [documentation](http://docs.datastax.com/en/latest-dse/datastax_enterprise/graph/graphTOC.html)
+- Apache TinkerPop [documentation](http://tinkerpop.apache.org/docs/current/reference/), [getting started tutorial](http://tinkerpop.apache.org/docs/current/tutorials/getting-started/), and [common recipes](http://tinkerpop.apache.org/docs/current/recipes/)
 - [DataStax Academy Slack](https://academy.datastax.com/slack) in the dse-graph channel
 - Stack overflow with the [datastax-enterprise/datastax-enterprise-graph](http://stackoverflow.com/questions/tagged/datastax-enterprise+datastax-enterprise-graph) tag
 - [DataStax support portal](https://support.datastax.com) (if you are a DataStax customer)
