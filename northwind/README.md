@@ -11,7 +11,7 @@ then load the data with `create_schema` set to false in the script or from the c
 
 ## Datamodel visualization
 
-<img src="datamodel-screenshot.png" alt="datamodel screenshot" align="center" width="300px" style="align-content: center; width: 300px;"/>
+(<img src="datamodel-screenshot.png" alt="datamodel screenshot" width="400px" style="width: 400px;"/>)[https://s3.amazonaws.com/datastax-graph-schema-viewer/index.html#/?schema=northwind.json]
 
 ## Example loading
 
