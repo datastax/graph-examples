@@ -9,6 +9,8 @@ However with DSE Graph, you'll have to explicitly enable use of scans and lambda
 You can choose to let it create the schema for you (default) or create the schema explicitly (recommended for production) and
 then load the data with `create_schema` set to false in the script or from the command-line.
 
+![Northwind Data Model](https://github.com/datastax/graph-examples/northwind/datamodel-screenshot.png)
+
 ## Example loading
 
 You can load the kryo file from within the northwind directory and you don't need to specify the path.  It will
