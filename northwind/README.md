@@ -9,7 +9,9 @@ However with DSE Graph, you'll have to explicitly enable use of scans and lambda
 You can choose to let it create the schema for you (default) or create the schema explicitly (recommended for production) and
 then load the data with `create_schema` set to false in the script or from the command-line.
 
-<img src="datamodel-screenshot.png" alt="datamodel screenshot" width="200px" style="width: 200px;"/>
+## Datamodel visualization
+
+<img src="datamodel-screenshot.png" alt="datamodel screenshot" align="center" width="300px" style="align-content: center; width: 300px;"/>
 
 ## Example loading
 
