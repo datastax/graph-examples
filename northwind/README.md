@@ -9,7 +9,7 @@ However with DSE Graph, you'll have to explicitly enable use of scans and lambda
 You can choose to let it create the schema for you (default) or create the schema explicitly (recommended for production) and
 then load the data with `create_schema` set to false in the script or from the command-line.
 
-![Northwind Data Model](datamodel-screenshot.png =300x)
+<img src="datamodel-screenshot.png" alt="datamodel screenshot" style="width: 300px;"/>
 
 ## Example loading
 
