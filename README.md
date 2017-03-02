@@ -1,6 +1,6 @@
 # graph-examples
 
-This repo contains a collection of graph examples.  The intent is to provide more complete and extensive examples than what is reasonable to include in DataStax documentation or blogposts.  This examples will include DataStax Graph Loader mapping scripts, schemas, example traversals, things to try in Studio, and application ucode examples.  Feel free to use and modify any of these for your own purposes.  There is no warranty or implied official support, but hopefully the examples will be useful as a starting point to show various ways of loading and experimenting with graph data.  And if you see anything that could be improved or added, issue reports and pull requests are always welcome!
+This repo contains a collection of graph examples.  The intent is to provide more complete and extensive examples than what is reasonable to include in DataStax documentation or blogposts.  This examples will include DataStax Graph Loader mapping scripts, schemas, example traversals, things to try in Studio, and application code examples.  Feel free to use and modify any of these for your own purposes.  There is no warranty or implied official support, but hopefully the examples will be useful as a starting point to show various ways of loading and experimenting with graph data.  And if you see anything that could be improved or added, issue reports and pull requests are always welcome!
 
 Download DSE Graph, Studio, and the DSE Graph Loader at https://academy.datastax.com/downloads.
 
