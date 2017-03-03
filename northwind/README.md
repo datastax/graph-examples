@@ -13,8 +13,8 @@ load the data with `create_schema` set to **false** in the script or from the co
 
 ## Datamodel visualization
 
+View the live schema visualization <a href="https://s3.amazonaws.com/datastax-graph-schema-viewer/index.html#/?schema=northwind.json" target="_blank">here</a>
 [![datamodel screenshot](datamodel-screenshot.png)](https://s3.amazonaws.com/datastax-graph-schema-viewer/index.html#/?schema=northwind.json)<br/>
-Click <a href="https://s3.amazonaws.com/datastax-graph-schema-viewer/index.html#/?schema=northwind.json" target="_blank">here</a> to go to interactive visualization
 
 ## Example loading
 

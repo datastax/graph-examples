@@ -35,7 +35,7 @@ The data comes to us from the [pokeapi](https://github.com/PokeAPI/pokeapi). I t
 If you'd like to add more indices for different types of traversals, you can always add them after the fact. The ones in the schema file are for the Graph Loader to do look ups and match vertices to edges.
 
 #####Click the `real-time` play button to execute. When it finishes, hit the `schema` button at the top right of Studio.
-View the Live Demo <a href="https://s3.amazonaws.com/datastax-graph-schema-viewer/index.html#/?schema=pokegraph.json" target="_blank">Here</a>
+View the live schema visualization <a href="https://s3.amazonaws.com/datastax-graph-schema-viewer/index.html#/?schema=pokegraph.json" target="_blank">here</a>
 [![Alt text](http://i.imgur.com/M8cSueW.png)](https://s3.amazonaws.com/datastax-graph-schema-viewer/index.html#/?schema=pokegraph.json)
 
 Note, there's plenty of other connections we can make with this dataset. Feel free to explore and play around!
