@@ -9,7 +9,7 @@ However, while using DSE Graph in Development mode, you'll have to explicitly en
     schema.config().option('graph.allow_scan').set('true')
     graph.schema().config().option('graph.traversal_sources.g.restrict_lambda').set(false)
 ```
-Note that scans are disabled by default for performance reasons; lambdas are disabled by default for both performance reasons and security concerns.
+<sub>Note that scans are disabled by default for performance reasons; lambdas are disabled by default for both performance reasons and security concerns.</sub>
 
 You can choose to let it create the schema for you (default) or you can create the schema explicitly (recommended for Production) and
 load the data with `create_schema` set to **false** in the script or from the command-line.
