@@ -1,7 +1,9 @@
-Dataset: KillrVideo 
-Author:  Artem Chebotko
+# KillrVideo
+
+The KillrVideo dataset comes from the DataStax Academy 330 course.  It includes metadata about films, users, and ratings.
 
 Data files:
+
 * movies.dat (920 records)
   movie_id::title::year::duration::country::rating::votes::genres::actors::directors::composers::screenwriters::cinematographers::production_companies
   Note: multiple genres, actor, directors, composers, screenwriters, cinematographers, and production_companies are separated by |
@@ -20,6 +22,7 @@ Data files:
   Note: some non-person exceptions include "Animation" for actors, "Miscellaneous" for composers, "The Beatles" for actors, etc. 
 
 Interesting dataset properties:
+
 * Users form 4 natural clusters based on movies they like
   Users with ids 1-200 (A), 201-700 (B), 701-900 (C), 901-1100 (D)
 * Users that belong to the same cluster may exhibit age and/or gender similarities 
