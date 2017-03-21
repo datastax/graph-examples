@@ -1,1 +1,5 @@
+# if running from pokemon directory
 /path/to/graphloader /path/to/poke_mapper.groovy -graph poke_graph -address localhost -abort_on_prep_errors false
+
+# if running from somewhere else
+/path/to/graphloader /path/to/poke_mapper.groovy -graph poke_graph -address localhost -abort_on_prep_errors false -inputpath /path/to/directory/containing/data

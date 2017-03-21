@@ -2,10 +2,10 @@ config create_schema: true, load_new: false
 
 // If the user specifies an inputpath on the command-line, use that.
 // Otherwise check the data directory from the data directory from where the loader is run.
-if (hasProperty('inputpath'))
-    path = inputpath + '/'
-else 
+if (inputpath == '')
     path = new java.io.File('.').getCanonicalPath() + '/data/'
+else
+    path = inputpath + '/'
 
 def fbMembersInput = File.csv(path + 'facebook_members.csv').delimiter('|')
 def identitiesInput = File.csv(path + 'identity_c2fb.csv').delimiter('|')
