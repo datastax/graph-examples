@@ -2,9 +2,15 @@
 config create_schema: false, load_new: true, load_vertex_threads: 3
 
 // DATA INPUT
+if (inputpath == '') {
+    inputfileV = new java.io.File('.').getCanonicalPath() + '/data/vertices/'
+    inputfileE = new java.io.File('.').getCanonicalPath() + '/data/edges/'
+}
+else {
+    inputfileV = inputpath + '/vertices/'
+    inputfileE = inputpath + '/edges/'
+}
 
-inputfileV = '/data/vertices/'
-inputfileE = '/data/edges/'
 //vertex files
 pokemonFile = File.csv(inputfileV + "pokemon.csv").delimiter(',')
 abilitiesFile = File.csv(inputfileV + "abilities.csv").delimiter(',')
