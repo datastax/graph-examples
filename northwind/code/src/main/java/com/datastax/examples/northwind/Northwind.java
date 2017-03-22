@@ -35,7 +35,7 @@ public class Northwind {
                 new SimpleGraphStatement(
                         "g.addV(label, 'networkMember', 'name', name, 'age', age)")
                         .set("name", name)
-                        .set("age", age)
+                        .set("age", String.valueOf(age))
         );
 
         // Add edge between two existing vertices
