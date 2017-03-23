@@ -33,7 +33,8 @@ graphloader -graph northwind -address localhost northwind-mapping.groovy
 ```
 
 ```
-graphloader -graph northwind -address localhost northwind-mapping.groovy -inputpath ~/repos/graph-examples/northwind/data/
+# Alternatively, explicitly specify where the data files are
+graphloader -graph northwind -address localhost northwind-mapping.groovy -inputpath ~/graph-examples/northwind/data/
 ```
 
 ## Supplemental data
@@ -51,5 +52,6 @@ graphloader -graph northwind -address localhost supplemental-data-mapping.groovy
 ```
 
 ```
-graphloader -graph northwind -address localhost supplemental-data-mapping.groovy -inputpath ~/repos/graph-examples/northwind/data/
+# Alternatively, explicitly specify where the data files are
+graphloader -graph northwind -address localhost supplemental-data-mapping.groovy -inputpath ~/graph-examples/northwind/data/
 ```
