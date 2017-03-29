@@ -21,9 +21,10 @@ For additional interesting datasets, you might consider the following resources:
 - Stack overflow with the [datastax-enterprise/datastax-enterprise-graph](http://stackoverflow.com/questions/tagged/datastax-enterprise+datastax-enterprise-graph) tag
 - [DataStax support portal](https://support.datastax.com) (if you are a DataStax customer)
 
-### Useful blog posts
+### Other posts and resources
 
 - [Getting started with the DataStax Graph Loader](http://www.datastax.com/dev/blog/dgl-basics)
 - [Gremlin's Time Machine](https://www.datastax.com/dev/blog/gremlins-time-machine) - a post about how to use the TinkerPop SubgraphStrategy to traverse your graph at a specific version or time in its history.
 - [graphoendodonticology](https://www.datastax.com/2017/03/graphoendodonticology) - a resource to troubleshoot your graph
 - Large graph loading best practices, [part 1](http://www.datastax.com/dev/blog/large-graph-loading-best-practices-strategies-part-1) and [part 2](http://www.datastax.com/dev/blog/large-graph-loading-tactics-part-2)
+- Fighting Fraud with Graph Databases Webinar [recording](https://www.youtube.com/watch?v=H5MmSL1c9Zs) and [slides](https://www.slideshare.net/DataStax/webinar-fighting-fraud-with-graph-databases).  Presented by DataStax and Cambridge Intelligence.
