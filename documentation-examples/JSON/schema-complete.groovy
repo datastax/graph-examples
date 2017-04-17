@@ -1,3 +1,8 @@
+system.graph('testJSON').ifNotExists().create()
+:remote config alias g testJSON.g
+schema.clear()
+schema.config().option('graph.allow_scan').set('true')
+
 // SCHEMA
 // PROPERTIES
 schema.propertyKey('name').Text().ifNotExists().create()
