@@ -6,17 +6,21 @@ authorBook: {"name":"The Art of French Cooking, Vol. 1","author":"Julia Child"}
 
 // CONFIGURATION
 // Configures the data loader to create the schema
-config create_schema: false, load_new: true
+config create_schema: false, load_new: true, load_vertex_threads: 3
 
 // DATA INPUT
-// Define the data input source (a file which can be specified via command line arguments)
-// inputfiledir is the directory for the input files that is given in the commandline
-// as the "-filename" option
+if (inputpath == '') {
+    inputfileV = new java.io.File('.').getCanonicalPath() + '/data/vertices/'
+    inputfileE = new java.io.File('.').getCanonicalPath() + '/data/edges/'
+}
+else {
+    inputfileV = inputpath + '/vertices/'
+    inputfileE = inputpath + '/edges/'
+}
 
-inputfiledir = '/graph-examples/documentation-examples/JSON/'
-authorInput = File.json(inputfiledir + 'author.json')
-bookInput = File.json(inputfiledir + 'book.json')
-authorBookInput = File.json(inputfiledir + 'authorBook.json')
+authorInput = File.json(inputfileV + 'author.json')
+bookInput = File.json(inputfileV + 'book.json')
+authorBookInput = File.json(inputfileE + 'authorBook.json')
 
 //Specifies what data source to load using which mapper (as defined inline)
   

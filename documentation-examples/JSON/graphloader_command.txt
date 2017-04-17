@@ -1,0 +1,5 @@
+# if running from JSON directory
+/path/to/graphloader /path/to/authorBookMappingJSON.groovy -graph testJSON -address localhost -abort_on_prep_errors false
+
+# if running from somewhere else
+/path/to/graphloader /path/to/authorBookMappingJSON.groovy -graph testJSON -address localhost -abort_on_prep_errors false -inputpath /path/to/directory/containing/data

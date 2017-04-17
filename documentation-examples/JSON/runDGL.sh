@@ -14,7 +14,7 @@ LDR=<location>/$VERSION/graphloader
 TYPE=JSON
 INPUTEXAMPLE='authorBookJSON'
 INPUTBASEDIR='/graph-examples/documentation-examples'
-INPUTFILEDIR=$INPUTBASEDIR/$TYPE
+INPUTFILEPUTH=$INPUTBASEDIR/$TYPE
 SCRIPTNAME='authorBookMapping'$TYPE'.groovy'
 GRAPHNAME='test'$INPUTEXAMPLE
 $LDR $INPUTFILEDIR/$SCRIPTNAME -graph $GRAPHNAME -address localhost
