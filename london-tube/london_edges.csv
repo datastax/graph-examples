@@ -1,0 +1,410 @@
+11,163,Bakerloo Line
+11,212,Bakerloo Line
+49,87,Bakerloo Line
+49,197,Bakerloo Line
+82,163,Bakerloo Line
+82,193,Bakerloo Line
+84,148,Bakerloo Line
+87,279,Bakerloo Line
+113,246,Bakerloo Line
+113,298,Bakerloo Line
+114,140,Bakerloo Line
+137,206,Bakerloo Line
+137,298,Bakerloo Line
+140,237,Bakerloo Line
+143,159,Bakerloo Line
+143,206,Bakerloo Line
+148,279,Bakerloo Line
+159,278,Bakerloo Line
+185,237,Bakerloo Line
+185,281,Bakerloo Line
+192,197,Bakerloo Line
+192,212,Bakerloo Line
+193,278,Bakerloo Line
+246,281,Bakerloo Line
+13,156,Central Line
+13,250,Central Line
+16,91,Central Line
+16,173,Central Line
+24,156,Central Line
+24,164,Central Line
+28,162,Central Line
+28,192,Central Line
+37,158,Central Line
+37,301,Central Line
+48,126,Central Line
+48,250,Central Line
+51,103,Central Line
+51,215,Central Line
+68,158,Central Line
+68,256,Central Line
+72,286,Central Line
+76,181,Central Line
+76,296,Central Line
+88,256,Central Line
+91,109,Central Line
+98,173,Central Line
+98,211,Central Line
+103,109,Central Line
+105,177,Central Line
+105,196,Central Line
+112,181,Central Line
+112,196,Central Line
+126,259,Central Line
+127,186,Central Line
+127,226,Central Line
+149,162,Central Line
+149,208,Central Line
+153,154,Central Line
+153,247,Central Line
+154,230,Central Line
+154,275,Central Line
+164,247,Central Line
+177,239,Central Line
+181,286,Central Line
+186,208,Central Line
+192,259,Central Line
+211,275,Central Line
+215,301,Central Line
+221,239,Central Line
+221,294,Central Line
+226,296,Central Line
+230,241,Central Line
+241,301,Central Line
+2,156,Circle Line
+2,263,Circle Line
+11,83,Circle Line
+11,104,Circle Line
+14,92,Circle Line
+14,167,Circle Line
+18,186,Circle Line
+18,193,Circle Line
+25,161,Circle Line
+25,255,Circle Line
+44,161,Circle Line
+44,166,Circle Line
+83,193,Circle Line
+87,255,Circle Line
+87,285,Circle Line
+90,104,Circle Line
+90,145,Circle Line
+92,145,Circle Line
+99,122,Circle Line
+99,236,Circle Line
+122,186,Circle Line
+156,167,Circle Line
+166,263,Circle Line
+229,236,Circle Line
+229,273,Circle Line
+248,273,Circle Line
+248,285,Circle Line
+3,263,District Line
+3,295,District Line
+15,78,District Line
+15,269,District Line
+17,110,District Line
+17,293,District Line
+18,186,District Line
+18,193,District Line
+21,67,District Line
+21,269,District Line
+25,161,District Line
+25,255,District Line
+33,36,Hammersmith & City Line
+306,307,Docklands Light Railway
+33,164,District Line
+36,289,District Line
+44,161,District Line
+44,166,District Line
+52,1,District Line
+52,265,District Line
+66,67,District Line
+66,85,District Line
+72,73,District Line
+73,1,District Line
+74,99,District Line
+74,122,District Line
+74,138,District Line
+74,287,District Line
+74,293,District Line
+78,270,District Line
+80,205,District Line
+80,231,District Line
+83,193,District Line
+85,129,District Line
+87,255,District Line
+87,285,District Line
+96,195,District Line
+96,287,District Line
+99,236,District Line
+108,141,District Line
+108,265,District Line
+110,209,District Line
+122,186,District Line
+129,268,District Line
+141,213,District Line
+164,244,District Line
+166,263,District Line
+195,205,District Line
+200,270,District Line
+200,289,District Line
+209,242,District Line
+229,236,District Line
+229,273,District Line
+231,300,District Line
+242,265,District Line
+244,295,District Line
+248,273,District Line
+248,285,District Line
+267,268,District Line
+299,300,District Line
+41,216,East London Line
+41,253,East London Line
+174,253,East London Line
+175,253,East London Line
+216,276,East London Line
+225,276,East London Line
+225,295,East London Line
+228,295,East London Line
+3,156,Hammersmith & City Line
+3,295,Hammersmith & City Line
+11,83,Hammersmith & City Line
+11,104,Hammersmith & City Line
+14,92,Hammersmith & City Line
+14,167,Hammersmith & City Line
+15,78,Hammersmith & City Line
+33,36,District Line
+305,306,Docklands Light Railway
+33,164,Hammersmith & City Line
+36,289,Hammersmith & City Line
+78,270,Hammersmith & City Line
+83,193,Hammersmith & City Line
+90,104,Hammersmith & City Line
+90,145,Hammersmith & City Line
+92,145,Hammersmith & City Line
+101,110,Hammersmith & City Line
+101,227,Hammersmith & City Line
+147,150,Hammersmith & City Line
+147,283,Hammersmith & City Line
+150,227,Hammersmith & City Line
+156,167,Hammersmith & City Line
+164,244,Hammersmith & City Line
+193,218,Hammersmith & City Line
+200,270,Hammersmith & City Line
+200,289,Hammersmith & City Line
+218,283,Hammersmith & City Line
+244,295,Hammersmith & City Line
+11,28,Jubilee Line
+11,249,Jubilee Line
+23,41,Jubilee Line
+23,157,Jubilee Line
+28,107,Jubilee Line
+41,42,Jubilee Line
+42,183,Jubilee Line
+43,183,Jubilee Line
+43,289,Jubilee Line
+45,207,Jubilee Line
+45,243,Jubilee Line
+71,172,Jubilee Line
+71,297,Jubilee Line
+94,254,Jubilee Line
+94,290,Jubilee Line
+107,285,Jubilee Line
+142,290,Jubilee Line
+142,297,Jubilee Line
+144,207,Jubilee Line
+144,282,Jubilee Line
+157,233,Jubilee Line
+172,282,Jubilee Line
+233,279,Jubilee Line
+247,289,Jubilee Line
+249,254,Jubilee Line
+279,285,Jubilee Line
+2,156,Metropolitan Line
+6,46,Metropolitan Line
+11,104,Metropolitan Line
+11,94,Metropolitan Line
+14,92,Metropolitan Line
+14,167,Metropolitan Line
+46,50,Metropolitan Line
+46,53,Metropolitan Line
+53,214,Metropolitan Line
+62,168,Metropolitan Line
+62,280,Metropolitan Line
+75,210,Metropolitan Line
+75,222,Metropolitan Line
+90,104,Metropolitan Line
+90,145,Metropolitan Line
+92,145,Metropolitan Line
+304,305,Docklands Light Railway
+94,282,Metropolitan Line
+115,178,Metropolitan Line
+115,184,Metropolitan Line
+115,291,Metropolitan Line
+125,134,Metropolitan Line
+125,271,Metropolitan Line
+134,220,Metropolitan Line
+156,167,Metropolitan Line
+168,179,Metropolitan Line
+168,214,Metropolitan Line
+178,202,Metropolitan Line
+179,180,Metropolitan Line
+180,199,Metropolitan Line
+184,199,Metropolitan Line
+202,282,Metropolitan Line
+210,291,Metropolitan Line
+220,222,Metropolitan Line
+7,145,Northern Line
+7,188,Northern Line
+8,124,Northern Line
+8,264,Northern Line
+12,56,Northern Line
+12,257,Northern Line
+13,157,Northern Line
+13,167,Northern Line
+22,47,Northern Line
+22,111,Northern Line
+29,84,Northern Line
+29,157,Northern Line
+34,100,Northern Line
+34,119,Northern Line
+38,58,Northern Line
+38,81,Northern Line
+40,47,Northern Line
+40,89,Northern Line
+40,139,Northern Line
+40,170,Northern Line
+49,87,Northern Line
+49,151,Northern Line
+54,55,Northern Line
+54,56,Northern Line
+55,245,Northern Line
+58,119,Northern Line
+59,240,Northern Line
+59,258,Northern Line
+77,93,Northern Line
+77,124,Northern Line
+84,136,Northern Line
+87,279,Northern Line
+89,145,Northern Line
+89,170,Northern Line
+89,277,Northern Line
+93,165,Northern Line
+93,288,Northern Line
+100,111,Northern Line
+102,259,Northern Line
+102,277,Northern Line
+121,261,Northern Line
+136,191,Northern Line
+136,279,Northern Line
+139,264,Northern Line
+151,259,Northern Line
+167,188,Northern Line
+169,240,Northern Line
+191,245,Northern Line
+257,258,Northern Line
+261,302,Northern Line
+288,302,Northern Line
+1,73,Piccadilly Line
+1,234,Piccadilly Line
+1,265,Piccadilly Line
+5,194,Piccadilly Line
+5,252,Piccadilly Line
+9,31,Piccadilly Line
+9,232,Piccadilly Line
+10,128,Piccadilly Line
+10,95,Piccadilly Line
+17,74,Piccadilly Line
+17,110,Piccadilly Line
+30,176,Piccadilly Line
+30,190,Piccadilly Line
+31,303,Piccadilly Line
+39,128,Piccadilly Line
+39,145,Piccadilly Line
+57,187,Piccadilly Line
+60,126,Piccadilly Line
+60,151,Piccadilly Line
+73,182,Piccadilly Line
+74,99,Piccadilly Line
+75,210,Piccadilly Line
+75,222,Piccadilly Line
+99,236,Piccadilly Line
+107,133,Piccadilly Line
+107,197,Piccadilly Line
+110,265,Piccadilly Line
+116,117,Piccadilly Line
+116,118,Piccadilly Line
+116,132,Piccadilly Line
+117,118,Piccadilly Line
+125,134,Piccadilly Line
+125,271,Piccadilly Line
+126,223,Piccadilly Line
+130,131,Piccadilly Line
+130,132,Piccadilly Line
+131,190,Piccadilly Line
+133,146,Piccadilly Line
+134,220,Piccadilly Line
+145,223,Piccadilly Line
+146,236,Piccadilly Line
+151,197,Piccadilly Line
+160,266,Piccadilly Line
+176,234,Piccadilly Line
+182,194,Piccadilly Line
+187,232,Piccadilly Line
+210,235,Piccadilly Line
+220,222,Piccadilly Line
+235,251,Piccadilly Line
+251,252,Piccadilly Line
+266,303,Piccadilly Line
+26,260,Victoria Line
+26,274,Victoria Line
+35,245,Victoria Line
+89,145,Victoria Line
+89,277,Victoria Line
+95,123,Victoria Line
+95,224,Victoria Line
+107,192,Victoria Line
+107,273,Victoria Line
+123,145,Victoria Line
+192,277,Victoria Line
+198,272,Victoria Line
+198,273,Victoria Line
+224,260,Victoria Line
+245,272,Victoria Line
+13,279,Waterloo & City Line
+4,70,Docklands Light Railway
+4,201,Docklands Light Railway
+13,225,Docklands Light Railway
+19,97,Docklands Light Railway
+20,65,Docklands Light Railway
+20,217,Docklands Light Railway
+27,79,Docklands Light Railway
+27,201,Docklands Light Railway
+32,70,Docklands Light Railway
+32,204,Docklands Light Railway
+42,120,Docklands Light Railway
+42,292,Docklands Light Railway
+43,79,Docklands Light Railway
+43,219,Docklands Light Railway
+61,171,Docklands Light Railway
+61,238,Docklands Light Railway
+63,203,Docklands Light Railway
+63,219,Docklands Light Railway
+64,106,Docklands Light Railway
+64,135,Docklands Light Railway
+65,97,Docklands Light Railway
+69,86,Docklands Light Railway
+69,106,Docklands Light Railway
+86,152,Docklands Light Railway
+120,238,Docklands Light Railway
+135,171,Docklands Light Railway
+155,225,Docklands Light Railway
+155,284,Docklands Light Railway
+201,284,Docklands Light Railway
+201,292,Docklands Light Railway
+203,217,Docklands Light Railway
+204,247,Docklands Light Railway
+225,262,Docklands Light Railway
+284,292,Docklands Light Railway
+95,160,Piccadilly Line
+43,304,Docklands Light Railway
