@@ -1,0 +1,306 @@
+69,Deptford Bridge,2.5,false,Docklands Light Railway
+138,Kensington (Olympia),2.0,true,District Line
+101,Goldhawk Road,2.0,false,Hammersmith & City Line
+249,St. John's Wood,2.0,false,Jubilee Line
+234,South Ealing,3.0,false,Piccadilly Line
+88,Epping,6.0,false,Central Line
+170,Mornington Crescent,2.0,false,Northern Line
+115,Harrow-on-the-Hill,5.0,true,Metropolitan Line
+217,Royal Albert,3.0,false,Docklands Light Railway
+276,Wapping,2.0,false,East London Line
+5,Alperton,4.0,false,Piccadilly Line
+120,Heron Quays,2.0,false,Docklands Light Railway
+247,Stratford,3.0,true,Central Line|Jubilee Line|Docklands Light Railway
+269,Upney,4.0,false,District Line
+202,Preston Road,4.0,false,Metropolitan Line
+10,Arsenal,2.0,false,Piccadilly Line
+56,Clapham South,2.5,false,Northern Line
+142,Kilburn,2.0,false,Jubilee Line
+153,Leyton,3.0,false,Central Line
+174,New Cross,2.0,true,East London Line
+185,North Wembley,4.0,false,Bakerloo Line
+42,Canary Wharf,2.0,false,Jubilee Line|Docklands Light Railway
+24,Bethnal Green,2.0,false,Central Line
+288,West Finchley,4.0,false,Northern Line
+301,Woodford,4.0,false,Central Line
+37,Buckhurst Hill,5.0,false,Central Line
+25,Blackfriars,1.0,false,Circle Line|District Line
+257,Tooting Bec,3.0,false,Northern Line
+52,Chiswick Park,3.0,false,District Line
+14,Barbican,1.0,false,Circle Line|Hammersmith & City Line|Metropolitan Line
+184,North Harrow,5.0,false,Metropolitan Line
+110,Hammersmith,2.0,false,District Line|Hammersmith & City Line|Piccadilly Line
+125,Hillingdon,6.0,false,Metropolitan Line|Piccadilly Line
+196,Perivale,4.0,false,Central Line
+157,London Bridge,1.0,true,Jubilee Line|Northern Line
+20,Beckton Park,3.0,false,Docklands Light Railway
+46,Chalfont & Latimer,9.0,true,Metropolitan Line
+93,Finchley Central,4.0,false,Northern Line
+284,Westferry,2.0,false,Docklands Light Railway
+152,Lewisham,2.5,true,Docklands Light Railway
+228,Shoreditch,2.0,false,East London Line
+289,West Ham,3.0,true,District Line|Hammersmith & City Line|Jubilee Line
+57,Cockfosters,5.0,false,Piccadilly Line
+78,East Ham,3.5,false,District Line|Hammersmith & City Line
+261,Totteridge & Whetstone,4.0,false,Northern Line
+29,Borough,1.0,false,Northern Line
+216,Rotherhithe,2.0,false,East London Line
+164,Mile End,2.0,false,Central Line|District Line|Hammersmith & City Line
+179,Northwood,6.0,false,Metropolitan Line
+211,Redbridge,4.0,false,Central Line
+253,Surrey Quays,2.0,false,East London Line
+106,Greenwich,2.5,true,Docklands Light Railway
+238,South Quay,2.0,false,Docklands Light Railway
+121,High Barnet,5.0,false,Northern Line
+84,Elephant & Castle,1.5,true,Bakerloo Line|Northern Line
+147,Ladbroke Grove,2.0,false,Hammersmith & City Line
+280,Watford,8.0,false,Metropolitan Line
+61,Crossharbour & London Arena,2.0,false,Docklands Light Railway
+221,Ruislip Gardens,5.0,false,Central Line
+293,West Kensington,2.0,false,District Line
+132,Hounslow West,5.0,false,Piccadilly Line
+89,Euston,1.0,true,Northern Line|Victoria Line
+133,Hyde Park Corner,1.0,false,Piccadilly Line
+116,Hatton Cross,5.5,false,Piccadilly Line
+243,Stanmore,5.0,false,Jubilee Line
+1,Acton Town,3.0,false,District Line|Piccadilly Line
+265,Turnham Green,2.5,false,District Line|Piccadilly Line
+74,Earl's Court,1.5,false,District Line|Piccadilly Line
+206,Queen's Park,2.0,true,Bakerloo Line
+307,King George V,3.0,false,Docklands Light Railway
+292,West India Quay,2.0,false,Docklands Light Railway
+233,Southwark,1.0,false,Jubilee Line
+6,Amersham,10.0,true,Metropolitan Line
+248,St. James's Park,1.0,false,Circle Line|District Line
+60,Covent Garden,1.0,false,Piccadilly Line
+117,Heathrow Terminals 1-2-3,6.0,false,Piccadilly Line
+270,Upton Park,3.0,false,District Line|Hammersmith & City Line
+85,Elm Park,6.0,false,District Line
+201,Poplar,2.0,false,Docklands Light Railway
+220,Ruislip,6.0,false,Metropolitan Line|Piccadilly Line
+102,Goodge Street,1.0,false,Northern Line
+302,Woodside Park,4.0,false,Northern Line
+260,Tottenham Hale,3.0,true,Victoria Line
+28,Bond Street,1.0,false,Central Line|Jubilee Line
+38,Burnt Oak,4.0,false,Northern Line
+160,Manor House,2.5,false,Piccadilly Line
+297,Willesden Green,2.5,false,Jubilee Line
+70,Devons Road,2.0,false,Docklands Light Railway
+192,Oxford Circus,1.0,false,Bakerloo Line|Central Line|Victoria Line
+275,Wanstead,4.0,false,Central Line
+21,Becontree,5.0,false,District Line
+137,Kensal Green,2.0,false,Bakerloo Line
+165,Mill Hill East,4.0,false,Northern Line
+33,Bow Road,2.0,false,Hammersmith & City Line|District Line
+92,Farringdon,1.0,true,Circle Line|Hammersmith & City Line|Metropolitan Line
+229,Sloane Square,1.0,false,Circle Line|District Line
+252,Sudbury Town,4.0,false,Piccadilly Line
+197,Piccadilly Circus,1.0,false,Bakerloo Line|Piccadilly Line
+65,Cyprus,3.0,false,Docklands Light Railway
+97,Gallions Reach,3.0,false,Docklands Light Railway
+285,Westminster,1.0,false,Circle Line|District Line|Jubilee Line
+224,Seven Sisters,3.0,true,Victoria Line
+156,Liverpool Street,1.0,true,Central Line|Circle Line|Hammersmith & City Line|Metropolitan Line
+9,Arnos Grove,4.0,false,Piccadilly Line
+188,Old Street,1.0,true,Northern Line
+53,Chorleywood,8.0,false,Metropolitan Line
+169,Morden,4.0,false,Northern Line
+141,Kew Gardens,3.5,false,District Line
+109,Hainault,5.0,false,Central Line
+256,Theydon Bois,6.0,false,Central Line
+124,Highgate,3.0,false,Northern Line
+225,Shadwell,2.0,false,East London Line|Docklands Light Railway
+77,East Finchley,3.0,false,Northern Line
+193,Paddington,1.0,true,Bakerloo Line|Circle Line|District Line|Hammersmith & City Line
+212,Regent's Park,1.0,false,Bakerloo Line
+96,Fulham Broadway,2.0,false,District Line
+173,Newbury Park,4.0,false,Central Line
+13,Bank,1.0,false,Central Line|Northern Line|Waterloo & City Line|Docklands Light Railway
+129,Hornchurch,6.0,false,District Line
+41,Canada Water,2.0,false,East London Line|Jubilee Line
+134,Ickenham,6.0,false,Metropolitan Line|Piccadilly Line
+73,Ealing Common,3.0,false,District Line|Piccadilly Line
+128,Holloway Road,2.0,false,Piccadilly Line
+237,South Kenton,4.0,false,Bakerloo Line
+105,Greenford,4.0,true,Central Line
+244,Stepney Green,2.0,false,District Line|Hammersmith & City Line
+2,Aldgate,1.0,false,Circle Line|Metropolitan Line
+266,Turnpike Lane,3.0,false,Piccadilly Line
+205,Putney Bridge,2.0,false,District Line
+298,Willesden Junction,3.0,true,Bakerloo Line
+166,Monument,1.0,false,Circle Line|District Line
+32,Bow Church,2.0,false,Docklands Light Railway
+34,Brent Cross,3.0,false,Northern Line
+148,Lambeth North,1.0,false,Bakerloo Line
+264,Tufnell Park,2.0,false,Northern Line
+45,Canons Park,5.0,false,Jubilee Line
+161,Mansion House,1.0,false,Circle Line|District Line
+279,Waterloo,1.0,true,Bakerloo Line|Jubilee Line|Northern Line|Waterloo & City Line
+64,Cutty Sark,2.5,false,Docklands Light Railway
+180,Northwood Hills,6.0,false,Metropolitan Line
+296,White City,2.0,false,Central Line
+17,Barons Court,2.0,false,District Line|Piccadilly Line
+149,Lancaster Gate,1.0,false,Central Line
+176,Northfields,3.0,false,Piccadilly Line
+191,Oval,2.0,false,Northern Line
+22,Belsize Park,2.0,false,Northern Line
+44,Cannon Street,1.0,false,Circle Line|District Line
+286,West Acton,3.0,false,Central Line
+291,West Harrow,5.0,false,Metropolitan Line
+59,Colliers Wood,3.0,false,Northern Line
+118,Heathrow Terminal 4,6.0,false,Piccadilly Line
+281,Wembley Central,4.0,true,Bakerloo Line
+204,Pudding Mill Lane,2.5,false,Docklands Light Railway
+259,Tottenham Court Road,1.0,false,Central Line|Northern Line
+27,Blackwall,2.0,false,Docklands Light Railway
+71,Dollis Hill,3.0,false,Jubilee Line
+12,Balham,3.0,true,Northern Line
+54,Clapham Common,2.0,false,Northern Line
+144,Kingsbury,4.0,false,Jubilee Line
+49,Charing Cross,1.0,true,Bakerloo Line|Northern Line
+236,South Kensington,1.0,false,Circle Line|District Line|Piccadilly Line
+181,North Acton,2.5,false,Central Line
+86,Elverson Road,2.5,false,Docklands Light Railway
+159,Maida Vale,2.0,false,Bakerloo Line
+187,Oakwood,5.0,false,Piccadilly Line
+172,Neasden,3.0,false,Jubilee Line
+113,Harlesden,3.0,false,Bakerloo Line
+219,Royal Victoria,3.0,false,Docklands Light Railway
+274,Walthamstow Central,3.0,true,Victoria Line
+81,Edgware,5.0,false,Northern Line
+230,Snaresbrook,4.0,false,Central Line
+76,East Acton,2.0,false,Central Line
+7,Angel,1.0,false,Northern Line
+245,Stockwell,2.0,false,Northern Line|Victoria Line
+39,Caledonian Road,2.0,false,Piccadilly Line
+98,Gants Hill,4.0,false,Central Line
+303,Wood Green,3.0,false,Piccadilly Line
+271,Uxbridge,6.0,false,Metropolitan Line|Piccadilly Line
+208,Queensway,1.0,false,Central Line
+103,Grange Hill,5.0,false,Central Line
+140,Kenton,4.0,false,Bakerloo Line
+213,Richmond,4.0,true,District Line
+91,Fairlop,5.0,false,Central Line
+66,Dagenham East,5.0,false,District Line
+240,South Wimbledon,3.5,false,Northern Line
+251,Sudbury Hill,4.0,false,Piccadilly Line
+155,Limehouse,2.0,true,Docklands Light Railway
+198,Pimlico,1.0,false,Victoria Line
+108,Gunnersbury,3.0,false,District Line
+130,Hounslow Central,4.0,false,Piccadilly Line
+278,Warwick Avenue,2.0,false,Bakerloo Line
+223,Russell Square,1.0,false,Piccadilly Line
+306,London City Airport,3.0,false,Docklands Light Railway
+135,Island Gardens,2.0,false,Docklands Light Railway
+299,Wimbledon,3.0,true,District Line
+226,Shepherd's Bush (C),2.0,false,Central Line
+3,Aldgate East,1.0,false,District Line|Hammersmith & City Line
+267,Upminster,6.0,true,District Line
+241,South Woodford,4.0,false,Central Line
+80,East Putney,2.5,false,District Line
+167,Moorgate,1.0,true,Circle Line|Hammersmith & City Line|Metropolitan Line|Northern Line
+35,Brixton,2.0,true,Victoria Line
+162,Marble Arch,1.0,false,Central Line
+255,Temple,1.0,false,Circle Line|District Line
+209,Ravenscourt Park,2.0,false,District Line
+112,Hanger Lane,3.0,false,Central Line
+123,Highbury & Islington,2.0,true,Victoria Line
+194,Park Royal,3.0,false,Piccadilly Line
+145,King's Cross St. Pancras,1.0,true,Metropolitan Line|Hammersmith & City Line|Piccadilly Line|Victoria Line|Northern Line|Circle Line
+48,Chancery Lane,1.0,false,Central Line
+63,Custom House,3.0,false,Docklands Light Railway
+295,Whitechapel,2.0,false,District Line|East London Line|Hammersmith & City Line
+18,Bayswater,1.0,false,Circle Line|District Line
+282,Wembley Park,4.0,false,Jubilee Line|Metropolitan Line
+150,Latimer Road,2.0,false,Hammersmith & City Line
+95,Finsbury Park,2.0,true,Piccadilly Line|Victoria Line
+263,Tower Hill,1.0,false,Circle Line|District Line
+50,Chesham,10.0,false,Metropolitan Line
+67,Dagenham Heathway,5.0,false,District Line
+199,Pinner,5.0,false,Metropolitan Line
+177,Northolt,5.0,false,Central Line
+182,North Ealing,3.0,false,Piccadilly Line
+16,Barkingside,5.0,false,Central Line
+127,Holland Park,2.0,false,Central Line
+31,Bounds Green,3.5,false,Piccadilly Line
+154,Leytonstone,3.5,false,Central Line
+11,Baker Street,1.0,false,Metropolitan Line|Jubilee Line|Hammersmith & City Line|Bakerloo Line|Circle Line
+72,Ealing Broadway,3.0,true,Central Line|District Line
+175,New Cross Gate,2.0,true,East London Line
+143,Kilburn Park,2.0,false,Bakerloo Line
+43,Canning Town,3.0,true,Jubilee Line|Docklands Light Railway
+250,St. Paul's,1.0,false,Central Line
+231,Southfields,3.0,false,District Line
+99,Gloucester Road,1.0,false,Circle Line|District Line|Piccadilly Line
+87,Embankment,1.0,false,Bakerloo Line|Circle Line|District Line|Northern Line
+203,Prince Regent,3.0,false,Docklands Light Railway
+218,Royal Oak,2.0,false,Hammersmith & City Line
+104,Great Portland Street,1.0,false,Circle Line|Hammersmith & City Line|Metropolitan Line
+40,Camden Town,2.0,false,Northern Line
+304,West Silvertown,3.0,false,Docklands Light Railway
+26,Blackhorse Road,3.0,true,Victoria Line
+258,Tooting Broadway,3.0,false,Northern Line
+158,Loughton,6.0,false,Central Line
+186,Notting Hill Gate,1.5,false,Central Line|Circle Line|District Line
+55,Clapham North,2.0,false,Northern Line
+114,Harrow & Wealdston,5.0,true,Bakerloo Line
+171,Mudchute,2.0,false,Docklands Light Railway
+139,Kentish Town,2.0,true,Northern Line
+23,Bermondsey,2.0,false,Jubilee Line
+8,Archway,2.5,false,Northern Line
+75,Eastcote,5.0,false,Metropolitan Line|Piccadilly Line
+290,West Hampstead,2.0,true,Jubilee Line
+119,Hendon Central,3.5,false,Northern Line
+58,Colindale,4.0,false,Northern Line
+235,South Harrow,5.0,false,Piccadilly Line
+246,Stonebridge Park,3.0,false,Bakerloo Line
+207,Queensbury,4.0,false,Jubilee Line
+272,Vauxhall,1.5,true,Victoria Line
+82,Edgware Road (B),1.0,false,Bakerloo Line
+214,Rickmansworth,7.0,false,Metropolitan Line
+287,West Brompton,2.0,true,District Line
+151,Leicester Square,1.0,false,Northern Line|Piccadilly Line
+300,Wimbledon Park,3.0,false,District Line
+36,Bromley-By-Bow,2.5,false,Hammersmith & City Line|District Line
+168,Moor Park,6.5,false,Metropolitan Line
+262,Tower Gateway,1.0,false,Docklands Light Railway
+146,Knightsbridge,1.0,false,Piccadilly Line
+30,Boston Manor,4.0,false,Piccadilly Line
+51,Chigwell,5.0,false,Central Line
+190,Osterley,4.0,false,Piccadilly Line
+183,North Greenwich,2.5,false,Jubilee Line
+19,Beckton,3.0,false,Docklands Light Railway
+273,Victoria,1.0,true,Circle Line|District Line|Victoria Line
+305,Pontoon Dock,3.0,false,Docklands Light Railway
+210,Rayners Lane,5.0,false,Metropolitan Line|Piccadilly Line
+107,Green Park,1.0,false,Jubilee Line|Piccadilly Line|Victoria Line
+239,South Ruislip,5.0,true,Central Line
+242,Stamford Brook,2.0,false,District Line
+4,All Saints,2.0,false,Docklands Light Railway
+294,West Ruislip,6.0,true,Central Line
+126,Holborn,1.0,false,Central Line|Piccadilly Line
+136,Kennington,2.0,false,Northern Line
+268,Upminster Bridge,6.0,false,District Line
+79,East India,2.5,false,Docklands Light Railway
+195,Parsons Green,2.0,false,District Line
+94,Finchley Road,2.0,false,Jubilee Line|Metropolitan Line
+283,Westbourne Park,2.0,false,Hammersmith & City Line
+131,Hounslow East,4.0,false,Piccadilly Line
+47,Chalk Farm,2.0,false,Northern Line
+15,Barking,4.0,true,District Line|Hammersmith & City Line
+163,Marylebone,1.0,true,Bakerloo Line
+200,Plaistow,3.0,false,District Line|Hammersmith & City Line
+68,Debden,6.0,false,Central Line
+62,Croxley,7.0,false,Metropolitan Line
+178,Northwick Park,4.0,false,Metropolitan Line
+277,Warren Street,1.0,false,Northern Line|Victoria Line
+90,Euston Square,1.0,false,Circle Line|Hammersmith & City Line|Metropolitan Line
+111,Hampstead,2.5,false,Northern Line
+254,Swiss Cottage,2.0,false,Jubilee Line
+227,Shepherd's Bush (H),2.0,false,Hammersmith & City Line
+122,High Street Kensington,1.0,false,Circle Line|District Line
+83,Edgware Road (C),1.0,false,Circle Line|District Line|Hammersmith & City Line
+215,Roding Valley,5.0,false,Central Line
+222,Ruislip Manor,6.0,false,Metropolitan Line|Piccadilly Line
+232,Southgate,4.0,false,Piccadilly Line
+100,Golders Green,3.0,false,Northern Line

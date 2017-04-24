@@ -1,0 +1,2 @@
+# change paths
+/path/to/graphloader /path/to/authorBookMap_JSON.groovy -graph testJSON -address localhost -abort_on_prep_errors false -inputpath /path/to/directory/containing/data
