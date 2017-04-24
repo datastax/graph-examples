@@ -14,7 +14,7 @@ For additional interesting datasets, you might consider the following resources:
 
 ### Graph Resources and Help:
 
-- DataStax Enterprise Graph [documentation](http://docs.datastax.com/en/latest-dse/datastax_enterprise/graph/graphTOC.html)
+- DataStax Enterprise Graph [documentation](http://docs.datastax.com/en/dse/5.1/dse-dev/datastax_enterprise/graph/graphTOC.html)
 - DataStax Academy [DS330 course](https://academy.datastax.com/resources/ds330-datastax-enterprise-graph) on DSE Graph, a self-paced course covering both DSE Graph and Gremlin as a traversal language.
 - Apache TinkerPop [documentation](http://tinkerpop.apache.org/docs/current/reference/), [getting started tutorial](http://tinkerpop.apache.org/docs/current/tutorials/getting-started/), and [common recipes](http://tinkerpop.apache.org/docs/current/recipes/)
 - [DataStax Academy Slack](https://academy.datastax.com/slack) in the dse-graph channel
