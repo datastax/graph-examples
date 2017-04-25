@@ -4,14 +4,6 @@ This repo contains a collection of graph examples.  The intent is to provide mor
 
 Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at https://academy.datastax.com/downloads.
 
-### Additional datasets
-
-For additional interesting datasets, you might consider the following resources:
-
-- [Stanford Large Network Dataset Collection](https://snap.stanford.edu/data/) - a collection of connected data in various categories such as social data, web graphs, product co-purchasing networks, review data, etc.
-- [Awesome Public Datasets](https://github.com/caesar0301/awesome-public-datasets) - a github repository with links to collections, large and small, of interesting public data.  These are further categorized by industry and data type such as energy, government, machine learning, time series, sports data, transportation, etc.
-- [CRAWDAD](http://crawdad.org/) - the Community Resource for Archiving Wireless Data At Dartmouth.  This includes wireless network trace data from a variety of sources.
-
 ### Graph Resources and Help:
 
 - DataStax Enterprise Graph [documentation](http://docs.datastax.com/en/dse/5.1/dse-dev/datastax_enterprise/graph/graphTOC.html)
@@ -31,7 +23,7 @@ For additional interesting datasets, you might consider the following resources:
 - [Ruby](http://docs.datastax.com/en/developer/ruby-driver-dse/2.0/)
 - [PHP](http://docs.datastax.com/en/developer/php-driver-dse/1.1/)
 
-### Other posts and resources
+### Blog posts and other resources
 
 - [Getting started with the DataStax Graph Loader](http://www.datastax.com/dev/blog/dgl-basics)
 - [Gremlin's Time Machine](https://www.datastax.com/dev/blog/gremlins-time-machine) - a post about how to use the TinkerPop SubgraphStrategy to traverse your graph at a specific version or time in its history.
@@ -39,3 +31,11 @@ For additional interesting datasets, you might consider the following resources:
 - [Reducing Computational Complexity with Correlate Traversals](https://www.datastax.com/2017/04/reducing-computational-complexity-with-correlate-traversals) - a post about calculating network centrality in various manners and the associated cost.
 - Large graph loading best practices, [part 1](http://www.datastax.com/dev/blog/large-graph-loading-best-practices-strategies-part-1) and [part 2](http://www.datastax.com/dev/blog/large-graph-loading-tactics-part-2)
 - Fighting Fraud with Graph Databases Webinar [recording](https://www.youtube.com/watch?v=H5MmSL1c9Zs) and [slides](https://www.slideshare.net/DataStax/webinar-fighting-fraud-with-graph-databases).  Presented by DataStax and Cambridge Intelligence.
+
+### Additional datasets
+
+For additional interesting datasets, you might consider the following resources:
+
+- [Stanford Large Network Dataset Collection](https://snap.stanford.edu/data/) - a collection of connected data in various categories such as social data, web graphs, product co-purchasing networks, review data, etc.
+- [Awesome Public Datasets](https://github.com/caesar0301/awesome-public-datasets) - a github repository with links to collections, large and small, of interesting public data.  These are further categorized by industry and data type such as energy, government, machine learning, time series, sports data, transportation, etc.
+- [CRAWDAD](http://crawdad.org/) - the Community Resource for Archiving Wireless Data At Dartmouth.  This includes wireless network trace data from a variety of sources.
