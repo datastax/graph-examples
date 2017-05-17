@@ -22,7 +22,7 @@ Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at 
 - [C/C++](http://docs.datastax.com/en/developer/cpp-driver-dse/1.2/)
 - [Ruby](http://docs.datastax.com/en/developer/ruby-driver-dse/2.0/)
 - [PHP](http://docs.datastax.com/en/developer/php-driver-dse/1.1/)
-- Looking for Scala? Take a look at [this example|https://github.com/mpollmeier/gremlin-scala-examples/tree/master/dse-graph] of using Scala with the DataStax Java driver.
+- Looking for Scala? Take a look at [this example](https://github.com/mpollmeier/gremlin-scala-examples/tree/master/dse-graph) of using Scala with the DataStax Java driver
 
 ### Blog posts and other resources
 
