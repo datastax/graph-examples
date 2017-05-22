@@ -12,7 +12,7 @@ Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at 
 - [DataStax Academy Slack](https://academy.datastax.com/slack) in the dse-graph channel
 - Stack overflow with the [datastax-enterprise/datastax-enterprise-graph](http://stackoverflow.com/questions/tagged/datastax-enterprise+datastax-enterprise-graph) tag
 - [DataStax support portal](https://support.datastax.com) (if you are a DataStax customer)
-- DataStax Academy Gremlin Recipes
+- DataStax Academy Gremlin Recipes (videos)
   - [Gremlin as a stream](https://vimeo.com/user35188327/review/215965720/22e5289c7e)
   - [SQL to Gremlin](https://vimeo.com/user35188327/review/215966324/84ecf9b4ee)
   - [Recommendation engine with Gremlin](https://vimeo.com/user35188327/review/216119433/0dcc2e6055)
