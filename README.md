@@ -4,20 +4,24 @@ This repo contains a collection of graph examples.  The intent is to provide mor
 
 Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at https://academy.datastax.com/downloads.
 
-### Graph Resources and Help:
+### Graph Resources:
 
+- Apache TinkerPop [documentation](http://tinkerpop.apache.org/docs/current/reference/), [getting started tutorial](http://tinkerpop.apache.org/docs/current/tutorials/getting-started/), and [common recipes](http://tinkerpop.apache.org/docs/current/recipes/)
 - DataStax Enterprise Graph [documentation](http://docs.datastax.com/en/dse/5.1/dse-dev/datastax_enterprise/graph/graphTOC.html)
 - DataStax Academy [DS330 course](https://academy.datastax.com/resources/ds330-datastax-enterprise-graph) on DSE Graph, a self-paced course covering both DSE Graph and Gremlin as a traversal language.
-- Apache TinkerPop [documentation](http://tinkerpop.apache.org/docs/current/reference/), [getting started tutorial](http://tinkerpop.apache.org/docs/current/tutorials/getting-started/), and [common recipes](http://tinkerpop.apache.org/docs/current/recipes/)
-- [DataStax Academy Slack](https://academy.datastax.com/slack) in the dse-graph channel
-- Stack overflow with the [datastax-enterprise/datastax-enterprise-graph](http://stackoverflow.com/questions/tagged/datastax-enterprise+datastax-enterprise-graph) tag
-- [DataStax support portal](https://support.datastax.com) (if you are a DataStax customer)
 - DataStax Academy Gremlin Recipes (videos)
   - [Gremlin as a stream](https://vimeo.com/user35188327/review/215965720/22e5289c7e)
   - [SQL to Gremlin](https://vimeo.com/user35188327/review/215966324/84ecf9b4ee)
   - [Recommendation engine with Gremlin](https://vimeo.com/user35188327/review/216119433/0dcc2e6055)
   - [Recursive traversal](https://vimeo.com/user35188327/review/216179907/b40808f0a2)
   - [Path with Gremlin](https://vimeo.com/user35188327/review/216259582/8ae9955826)
+
+### Help!
+
+- [DataStax support portal](https://support.datastax.com) (for current DataStax customers)
+- [DataStax Academy Slack](https://academy.datastax.com/slack) in the dse-graph channel
+- [Gremlin-users google group](https://groups.google.com/forum/#!forum/gremlin-users)
+- Stack overflow with the [datastax-enterprise/datastax-enterprise-graph](http://stackoverflow.com/questions/tagged/datastax-enterprise+datastax-enterprise-graph) tag
 
 ### Blog posts and other resources
 
