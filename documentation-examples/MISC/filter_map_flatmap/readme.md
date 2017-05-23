@@ -1,9 +1,13 @@
 ## Filter, Map, and Flatmap
 * [filterSchema] (filterSchema.groovy)
 * [flatmapSchema] (flatmapSchema.groovy)
+* [mapSchema] (mapSchema.groovy)
 * [filterData.groovy] (filterData.groovy)
 * [flatmapData.groovy] (flatmapData.groovy)
+* [mapData.groovy] (mapData.groovy)
 * [filterQueries.groovy] (filterQueries.groovy)
 * [flatmapQueries.groovy] (flatmapQueries.groovy)
+* [mapQueries.groovy] (mapQueries.groovy)
 * [graphloaderFilter.text] (graphloaderFilter.txt)
 * [graphloaderFlatmap.text] (graphloaderFlatmap.txt)
+* [graphloaderMap.text] (graphloaderMap.txt)
