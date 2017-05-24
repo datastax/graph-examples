@@ -57,9 +57,9 @@ object Notes extends App {
 
   //import graph into C* backend
   // do not forget to create schema for new graph
-  val g = spark.dseGraph("test_import")
-  g.updateVertices(spark.read.json("/tmp/v.json"))
-  g.updateEdges(spark.read.json("/tmp/e.json"))
+  val d = spark.dseGraph("test_import")
+  d.updateVertices(spark.read.json("/tmp/v.json"))
+  d.updateEdges(spark.read.json("/tmp/e.json"))
 
   // import custom graph
   val new_data = org.graphframes.examples.Graphs.friends
@@ -67,7 +67,7 @@ object Notes extends App {
   val e = new_data.edges.select (g.idColumn(lit("person"), col("src")) as "src", g.idColumn(lit("person"), col("dst")) as "dst",
     col("relationship") as "~label")
 
-  new_data.updateVertices (v)
-  new_data.updateEdges (e)
+  g.updateVertices (v)
+  g.updateEdges (e)
 
 }
