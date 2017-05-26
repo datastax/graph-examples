@@ -8,13 +8,27 @@ Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at 
 
 - Apache TinkerPop [documentation](http://tinkerpop.apache.org/docs/current/reference/), [getting started tutorial](http://tinkerpop.apache.org/docs/current/tutorials/getting-started/), and [common recipes](http://tinkerpop.apache.org/docs/current/recipes/)
 - DataStax Enterprise Graph [documentation](http://docs.datastax.com/en/dse/5.1/dse-dev/datastax_enterprise/graph/graphTOC.html)
-- DataStax Academy [DS330 course](https://academy.datastax.com/resources/ds330-datastax-enterprise-graph) on DSE Graph, a self-paced course covering both DSE Graph and Gremlin as a traversal language.
+- DataStax Academy [DSA 330 course](https://academy.datastax.com/resources/ds330-datastax-enterprise-graph) on DSE Graph, a self-paced course covering both DSE Graph and Gremlin as a traversal language.
 - DataStax Academy Gremlin Recipes (videos)
   - [Gremlin as a stream](https://vimeo.com/user35188327/review/215965720/22e5289c7e)
   - [SQL to Gremlin](https://vimeo.com/user35188327/review/215966324/84ecf9b4ee)
   - [Recommendation engine with Gremlin](https://vimeo.com/user35188327/review/216119433/0dcc2e6055)
   - [Recursive traversal](https://vimeo.com/user35188327/review/216179907/b40808f0a2)
   - [Path with Gremlin](https://vimeo.com/user35188327/review/216259582/8ae9955826)]
+- [sql2gremlin.com](http://sql2gremlin.com) - to help migrate from sql to graph, used in the [Northwind](/northwind) graph example
+
+### Blog posts
+
+- [Getting started with the DataStax Graph Loader](http://www.datastax.com/dev/blog/dgl-basics)
+- [Gremlin's Time Machine](https://www.datastax.com/dev/blog/gremlins-time-machine) - a post about how to use the TinkerPop SubgraphStrategy to traverse your graph at a specific version or time in its history.
+- [graphoendodonticology](https://www.datastax.com/2017/03/graphoendodonticology) - a resource to troubleshoot your graph
+- [Reducing Computational Complexity with Correlate Traversals](https://www.datastax.com/2017/04/reducing-computational-complexity-with-correlate-traversals) - a post about calculating network centrality in various manners and the associated cost.
+- Large graph loading best practices, [part 1](http://www.datastax.com/dev/blog/large-graph-loading-best-practices-strategies-part-1) and [part 2](http://www.datastax.com/dev/blog/large-graph-loading-tactics-part-2)
+
+### Presentations
+
+- [The Gremlin Graph Traversal Language](https://www.slideshare.net/slidarko/the-gremlin-traversal-language), a presentation by Marko Rodriguez and Daniel Kuppitz
+- Fighting Fraud with Graph Databases Webinar [recording](https://www.youtube.com/watch?v=H5MmSL1c9Zs) and [slides](https://www.slideshare.net/DataStax/webinar-fighting-fraud-with-graph-databases).  Presented by DataStax and Cambridge Intelligence.
 
 ### Help!
 
@@ -22,16 +36,6 @@ Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at 
 - [DataStax Academy Slack](https://academy.datastax.com/slack) in the dse-graph channel
 - [Gremlin-users google group](https://groups.google.com/forum/#!forum/gremlin-users)
 - Stack overflow with the [datastax-enterprise/datastax-enterprise-graph](http://stackoverflow.com/questions/tagged/datastax-enterprise+datastax-enterprise-graph) tag
-
-### Blog posts and other resources
-
-- [Getting started with the DataStax Graph Loader](http://www.datastax.com/dev/blog/dgl-basics)
-- [Gremlin's Time Machine](https://www.datastax.com/dev/blog/gremlins-time-machine) - a post about how to use the TinkerPop SubgraphStrategy to traverse your graph at a specific version or time in its history.
-- [graphoendodonticology](https://www.datastax.com/2017/03/graphoendodonticology) - a resource to troubleshoot your graph
-- [Reducing Computational Complexity with Correlate Traversals](https://www.datastax.com/2017/04/reducing-computational-complexity-with-correlate-traversals) - a post about calculating network centrality in various manners and the associated cost.
-- Large graph loading best practices, [part 1](http://www.datastax.com/dev/blog/large-graph-loading-best-practices-strategies-part-1) and [part 2](http://www.datastax.com/dev/blog/large-graph-loading-tactics-part-2)
-- [The Gremlin Graph Traversal Language](https://www.slideshare.net/slidarko/the-gremlin-traversal-language), a presentation by Marko Rodriguez and Daniel Kuppitz
-- Fighting Fraud with Graph Databases Webinar [recording](https://www.youtube.com/watch?v=H5MmSL1c9Zs) and [slides](https://www.slideshare.net/DataStax/webinar-fighting-fraud-with-graph-databases).  Presented by DataStax and Cambridge Intelligence.
 
 ### Graph language drivers
 - Apache TinkerPop [Gremlin Language Variants](http://tinkerpop.apache.org/docs/current/tutorials/gremlin-language-variants/) - describes TinkerPop's idiomatic language support in the form of a fluent API
