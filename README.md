@@ -4,14 +4,14 @@ This repo contains a collection of graph examples.  The intent is to provide mor
 
 Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at https://academy.datastax.com/downloads.
 
-### Graph Resources:
+## Graph Resources:
 
-## Documentation
+### Documentation
 - Apache TinkerPop [documentation](http://tinkerpop.apache.org/docs/current/reference/), [getting started tutorial](http://tinkerpop.apache.org/docs/current/tutorials/getting-started/), and [common recipes](http://tinkerpop.apache.org/docs/current/recipes/)
 - DataStax Enterprise Graph [documentation](http://docs.datastax.com/en/dse/5.1/dse-dev/datastax_enterprise/graph/graphTOC.html)
 - [sql2gremlin.com](http://sql2gremlin.com) - to help migrate from sql to graph, used in the [Northwind](/northwind) graph example
 
-## Video tutorials
+### Video tutorials
 
 - DataStax Academy [DSA 330 course](https://academy.datastax.com/resources/ds330-datastax-enterprise-graph) on DSE Graph, a self-paced course covering both DSE Graph and Gremlin as a traversal language.
 - DataStax Academy Gremlin Recipes
@@ -21,7 +21,7 @@ Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at 
   - [Recursive traversal](https://vimeo.com/user35188327/review/216179907/b40808f0a2)
   - [Path with Gremlin](https://vimeo.com/user35188327/review/216259582/8ae9955826)
 
-## Blog posts
+### Blog posts
 
 - [Getting started with the DataStax Graph Loader](http://www.datastax.com/dev/blog/dgl-basics)
 - [Gremlin's Time Machine](https://www.datastax.com/dev/blog/gremlins-time-machine) - a post about how to use the TinkerPop SubgraphStrategy to traverse your graph at a specific version or time in its history.
@@ -29,19 +29,19 @@ Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at 
 - [Reducing Computational Complexity with Correlate Traversals](https://www.datastax.com/2017/04/reducing-computational-complexity-with-correlate-traversals) - a post about calculating network centrality in various manners and the associated cost.
 - Large graph loading best practices, [part 1](http://www.datastax.com/dev/blog/large-graph-loading-best-practices-strategies-part-1) and [part 2](http://www.datastax.com/dev/blog/large-graph-loading-tactics-part-2)
 
-## Presentations
+### Presentations
 
 - [The Gremlin Graph Traversal Language](https://www.slideshare.net/slidarko/the-gremlin-traversal-language), a presentation by Marko Rodriguez and Daniel Kuppitz
 - Fighting Fraud with Graph Databases Webinar [recording](https://www.youtube.com/watch?v=H5MmSL1c9Zs) and [slides](https://www.slideshare.net/DataStax/webinar-fighting-fraud-with-graph-databases).  Presented by DataStax and Cambridge Intelligence.
 
-## Help!
+### Help!
 
 - [DataStax support portal](https://support.datastax.com) (for current DataStax customers)
 - [DataStax Academy Slack](https://academy.datastax.com/slack) in the dse-graph channel
 - [Gremlin-users google group](https://groups.google.com/forum/#!forum/gremlin-users)
 - Stack overflow with the [datastax-enterprise/datastax-enterprise-graph](http://stackoverflow.com/questions/tagged/datastax-enterprise+datastax-enterprise-graph) tag
 
-## Graph language drivers
+### Graph language drivers
 - Apache TinkerPop [Gremlin Language Variants](http://tinkerpop.apache.org/docs/current/tutorials/gremlin-language-variants/) - describes TinkerPop's idiomatic language support in the form of a fluent API
 - [Introduction to the Fluent Graph APIs](http://www.datastax.com/dev/blog/datastax-drivers-fluent-apis-for-dse-graph-are-out)
 - [Java](http://docs.datastax.com/en/developer/java-driver-dse/1.2/) - includes both a String based and fluent API
@@ -53,7 +53,7 @@ Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at 
 - [PHP](http://docs.datastax.com/en/developer/php-driver-dse/1.1/)
 - Looking for Scala? Take a look at [this example](https://github.com/mpollmeier/gremlin-scala-examples/tree/master/dse-graph) of using Scala with the DataStax Java driver
 
-## Additional datasets
+### Additional datasets
 
 For additional interesting datasets, you might consider the following resources:
 
