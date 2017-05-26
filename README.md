@@ -14,12 +14,12 @@ Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at 
 ## Video tutorials
 
 - DataStax Academy [DSA 330 course](https://academy.datastax.com/resources/ds330-datastax-enterprise-graph) on DSE Graph, a self-paced course covering both DSE Graph and Gremlin as a traversal language.
-- DataStax Academy Gremlin Recipes (videos)
+- DataStax Academy Gremlin Recipes
   - [Gremlin as a stream](https://vimeo.com/user35188327/review/215965720/22e5289c7e)
   - [SQL to Gremlin](https://vimeo.com/user35188327/review/215966324/84ecf9b4ee)
   - [Recommendation engine with Gremlin](https://vimeo.com/user35188327/review/216119433/0dcc2e6055)
   - [Recursive traversal](https://vimeo.com/user35188327/review/216179907/b40808f0a2)
-  - [Path with Gremlin](https://vimeo.com/user35188327/review/216259582/8ae9955826)]
+  - [Path with Gremlin](https://vimeo.com/user35188327/review/216259582/8ae9955826)
 
 ## Blog posts
 
