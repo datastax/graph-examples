@@ -14,7 +14,7 @@ Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at 
   - [SQL to Gremlin](https://vimeo.com/user35188327/review/215966324/84ecf9b4ee)
   - [Recommendation engine with Gremlin](https://vimeo.com/user35188327/review/216119433/0dcc2e6055)
   - [Recursive traversal](https://vimeo.com/user35188327/review/216179907/b40808f0a2)
-  - [Path with Gremlin](https://vimeo.com/user35188327/review/216259582/8ae9955826)
+  - [Path with Gremlin](https://vimeo.com/user35188327/review/216259582/8ae9955826)]
 
 ### Help!
 
@@ -30,6 +30,7 @@ Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at 
 - [graphoendodonticology](https://www.datastax.com/2017/03/graphoendodonticology) - a resource to troubleshoot your graph
 - [Reducing Computational Complexity with Correlate Traversals](https://www.datastax.com/2017/04/reducing-computational-complexity-with-correlate-traversals) - a post about calculating network centrality in various manners and the associated cost.
 - Large graph loading best practices, [part 1](http://www.datastax.com/dev/blog/large-graph-loading-best-practices-strategies-part-1) and [part 2](http://www.datastax.com/dev/blog/large-graph-loading-tactics-part-2)
+- [The Gremlin Graph Traversal Language](https://www.slideshare.net/slidarko/the-gremlin-traversal-language), a presentation by Marko Rodriguez and Daniel Kuppitz
 - Fighting Fraud with Graph Databases Webinar [recording](https://www.youtube.com/watch?v=H5MmSL1c9Zs) and [slides](https://www.slideshare.net/DataStax/webinar-fighting-fraud-with-graph-databases).  Presented by DataStax and Cambridge Intelligence.
 
 ### Graph language drivers
