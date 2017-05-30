@@ -1,6 +1,6 @@
 # KillrVideo
 
-The KillrVideo dataset comes from the DataStax Academy 330 course.  It includes metadata about films, users, and ratings.
+The KillrVideo dataset comes from the [DataStax Academy 330 course](https://academy.datastax.com/resources/ds330-datastax-enterprise-graph).  It includes metadata about films, users, and ratings.
 
 Data files:
 
