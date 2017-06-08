@@ -1,6 +1,5 @@
 // Geodetic example - NO SEARCH INDEX
 
-system.graph('geodetic51').create()
 :remote config alias g geodetic51.g
 //schema.config().option('graph.allow_scan').set('true')
 schema.config().option('graph.allow_scan').set('false')
