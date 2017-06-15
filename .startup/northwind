@@ -1,0 +1,1 @@
+java -Xms4096M -Xmx4096M -cp /tmp/dse-graph-loader-*/dse-graph-loader-*-uberjar.jar com.datastax.dsegraphloader.cli.Executable -graph northwind -address localhost northwind-mapping.groovy
