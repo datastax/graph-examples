@@ -1,0 +1,2 @@
+# change paths
+/path/to/graphloader /path/to/geodetic-map-script.groovy -graph testGeo51 -address localhost -abort_on_prep_errors false -inputpath /path/to/directory/containing/data
