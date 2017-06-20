@@ -27,6 +27,7 @@ Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at 
 - [Gremlin's Time Machine](https://www.datastax.com/dev/blog/gremlins-time-machine) - a post about how to use the TinkerPop SubgraphStrategy to traverse your graph at a specific version or time in its history.
 - [graphoendodonticology](https://www.datastax.com/2017/03/graphoendodonticology) - a resource to troubleshoot your graph
 - [Reducing Computational Complexity with Correlate Traversals](https://www.datastax.com/2017/04/reducing-computational-complexity-with-correlate-traversals) - a post about calculating network centrality in various manners and the associated cost.
+- [Introducing DSE Graph Frames](http://www.datastax.com/dev/blog/dse-graph-frame) - how to use DSE Graph with Spark's GraphFrames
 - Large graph loading best practices, [part 1](http://www.datastax.com/dev/blog/large-graph-loading-best-practices-strategies-part-1) and [part 2](http://www.datastax.com/dev/blog/large-graph-loading-tactics-part-2)
 
 ### Presentations
