@@ -19,6 +19,11 @@ load the data with `create_schema` set to **false** in the script or from the co
 View the live schema visualization <a href="https://s3.amazonaws.com/datastax-graph-schema-viewer/index.html#/?schema=northwind.json" target="_blank">here</a>
 [![datamodel screenshot](datamodel-screenshot.png)](https://s3.amazonaws.com/datastax-graph-schema-viewer/index.html#/?schema=northwind.json)<br/>
 
+## Create the schema
+
+Included is a `schema.groovy` file.  You can create your graph in Studio and copy and paste the schema statements
+to run there.  Alternately, the statements can be run from the gremlin console.
+
 ## Example loading
 
 If you load the Kryo file from within the northwind directory, you don't need to specify the path.  It will

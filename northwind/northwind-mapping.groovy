@@ -1,5 +1,5 @@
 //Configures the data loader to create the schema
-config create_schema: true, load_new: true
+config create_schema: false, load_new: true
 
 inputfile = 'northwind.kryo'
 
