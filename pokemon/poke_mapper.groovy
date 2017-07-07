@@ -180,17 +180,17 @@ load(pokemonevolutionEdgeFile).asEdges {
     }
 }
 
-// load(pokemonlocationEdgeFile).asEdges {
-//     label "has_location"
-//     outV "pokemon_id", {
-//         label "pokemon"
-//         key "pokemon_id"
-//     }
-//     inV "game_index", {
-//         label "location"
-//         key "game_index"
-//     }
-// }
+load(pokemonlocationEdgeFile).asEdges {
+    label "has_location"
+    outV "pokemon_id", {
+        label "pokemon"
+        key "pokemon_id"
+    }
+    inV "game_index", {
+        label "location"
+        key "game_index"
+    }
+}
 
 load(pokemonmovesEdgeFile).asEdges {
     label "has_move"
