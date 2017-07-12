@@ -8,18 +8,18 @@ if (inputpath == '')
 else
     path = inputpath + '/'
 
-customerInput = File.csv(inputpath + 'customers.csv').delimiter('|')
-sessionInput = File.csv(inputpath + 'sessions.csv').delimiter('|')
-orderInput = File.csv(inputpath + 'orders.csv').delimiter('|')
-chargebackInput = File.csv(inputpath + 'chargebacks.csv').delimiter('|')
-//merchantInput = File.csv(inputpath + 'merchants.csv').delimiter('|')
+customerInput = File.csv(path + 'customers.csv').delimiter('|')
+sessionInput = File.csv(path + 'sessions.csv').delimiter('|')
+orderInput = File.csv(path + 'orders.csv').delimiter('|')
+chargebackInput = File.csv(path + 'chargebacks.csv').delimiter('|')
+//merchantInput = File.csv(path + 'merchants.csv').delimiter('|')
 
-customerOrderInput = File.csv(inputpath + 'customerOrders.csv').delimiter('|')
-orderChargebackInput = File.csv(inputpath + 'orderChargebacks.csv').delimiter('|')
-//orderMerchantInput = File.csv(inputpath + 'orderMerchants.csv').delimiter('|')
-customerSessionInput = File.csv(inputpath + 'customerSessions.csv').delimiter('|')
-customerChargebackInput = File.csv(inputpath + 'customerChargebacks.csv').delimiter('|')
-relatedCustomerInput = File.csv(inputpath + 'relatedCustomers.csv').delimiter('|')
+customerOrderInput = File.csv(path + 'customerOrders.csv').delimiter('|')
+orderChargebackInput = File.csv(path + 'orderChargebacks.csv').delimiter('|')
+//orderMerchantInput = File.csv(path + 'orderMerchants.csv').delimiter('|')
+customerSessionInput = File.csv(path + 'customerSessions.csv').delimiter('|')
+customerChargebackInput = File.csv(path + 'customerChargebacks.csv').delimiter('|')
+relatedCustomerInput = File.csv(path + 'relatedCustomers.csv').delimiter('|')
 
 load(customerInput).asVertices {
     label "customer"
