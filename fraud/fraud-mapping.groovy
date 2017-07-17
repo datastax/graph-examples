@@ -12,6 +12,7 @@ customerInput = File.csv(path + 'customers.csv').delimiter('|')
 sessionInput = File.csv(path + 'sessions.csv').delimiter('|')
 orderInput = File.csv(path + 'orders.csv').delimiter('|')
 chargebackInput = File.csv(path + 'chargebacks.csv').delimiter('|')
+devices = File.csv(path + 'devices.csv').delimiter('|')
 //merchantInput = File.csv(path + 'merchants.csv').delimiter('|')
 
 customerOrderInput = File.csv(path + 'customerOrders.csv').delimiter('|')
@@ -20,6 +21,8 @@ orderChargebackInput = File.csv(path + 'orderChargebacks.csv').delimiter('|')
 customerSessionInput = File.csv(path + 'customerSessions.csv').delimiter('|')
 customerChargebackInput = File.csv(path + 'customerChargebacks.csv').delimiter('|')
 relatedCustomerInput = File.csv(path + 'relatedCustomers.csv').delimiter('|')
+sessionDeviceInput = File.csv(path + 'sessionDevices.csv').delimiter('|')
+orderDeviceInput = File.csv(path + 'orderDevices.csv').delimiter('|')
 
 load(customerInput).asVertices {
     label "customer"
@@ -39,6 +42,11 @@ load(orderInput).asVertices {
 load(chargebackInput).asVertices {
     label "chargeback"
     key "chargebackNumber"
+}
+
+load(devices).asVertices {
+    label 'device'
+    key 'deviceId'
 }
 
 //load(merchantInput).asVertices {
@@ -115,6 +123,30 @@ load(relatedCustomerInput).asEdges {
     inV "childCustomerId", {
         label "customer"
         key "customerId"
+    }
+}
+
+load(sessionDeviceInput).asEdges {
+    label "using"
+    outV "sessionId", {
+        label "session"
+        key "sessionId"
+    }
+    inV "deviceId", {
+        label "device"
+        key "deviceId"
+    }
+}
+
+load(orderDeviceInput).asEdges {
+    label "using"
+    outV "orderId", {
+        label "order"
+        key "orderId"
+    }
+    inV "deviceId", {
+        label "device"
+        key "deviceId"
     }
 }
 
