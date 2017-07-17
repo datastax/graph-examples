@@ -12,7 +12,7 @@ to run there.  Alternately, the statements can be run from the gremlin console.
 Example of loading the fraud data:
 
 ```
-# From the northwind directory
+# From the fraud directory
 graphloader -graph fraud -address localhost fraud-mapping.groovy
 ```
 
