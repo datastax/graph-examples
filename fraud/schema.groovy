@@ -2,7 +2,7 @@
 schema.propertyKey('customerId').Uuid().ifNotExists().create()
 schema.propertyKey('firstName').Text().ifNotExists().create()
 schema.propertyKey('lastName').Text().ifNotExists().create()
-schema.propertyKey('emailAddress').Text().ifNotExists.create()
+schema.propertyKey('emailAddress').Text().ifNotExists().create()
 schema.propertyKey('streetAddress1').Text().ifNotExists().create()
 schema.propertyKey('streetAddress2').Text().ifNotExists().create()
 schema.propertyKey('city').Text().ifNotExists().create()
