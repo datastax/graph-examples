@@ -2,6 +2,7 @@
 schema.propertyKey('customerId').Uuid().ifNotExists().create()
 schema.propertyKey('firstName').Text().ifNotExists().create()
 schema.propertyKey('lastName').Text().ifNotExists().create()
+schema.propertyKey('emailAddress').Text().ifNotExists.create()
 schema.propertyKey('streetAddress1').Text().ifNotExists().create()
 schema.propertyKey('streetAddress2').Text().ifNotExists().create()
 schema.propertyKey('city').Text().ifNotExists().create()
@@ -28,7 +29,7 @@ schema.propertyKey('chargebackDate').Timestamp().ifNotExists().create()
 schema.propertyKey('relatedBy').Text().ifNotExists().create()
 
 // Vertex labels
-schema.vertexLabel('customer').partitionKey('customerId').properties('firstName', 'lastName', 'streetAddress1', 'streetAddress2', 'city', 'state', 'postalCode', 'countryCode', 'phoneNumber', 'created').ifNotExists().create()
+schema.vertexLabel('customer').partitionKey('customerId').properties('firstName', 'lastName', 'emailAddress', 'streetAddress1', 'streetAddress2', 'city', 'state', 'postalCode', 'countryCode', 'phoneNumber', 'created').ifNotExists().create()
 schema.vertexLabel('session').partitionKey('sessionId').properties('ipAddress', 'deviceId', 'sessionDate').ifNotExists().create()
 schema.vertexLabel('order').partitionKey('orderId').properties('orderDate', 'outcome', 'creditCardHashed', 'ipAddress', 'amount', 'deviceId').ifNotExists().create()
 schema.vertexLabel('chargeback').partitionKey('chargebackNumber').properties('chargebackDate', 'amount', 'creditCardHashed').ifNotExists().create()
