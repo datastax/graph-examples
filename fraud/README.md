@@ -132,7 +132,7 @@ Event: Registration 10 days later - Customer name (Joe Smith) & email (Jsmith@ya
 Event: Session - same CustomerID (C44444) as above registration, unique DeviceID, unique IP Address
 Event: Order (O44444) - Name and Email linked to Customer from O33333 -- order is declined -- too many layers of account linkage (despite the fact that there are no links to chargebacks or other "hard" fraud indicators)
 
-## ToDo:
+## To Do:
 
 - Add traversals
 - Add credit card metadata including issuer, postal code, other location data

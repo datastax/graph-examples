@@ -1,4 +1,4 @@
-customerId|firstName|lastName|email|streetAddress1|city|state|postalCode|countryCode|phoneNumber|created
+customerId|firstName|lastName|email|address|city|state|postalCode|countryCode|phone|createdTime
 10000000-0000-0000-0000-000000000001|Aaron|Atkins|atkinsman@yahoo.com|101 Adams Lane|Anchorage|AK|99501|US|100-000-0001|2017-04-01T00:00:00.00Z
 10000000-0000-0000-0000-000000000002|Ben|Bailey|ben.bailey22@gmail.com|102 Bellevue Blvd|Baltimore|MD|21201|US|100-000-0002|2017-04-01T00:00:00.00Z
 10000000-0000-0000-0000-000000000003|Charles|Chardonnay|chardonnay.family@aol.com|103 Charity Court|Cincinatti|OH|45201|US|100-000-0003|2017-04-01T00:00:00.00Z
