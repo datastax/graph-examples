@@ -23,17 +23,19 @@ graphloader -graph fraud -address localhost fraud-mapping.groovy -inputpath ~/gr
 
 ## Scenarios
 
-[Scenario 1](#scenario1): Legitimate - User registers and eventually places a order
-[Scenario 2](#scenario2): Suspicious - User registers and places an order with previously used device id (might be husband and wife)
-[Scenario 3](#scenario3): Fraud - User registers and places an order with highly used device id
-[Scenario 4](#scenario4): Fraud - Order placed using the same credit card as an order which resulted in a chargeback
-[Scenario 5](#scenario5): Fraud - Order placed using the same device as an order which resulted in a chargeback
-[Scenario 6](#scenario6): Fraud - Order placed using a credit card which is linked to a device which was used by a customer who placed an order which resulted in a chargeback
-[Scenario 7](#scenario7): Suspicious - Levels of linkage are suspicious even without a chargeback
+- [Scenario 1](#scenario1): Legitimate - User registers and eventually places a order
+- [Scenario 2](#scenario2): Suspicious - User registers and places an order with previously used device id (might be husband and wife)
+- [Scenario 3](#scenario3): Fraud - User registers and places an order with highly used device id
+- [Scenario 4](#scenario4): Fraud - Order placed using the same credit card as an order which resulted in a chargeback
+- [Scenario 5](#scenario5): Fraud - Order placed using the same device as an order which resulted in a chargeback
+- [Scenario 6](#scenario6): Fraud - Order placed using a credit card which is linked to a device which was used by a customer who placed an order which resulted in a chargeback
+- [Scenario 7](#scenario7): Suspicious - Levels of linkage are suspicious even without a chargeback
 
 <a name='scenario1'/>
 ### Scenario 1
+
 #### Legitimate - User registers and eventually places a order
+
 Event: Registration - unique customer name, address, email, etc.
 Event: Session - same customer id as registration, unique device id, IP address
 
@@ -49,14 +51,18 @@ Event: Order  - unique credit card - order is approved
 
 <a name='scenario2'/>
 ### Scenario 2
+
 #### Suspicious - User registers and places an order with previously used device id (might be husband and wife?)
+
 Event: Registration - unique customer name, address, email, same physical address as another customer
 Event: Session - same customer id as registration, device id seen on 1 other customer registrations (the one with the same physical address), IP address seen on 1 other customer registrations
 Event: Order - unique credit card - order is approved
 
 <a name='scenario3'/>
 ### Scenario 3
+
 #### Fraud - User registers and places an order with highly used device id
+
 Event: Registration - unique customer name, address, email, etc.
 Event: Session - same customer id as registration, unique device id, unique IP address
 
@@ -90,7 +96,9 @@ Event: Order - unique credit card, same customer id as above registration - orde
 
 <a name='scenario4'/>
 ### Scenario 4
+
 #### Fraud - Order placed using the same credit card as an order which resulted in a chargeback
+
 Event: Registration - unique customer name, address, email, etc.
 Event: Session - same customer id as registration, unique device id, IP address
 Event: Order - unique credit card - order is approved
@@ -103,7 +111,9 @@ Event: Order - credit card same as above order - order is declined
 
 <a name='scenario5'/>
 ### Scenario 5
+
 #### Fraud - Order placed using the same device as an order which resulted in a chargeback
+
 Event: Registration - unique customer name, address, email, etc.
 Event: Session - same customer id as registration, unique device id, IP address
 
@@ -118,6 +128,7 @@ Event: Order - device id linked to a customer which is linked to a chargeback - 
 
 <a name='scenario6'/>
 ### Scenario 6
+
 #### Fraud - Order placed using a credit card which is linked to a device which was used by a customer who placed an order which resulted in a chargeback
 
 Traversal: `g.V().hasLabel('customer').has('customerId', '10000000-0000-0000-0000-000000000030').repeat(__.bothE().subgraph('sg').otherV()).times(8).cap('sg')`
@@ -140,6 +151,7 @@ Event: Order (O33333) - credit card (4111 1111 1111 1111) matched to O22222, cus
 
 <a name='scenario7'/>
 ### Scenario 7
+
 #### 4 Suspicious - Levels of linkage are suspicious even without a chargeback
 
 Traversal: `g.V().hasLabel('customer').has('address', '650 Del Prado Drive').repeat(__.bothE().subgraph('sg').otherV()).times(6).cap('sg')`
