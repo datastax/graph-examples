@@ -32,6 +32,7 @@ graphloader -graph fraud -address localhost fraud-mapping.groovy -inputpath ~/gr
 - [Scenario 7](#scenario7): Suspicious - Levels of linkage are suspicious even without a chargeback
 
 <a name='scenario1'/>
+
 ### Scenario 1
 
 #### Legitimate - User registers and eventually places a order
@@ -50,6 +51,7 @@ Event: Session -- same customer id, same device id as first login, different IP 
 Event: Order  - unique credit card - order is approved
 
 <a name='scenario2'/>
+
 ### Scenario 2
 
 #### Suspicious - User registers and places an order with previously used device id (might be husband and wife?)
@@ -59,6 +61,7 @@ Event: Session - same customer id as registration, device id seen on 1 other cus
 Event: Order - unique credit card - order is approved
 
 <a name='scenario3'/>
+
 ### Scenario 3
 
 #### Fraud - User registers and places an order with highly used device id
@@ -95,6 +98,7 @@ Event: Session - same customer id as registration, device id seen on 9 other cus
 Event: Order - unique credit card, same customer id as above registration - order is declined
 
 <a name='scenario4'/>
+
 ### Scenario 4
 
 #### Fraud - Order placed using the same credit card as an order which resulted in a chargeback
@@ -110,6 +114,7 @@ Event: Session - same customer id as above registration, unique device id, IP ad
 Event: Order - credit card same as above order - order is declined
 
 <a name='scenario5'/>
+
 ### Scenario 5
 
 #### Fraud - Order placed using the same device as an order which resulted in a chargeback
@@ -127,6 +132,7 @@ Event: Session - same customer id as above registration, same device id as custo
 Event: Order - device id linked to a customer which is linked to a chargeback - order is declined
 
 <a name='scenario6'/>
+
 ### Scenario 6
 
 #### Fraud - Order placed using a credit card which is linked to a device which was used by a customer who placed an order which resulted in a chargeback
@@ -150,6 +156,7 @@ Event: Session - same customer id (C33333) as above registration, unique device 
 Event: Order (O33333) - credit card (4111 1111 1111 1111) matched to O22222, customer from O22222 (C22222) linked by device id linked to customer (C11111) who placed an order with a chargeback - order is declined
 
 <a name='scenario7'/>
+
 ### Scenario 7
 
 #### 4 Suspicious - Levels of linkage are suspicious even without a chargeback
