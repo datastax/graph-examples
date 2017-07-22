@@ -19,7 +19,6 @@ customerOrders = File.csv(path + 'customerOrders.csv').delimiter('|')
 orderChargebacks = File.csv(path + 'orderChargebacks.csv').delimiter('|')
 customerSessions = File.csv(path + 'customerSessions.csv').delimiter('|')
 customerChargebacks = File.csv(path + 'customerChargebacks.csv').delimiter('|')
-relatedCustomers = File.csv(path + 'relatedCustomers.csv').delimiter('|')
 
 load(customers).asVertices {
     label 'customer'
@@ -129,18 +128,6 @@ load(customerChargebacks).asEdges {
     inV 'chargebackNumber', {
         label 'chargeback'
         key 'chargebackNumber'
-    }
-}
-
-load(relatedCustomers).asEdges {
-    label 'isRelatedTo'
-    outV 'parentCustomerId', {
-        label 'customer'
-        key 'customerId'
-    }
-    inV 'childCustomerId', {
-        label 'customer'
-        key 'customerId'
     }
 }
 

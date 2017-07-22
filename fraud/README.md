@@ -70,7 +70,9 @@ Event: Order - unique credit card - order is approved
 
 #### Fraud - User registers and places an order with highly used device id
 
-Traversal: `g.V().has("device", "deviceId", "30000000-0000-0000-0015-000000000004").inE()`
+Traversals:
+- `g.V().has("device", "deviceId", "30000000-0000-0000-0015-000000000004").inE()`
+- `g.V().has("device", "deviceId", "30000000-0000-0000-0015-000000000004").repeat(__.bothE().subgraph('sg').otherV().simplePath()).times(2).cap('sg')`
 
 Event: Registration - unique customer name, address, email, etc.
 Event: Session - same customer id as registration, unique device id, unique IP address
@@ -109,7 +111,7 @@ Event: Order - unique credit card, same customer id as above registration - orde
 
 #### Fraud - Order placed using the same credit card as an order which resulted in a chargeback
 
-Traversal: `g.V().has("customer", "customerId", "10000000-0000-0000-0000-000000000025").repeat(__.bothE().subgraph('sg').otherV()).times(3).cap('sg')`
+Traversal: `g.V().has('creditCard', 'creditCardHashed', 'a1ab1822888276fdb587a16b2dc7b697').repeat(__.bothE().subgraph('sg').otherV()).times(2).cap('sg')`
 
 Event: Registration - unique customer name, address, email, etc.
 Event: Session - same customer id as registration, unique device id, IP address
@@ -127,7 +129,7 @@ Event: Order - credit card same as above order - order is declined
 
 #### Fraud - Order placed using the same device as an order which resulted in a chargeback
 
-Traversal: `g.V().hasLabel('customer').has('customerId', '10000000-0000-0000-0000-000000000026').repeat(__.bothE().subgraph('sg').otherV()).times(5).cap('sg')`
+Traversal: `g.V().hasLabel('order').has('deviceId', '30000000-0000-0000-0122-000000000064').repeat(__.bothE().subgraph('sg').otherV()).times(3).cap('sg')`
 
 Event: Registration - unique customer name, address, email, etc.
 Event: Session - same customer id as registration, unique device id, IP address
@@ -192,6 +194,14 @@ Event: Order (O44444) - Name and Email linked to customer from O33333 -- order i
 ## To Do:
 
 - Put in all ids into the scenario notes
+- Order resultsIn chargeback - make sure that's done in the data - make the edge
+- Take out one of the Joe Banks, possibly add other linkage
+- Add a physical address vertex
+- Scenario 2 - have more than two people at the same address
+- Link the transaction with the chargeback - in the data itself
+- Tell the story about both visualizing existing fraud/suspicion as well as building simple rules around classifying automatically - like count the number of people involved
+- Enrich the data with related to with a graph frames job as well as add grandchildren like for session->order
+- Add some indexes on things we query by so we don't need `allow_scan` enabled
 - Add credit card metadata including issuer, postal code, other location data
 - Separate out address information into a vertex to be able to traverse through it (make showing scenario 7 simpler)
 - Link customers to orders via sessions instead of separate path, remove redundant IP and device information from orders - should only be needed on associated session
