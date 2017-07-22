@@ -26,8 +26,6 @@ schema.propertyKey('type').Text().ifNotExists().create()
 schema.propertyKey('os').Text().ifNotExists().create()
 schema.propertyKey('osVersion').Text().ifNotExists().create()
 
-schema.propertyKey('relatedBy').Text().ifNotExists().create()
-
 // Vertex labels
 schema.vertexLabel('customer').partitionKey('customerId').properties('firstName', 'lastName', 'email', 'address', 'city', 'state', 'postalCode', 'countryCode', 'phone', 'createdTime').ifNotExists().create()
 schema.vertexLabel('session').partitionKey('sessionId').properties('ipAddress', 'deviceId', 'createdTime').ifNotExists().create()
@@ -37,7 +35,6 @@ schema.vertexLabel('creditCard').partitionKey('creditCardHashed').properties('ty
 schema.vertexLabel('device').partitionKey('deviceId').properties('type', 'os', 'osVersion').ifNotExists().create()
 
 // Edge labels
-schema.edgeLabel('isRelatedTo').properties('relatedBy').connection('customer', 'customer').ifNotExists().create()
 schema.edgeLabel('places').connection('customer', 'order').ifNotExists().create()
 schema.edgeLabel('usesCard').connection('order', 'creditCard').ifNotExists().create()
 schema.edgeLabel('logsInto').connection('customer', 'session').ifNotExists().create()
