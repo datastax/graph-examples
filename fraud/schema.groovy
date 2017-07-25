@@ -27,7 +27,8 @@ schema.propertyKey('os').Text().ifNotExists().create()
 schema.propertyKey('osVersion').Text().ifNotExists().create()
 
 // Vertex labels
-schema.vertexLabel('customer').partitionKey('customerId').properties('firstName', 'lastName', 'email', 'address', 'city', 'state', 'postalCode', 'countryCode', 'phone', 'createdTime').ifNotExists().create()
+schema.vertexLabel('customer').partitionKey('customerId').properties('firstName', 'lastName', 'email', 'phone', 'createdTime').ifNotExists().create()
+schema.vertexLabel('address').partitionKey('address', 'postalCode').properties('city', 'state', 'countryCode').ifNotExists().create()
 schema.vertexLabel('session').partitionKey('sessionId').properties('ipAddress', 'deviceId', 'createdTime').ifNotExists().create()
 schema.vertexLabel('order').partitionKey('orderId').properties('createdTime', 'outcome', 'creditCardHashed', 'ipAddress', 'amount', 'deviceId').ifNotExists().create()
 schema.vertexLabel('chargeback').partitionKey('chargebackNumber').properties('createdTime', 'amount', 'creditCardHashed').ifNotExists().create()
@@ -35,6 +36,7 @@ schema.vertexLabel('creditCard').partitionKey('creditCardHashed').properties('ty
 schema.vertexLabel('device').partitionKey('deviceId').properties('type', 'os', 'osVersion').ifNotExists().create()
 
 // Edge labels
+schema.edgeLabel('hasAddress').connection('customer', 'address').ifNotExists().create()
 schema.edgeLabel('places').connection('customer', 'order').ifNotExists().create()
 schema.edgeLabel('usesCard').connection('order', 'creditCard').ifNotExists().create()
 schema.edgeLabel('logsInto').connection('customer', 'session').ifNotExists().create()
