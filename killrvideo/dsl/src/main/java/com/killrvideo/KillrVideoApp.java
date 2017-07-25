@@ -1,11 +1,7 @@
 package com.killrvideo;
 
-import org.apache.commons.configuration.BaseConfiguration;
-import org.apache.commons.configuration.Configuration;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
 import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection;
-import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.util.empty.EmptyGraph;
 
@@ -16,7 +12,7 @@ import java.util.Map;
 import static com.killrvideo.KV.KEY_TITLE;
 
 /**
- *
+ * A simple console application which demonstrates some of the features of the KillrVideo DSL.
  */
 public final class KillrVideoApp {
 
@@ -29,10 +25,10 @@ public final class KillrVideoApp {
             KillrVideoTraversalSource killr = graph.traversal(KillrVideoTraversalSource.class).withRemote(conn);
 
             printHeader("Actors for Young Guns", "killr.movies(\"Young Guns\").actors().values(\"name\")");
-            List names = killr.movies("Young Guns").actors().values("name").toList();
+            List<Object> names = killr.movies("Young Guns").actors().values("name").toList();
             names.forEach(System.out::println);
 
-            printHeader("Ratings by age for Young Guns", "killr.movies(\"Young Guns\").ratings().byAges(18, 40)");
+            printHeader("Ratings Distribution by Age for Young Guns", "killr.movies(\"Young Guns\").ratings().byAges(18, 40)");
             Map ratingsByAge = killr.movies("Young Guns").ratings().byAges(18, 40).next();
             System.out.println(ratingsByAge);
 

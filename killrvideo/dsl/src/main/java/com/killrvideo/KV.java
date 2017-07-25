@@ -1,7 +1,7 @@
 package com.killrvideo;
 
 /**
- *
+ * String tokens for graph element lables and property keys.
  */
 public class KV {
 
