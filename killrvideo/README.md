@@ -33,3 +33,26 @@ Interesting dataset properties:
 * Friendship or "knows" relationships form a small world with 6 degrees of separation
 * Clustering coefficient for "knows" relationships is different for each user group
   (Largest) C > A and D > B (Smallest)
+  
+## Loading
+
+The following steps assumes that there is a running DSE Graph instance in place. First, either load the script in studio or do as the schema script specifies and uncomment the specified lines before executing the script as follows:
+
+```text
+$ bin/dse gremlin-console -i ../graph-examples/killrvideo/schema.groovy
+```
+
+Be sure to properly set the path to the `schema.groovy` file. Now the data can be loaded with the link:https://docs.datastax.com/en/dse/5.1/dse-dev/datastax_enterprise/graph/dgl/dglOverview.html[DSE Graph Loader]:
+
+```text
+java -jar target/dse-graph-loader-*-uberjar.jar killrvideo/killrvideo-mapping.groovy -graph killrvideo -preparation false
+```
+
+Going back to the open Gremlin Console, it can be quickly validated that the data is loaded and indices are in place:
+
+```text
+gremlin> g.V().hasLabel('movie').has('title','Young Guns')
+==>v[{~label=movie, community_id=823607168, member_id=475}]
+```
+
+

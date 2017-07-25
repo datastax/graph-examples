@@ -21,7 +21,21 @@ import static org.apache.tinkerpop.gremlin.structure.Column.keys;
 import static org.apache.tinkerpop.gremlin.structure.Column.values;
 
 /**
- *
+ * The KillrVideo DSL definition that produces the custom {@code GraphTraversal} and specifies the custom
+ * {@code GraphTraversalSource}.
+ * <p/>
+ * A DSL definition must be an interface and extend {@code GraphTraversal.Admin} and should be annotated with the
+ * {@codd GremlinDsl} annotation. Methods that are added to this interface become steps that are "appended" to the
+ * common steps of the Gremlin language. These methods must:
+ * <ul>
+ *     <li>Return a {@code GraphTraversal}</li>
+ *     <li>Use common Gremlin steps or other DSL steps to compose the returned {@code GraphTraversal}</li>
+ * </ul>
+ * These methods are only applied to a {@code GraphTraversal}, but recall that a {@code GraphTraversal} is spawned
+ * from a {@code GraphTraversalSource}. To be clear, the "g" in {@code g.V()} is a {@code GraphTraversalSource} and
+ * the {@code V()} is a start step. To include DSL-based start steps on a custom {@code GraphTraversalSource} the
+ * "traversalSource" parameter is supplied to the {@code GremlinDsl} annotation which specifies the fully qualified
+ * name of the class that contains those DSL-based start steps.
  */
 @GremlinDsl(traversalSource = "com.killrvideo.KillrVideoTraversalSourceDsl")
 public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E> {

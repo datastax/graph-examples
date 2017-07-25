@@ -1,10 +1,10 @@
 // Either create the graph in studio and add the following in a cell
 //  or uncomment and run the following and run with the gremlin console
-//:remote config alias reset
-//system.graph("killrvideo").drop()
-//system.graph("killrvideo").ifNotExists().create()
-//:remote config alias g killrvideo.g
-//:remote config timeout max
+:remote config alias reset
+system.graph("killrvideo").drop()
+system.graph("killrvideo").ifNotExists().create()
+:remote config alias g killrvideo.g
+:remote config timeout max
 
 // Define properties 
 schema.propertyKey("genreId").Text().create();

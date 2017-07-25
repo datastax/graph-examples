@@ -8,6 +8,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.util.empty.EmptyGraph;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -25,23 +26,23 @@ public final class KillrVideoApp {
             DriverRemoteConnection conn = DriverRemoteConnection.using(Cluster.open(), "killrvideo.g");
             KillrVideoTraversalSource killr = graph.traversal(KillrVideoTraversalSource.class).withRemote(conn);
 
-            System.out.println("Actors for Young Guns");
+            printHeader("Actors for Young Guns", "killr.movies(\"Young Guns\").actors().values(\"name\")");
             List names = killr.movies("Young Guns").actors().values("name").toList();
             names.forEach(System.out::println);
 
-            System.out.println("Ratings by age for Young Guns");
+            printHeader("Ratings by age for Young Guns", "killr.movies(\"Young Guns\").ratings().byAges(18, 40)");
             Map ratingsByAge = killr.movies("Young Guns").ratings().byAges(18, 40).next();
             System.out.println(ratingsByAge);
 
-            System.out.println("Failed Validation");
+            printHeader("Failed Validation", "killr.movies(\"Young Guns\").ratings().byAges(17,40)");
             try {
                 killr.movies("Young Guns").ratings().byAges(17,40).next();
             } catch (IllegalArgumentException iae) {
-                iae.printStackTrace();
+                System.out.println("Caught IllegalArgumentException: " + iae.getMessage());
                 Thread.sleep(500);
             }
 
-            System.out.println("Five Recommendations for u460");
+            printHeader("Five Recommendations for u460", "killr.users(\"u460\").recommend(5, 7).values(KEY_TITLE)");
             killr.users("u460").recommend(5, 7).values(KEY_TITLE).forEachRemaining(System.out::println);
 
         } catch (Exception ex) {
@@ -50,7 +51,23 @@ public final class KillrVideoApp {
             cluster.close();
             System.exit(0);
         }
-
-
     }
+
+    private static void printHeader(String title) {
+        printHeader(title, null);
+    }
+
+    private static void printHeader(String title, String subtitle) {
+        String st = "";
+        String t = String.format("\n* %s", title);
+        System.out.println(t);
+        if (subtitle != null && !subtitle.isEmpty()) {
+            st = String.format("[%s]", subtitle);
+            System.out.println(st);
+        }
+
+        String line = String.join("", Collections.nCopies(st.isEmpty() ? t.length() : st.length(), "-"));
+        System.out.println(line);
+    }
+
 }
