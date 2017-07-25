@@ -2,6 +2,7 @@ package com.killrvideo;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
+import org.apache.log4j.BasicConfigurator;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
 import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection;
 import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
@@ -18,6 +19,7 @@ import static com.killrvideo.KV.KEY_TITLE;
  *
  */
 public final class KillrVideoApp {
+
     public static void main(String [] args) {
         Graph graph = EmptyGraph.instance();
 
