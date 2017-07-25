@@ -15,6 +15,7 @@ chargebacks = File.csv(path + 'chargebacks.csv').delimiter('|')
 creditCards = File.csv(path + 'creditCards.csv').delimiter('|')
 devices = File.csv(path + 'devices.csv').delimiter('|')
 
+customerAddresses = File.json(path + 'customerAddresses.json')
 customerOrders = File.csv(path + 'customerOrders.csv').delimiter('|')
 orderChargebacks = File.csv(path + 'orderChargebacks.csv').delimiter('|')
 customerSessions = File.csv(path + 'customerSessions.csv').delimiter('|')
@@ -23,6 +24,22 @@ customerChargebacks = File.csv(path + 'customerChargebacks.csv').delimiter('|')
 load(customers).asVertices {
     label 'customer'
     key 'customerId'
+    ignore 'address'
+    ignore 'city'
+    ignore 'state'
+    ignore 'postalCode'
+    ignore 'countryCode'
+}
+
+load(customers).asVertices {
+    label 'address'
+    key address: 'address', postalCode: 'postalCode'
+    ignore 'customerId'
+    ignore 'firstName' 
+    ignore 'lastName'
+    ignore 'email'
+    ignore 'phone'
+    ignore 'createdTime'
 }
 
 load(sessions).asVertices {
@@ -160,4 +177,16 @@ load(orders).asEdges {
     ignore 'ipAddress'
     ignore 'creditCardHashed'
     ignore 'amount'
+}
+
+load(customerAddresses).asEdges {
+    label 'hasAddress'
+    outV 'customer', {
+        label 'customer'
+        key 'customerId'
+    }
+    inV 'address', {
+        label 'address'
+        key address: 'address', postalCode: 'postalCode'
+    }
 }
