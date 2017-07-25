@@ -43,6 +43,17 @@ public final class KillrVideoApp {
             printHeader("Five Recommendations for u460", "killr.users(\"u460\").recommend(5, 7).values(KEY_TITLE)");
             killr.users("u460").recommend(5, 7).values(KEY_TITLE).forEachRemaining(System.out::println);
 
+            printHeader("Add a movie and a actors for that movie", "killr.ensureMovie(\"m100000\", \"Manos: The Hands of Fate\",...).ensureActor(...)");
+            killr.ensureMovie("m100000", "Manos: The Hands of Fate", "USA", "Sun City Films", 1966, 70).
+                    ensureActor("p1000000", "Tom Neyman").
+                    ensureActor("p1000001", "John Reynolds").
+                    ensureActor("p1000002", "Diane Mahree").
+                    forEachRemaining(v -> System.out.println("Added 3 actors to 'Manos: The Hands of Fate'"));
+
+            printHeader("Get the actors for the newly added movie", "killr.movies(\"Manos: The Hands of Fate\").actors().values(\"name\")");
+            names = killr.movies("Manos: The Hands of Fate").actors().values("name").toList();
+            names.forEach(System.out::println);
+
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {

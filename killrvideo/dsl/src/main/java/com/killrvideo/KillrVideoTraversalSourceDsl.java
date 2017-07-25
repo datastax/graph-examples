@@ -7,12 +7,18 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
+import java.time.Year;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.killrvideo.KV.KEY_COUNTRY;
+import static com.killrvideo.KV.KEY_DURATION;
+import static com.killrvideo.KV.KEY_MOVIE_ID;
+import static com.killrvideo.KV.KEY_PRODUCTION;
 import static com.killrvideo.KV.KEY_TITLE;
 import static com.killrvideo.KV.KEY_USER_ID;
+import static com.killrvideo.KV.KEY_YEAR;
 import static com.killrvideo.KV.VERTEX_MOVIE;
 import static com.killrvideo.KV.VERTEX_USER;
 
@@ -62,5 +68,50 @@ public class KillrVideoTraversalSourceDsl extends GraphTraversalSource {
             traversal = traversal.has(KEY_USER_ID, P.within(userIds));
 
         return traversal;
+    }
+
+    /**
+     * An overloaded step for {@link #ensureMovie(String, String, String, String, int, int)} where the "country" and
+     * "production" parameters are passed in as {@code null}.
+     */
+    public GraphTraversal<Vertex, Vertex> ensureMovie(String movieId, String title, int year, int duration) {
+        return ensureMovie(movieId, title, null, null, year, duration);
+    }
+
+    /**
+     * Ensures that a "movie" exists.
+     * <p/>
+     * This step performs a number of validations on the various parameters passed to it and then checks for existence
+     * of the movie based on the identifier for the movie. If it exists then the movie is returned with its mutable
+     * properties updated (all are mutable except for the "movieId" as defined by this DSL). If it does not exist then
+     * a new "movie" vertex is added.
+     */
+    public GraphTraversal<Vertex, Vertex> ensureMovie(String movieId, String title, String country, String production, int year, int duration) {
+        if (year < 1895) throw new IllegalArgumentException("The year of the movie cannot be before 1895");
+        if (year > Year.now().getValue()) throw new IllegalArgumentException("The year of the movie can not be in the future");
+        if (duration <= 0) throw new IllegalArgumentException("The duration of the movie must be greater than zero");
+        if (null == movieId || movieId.isEmpty()) throw new IllegalArgumentException("The movieId must not be null or empty");
+        if (null == title || title.isEmpty()) throw new IllegalArgumentException("The title of the movie must not be null or empty");
+
+        // set some defaults if null is provided
+        String prod = null == production ? "" : production;
+        String c = null == country ? "" : country;
+
+        GraphTraversal traversal = this.clone().V();
+
+        // performs a "get or create/update" for the movie vertex. if it is present then it simply returns the existing
+        // movie and updates the mutable property keys. if it is not, then it is created with the specified movieId
+        // and properties.
+        return traversal.
+                has(VERTEX_MOVIE, KEY_MOVIE_ID, movieId).
+                fold().
+                coalesce(
+                        __.unfold(),
+                        __.addV(VERTEX_MOVIE).property(KEY_MOVIE_ID, movieId)).
+                property(KEY_TITLE, title).
+                property(KEY_COUNTRY, c).
+                property(KEY_PRODUCTION, prod).
+                property(KEY_YEAR, year).
+                property(KEY_DURATION, duration);
     }
 }
