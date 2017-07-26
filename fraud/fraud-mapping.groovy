@@ -179,14 +179,14 @@ load(orders).asEdges {
     ignore 'amount'
 }
 
-load(customerAddresses).asEdges {
-    label 'hasAddress'
-    outV 'customer', {
-        label 'customer'
-        key 'customerId'
-    }
-    inV 'address', {
-        label 'address'
-        key address: 'address', postalCode: 'postalCode'
-    }
-}
+// load(customerAddresses).asEdges {
+//     label 'hasAddress'
+//     outV 'customer', {
+//         label 'customer'
+//         key 'customerId'
+//     }
+//     inV 'address', {
+//         label 'address'
+//         key address: 'address', postalCode: 'postalCode'
+//     }
+// }
