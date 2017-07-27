@@ -43,7 +43,7 @@ public final class KillrVideoApp {
             printHeader("Five Recommendations for u460", "killr.users(\"u460\").recommend(5, 7).values(KEY_TITLE)");
             killr.users("u460").recommend(5, 7).values(KEY_TITLE).forEachRemaining(System.out::println);
 
-            printHeader("Add a movie and a actors for that movie", "killr.ensureMovie(\"m100000\", \"Manos: The Hands of Fate\",...).ensureActor(...)");
+            printHeader("Insert/update movie and a actors for that movie", "killr.ensureMovie(\"m100000\", \"Manos: The Hands of Fate\",...).ensureActor(...)");
             killr.ensureMovie("m100000", "Manos: The Hands of Fate", "USA", "Sun City Films", 1966, 70).
                     ensureActor("p1000000", "Tom Neyman").
                     ensureActor("p1000001", "John Reynolds").
