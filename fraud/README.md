@@ -37,7 +37,9 @@ graphloader -graph fraud -address localhost fraud-mapping.groovy -inputpath ~/gr
 
 #### Legitimate - User registers and eventually places a order
 
-Traversal: `g.V().has("customer", "customerId", "10000000-0000-0000-0000-000000000001").repeat(__.bothE().subgraph('sg').otherV()).times(4).cap('sg')`
+*Traversal to visualize:* `g.V().has("customer", "customerId", "10000000-0000-0000-0000-000000000001").emit().repeat(both()).times(4)`
+
+*Scenario details*
 
 Event: Registration - unique customer name, address, email, etc.
 Event: Session - same customer id as registration, unique device id, IP address
@@ -58,7 +60,9 @@ Event: Order  - unique credit card - order is approved
 
 #### Suspicious - User registers and places an order with previously used device id (might be husband and wife)
 
-Traversal: `g.V().has("customer", "customerId", "10000000-0000-0000-0000-000000000002").repeat(__.bothE().subgraph('sg').otherV()).times(3).cap('sg')`
+*Traversal to visualize:* `g.V().has("address", "address", "102 Bellevue Blvd").has("postalCode", "21201").emit().repeat(__.both()).times(4)`
+
+*Scenario details*
 
 Event: Registration - unique customer name, address, email, same physical address as another customer
 Event: Session - same customer id as registration, device id seen on 1 other customer registrations (the one with the same physical address), IP address seen on 1 other customer registrations
@@ -72,7 +76,9 @@ Event: Order - unique credit card - order is approved
 
 Traversals:
 - `g.V().has("device", "deviceId", "30000000-0000-0000-0015-000000000004").inE()`
-- `g.V().has("device", "deviceId", "30000000-0000-0000-0015-000000000004").repeat(__.bothE().subgraph('sg').otherV().simplePath()).times(2).cap('sg')`
+- `g.V().has("device", "deviceId", "30000000-0000-0000-0015-000000000004").emit().repeat(both()).times(2)`
+
+*Scenario details*
 
 Event: Registration - unique customer name, address, email, etc.
 Event: Session - same customer id as registration, unique device id, unique IP address
@@ -111,7 +117,9 @@ Event: Order - unique credit card, same customer id as above registration - orde
 
 #### Fraud - Order placed using the same credit card as an order which resulted in a chargeback
 
-Traversal: `g.V().has('creditCard', 'creditCardHashed', 'a1ab1822888276fdb587a16b2dc7b697').repeat(__.bothE().subgraph('sg').otherV()).times(2).cap('sg')`
+*Traversal to visualize:* `g.V().has('creditCard', 'creditCardHashed', 'a1ab1822888276fdb587a16b2dc7b697').emit().repeat(both()).times(2)`
+
+*Scenario details*
 
 Event: Registration - unique customer name, address, email, etc.
 Event: Session - same customer id as registration, unique device id, IP address
@@ -129,7 +137,9 @@ Event: Order - credit card same as above order - order is declined
 
 #### Fraud - Order placed using the same device as an order which resulted in a chargeback
 
-Traversal: `g.V().hasLabel('order').has('deviceId', '30000000-0000-0000-0122-000000000064').repeat(__.bothE().subgraph('sg').otherV()).times(3).cap('sg')`
+*Traversal to visualize:* `g.V().has('order', 'orderId', '40000000-0000-0000-0991-000000000008').emit().repeat(both()).times(5)`
+
+*Scenario details*
 
 Event: Registration - unique customer name, address, email, etc.
 Event: Session - same customer id as registration, unique device id, IP address
@@ -149,7 +159,9 @@ Event: Order - device id linked to a customer which is linked to a chargeback - 
 
 #### Fraud - Order placed using a credit card which is linked to a device which was used by a customer who placed an order which resulted in a chargeback
 
-Traversal: `g.V().hasLabel('customer').has('customerId', '10000000-0000-0000-0000-000000000030').repeat(__.bothE().subgraph('sg').otherV()).times(8).cap('sg')`
+*Traversal to visualize:* `g.V().has('order', 'orderId', '40000000-0000-0000-0003-000000000188').emit().repeat(both()).times(6)`
+
+*Scenario details*
 
 Event: Registration - unique customer name, address, email, etc.
 Event: Session - same customer id (C11111) as registration, unique device id (e.g. D11111), IP address
@@ -173,7 +185,9 @@ Event: Order (O33333) - credit card (4111 1111 1111 1111) matched to O22222, cus
 
 #### Suspicious - Four levels of linkage are suspicious even without a chargeback
 
-Traversal: `g.V().hasLabel('customer').has('address', '650 Del Prado Drive').repeat(__.bothE().subgraph('sg').otherV()).times(6).cap('sg')`
+*Traversal to visualize:* `g.V().has('address', 'address', '650 Del Prado Drive').has('postalCode', '89005').emit().repeat(both().simplePath()).times(8)`
+
+*Scenario details*
 
 Event: Registration - unique customer name, address, email, etc.
 Event: Session - same customer id (C11111) as registration, unique device id (e.g. D11111), IP address
@@ -206,3 +220,4 @@ Event: Order (O44444) - Name and Email linked to customer from O33333 -- order i
 - Separate out address information into a vertex to be able to traverse through it (make showing scenario 7 simpler)
 - Link customers to orders via sessions instead of separate path, remove redundant IP and device information from orders - should only be needed on associated session
 - Add geoIP information to the session data?
+- Open ticket to display better date formatting, potential workaround is to add formatted properties via groovy and display those
