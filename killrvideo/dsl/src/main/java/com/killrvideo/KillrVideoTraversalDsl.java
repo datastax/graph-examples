@@ -1,5 +1,6 @@
 package com.killrvideo;
 
+import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.GremlinDsl;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Edge;
@@ -127,14 +128,14 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
     }
 
     /**
-     * Ensures that a particular "person" exists.
+     * Gets or creates a "person".
      * <p/>
      * This step first checks for existence of a person given their identifier. If it exists then the person is
      * returned and their "name" property updated. It is not possible to change the person's identifier once it is
      * assigned (at least as defined by this DSL). If the person does not exist then a new person vertex is added
      * with the specified identifier and name.
      */
-    public default GraphTraversal<S, Vertex> ensurePerson(String personId, String name) {
+    public default GraphTraversal<S, Vertex> person(String personId, String name) {
         if (null == personId || personId.isEmpty()) throw new IllegalArgumentException("The personId must not be null or empty");
         if (null == name || name.isEmpty()) throw new IllegalArgumentException("The name of the person must not be null or empty");
 
@@ -144,17 +145,16 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
     }
 
     /**
-     * Ensures that a particular actor exists.
+     * Gets or creates an "actor".
      * <p/>
      * In this schema, an actor is a "person" vertex with an incoming "actor" edge from a "movie" vertex. This step
      * therefore assumes that the incoming stream is a "movie" vertex and actors will be attached to that. This step
      * checks for existence of the "actor" edge first before adding and if found will return the existing one. It
-     * further ensures the existence of the "person" vertex as provided by the {@link #ensurePerson(String, String)}
-     * step. In the end it returns the "movie" vertex from which it started. In this way, calls to {@code ensureActor}
-     * can be chained to add multiple actors to a movie in the same traversal.
+     * further ensures the existence of the "person" vertex as provided by the {@link #person(String, String)}
+     * step.
      */
-    public default GraphTraversal<S, Vertex> ensureActor(String personId, String name) {
-        // no validation here as it would just duplicate what is happening in ensurePerson(). note the use of the
+    public default GraphTraversal<S, Vertex> actor(String personId, String name) {
+        // no validation here as it would just duplicate what is happening in person(). note the use of the
         // cast to KillrVideoTraversal. in this case, we want to use a DSL step within the DSL itself, but we want to
         // start the traversal with a GraphTraversal step which thus returns a GraphTraversal. The only ways to get
         // around this is to do the cast or to create a version of the GraphTraversal step in the DSL that will
@@ -164,10 +164,15 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
         // "^movie". the addition of the caret prefix has no meaning except to provide for a unique labelling space
         // within the DSL itself.
         return ((KillrVideoTraversal) as("^movie")).
-                choose(__.actors().has(KEY_PERSON_ID, personId),
-                       __.__(),
-                       __.ensurePerson(personId, name).
-                            addE(EDGE_ACTOR).from("^movie")).
-                select("^movie");
+                coalesce(__.actors().has(KEY_PERSON_ID, personId),
+                         __.person(personId, name).addE(EDGE_ACTOR).from("^movie").inV());
+    }
+
+    /**
+     * This step is an alias for the {@code sideEffect()} step. As an alias, it makes certain aspects of the DSL more
+     * readable.
+     */
+    public default GraphTraversal<S,?> ensure(Traversal<?,?> mutationTraversal) {
+        return sideEffect(mutationTraversal);
     }
 }

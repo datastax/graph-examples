@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.killrvideo.KV.KEY_TITLE;
+import static com.killrvideo.__.actor;
 
 /**
  * A simple console application which demonstrates some of the features of the KillrVideo DSL.
@@ -43,11 +44,11 @@ public final class KillrVideoApp {
             printHeader("Five Recommendations for u460", "killr.users(\"u460\").recommend(5, 7).values(KEY_TITLE)");
             killr.users("u460").recommend(5, 7).values(KEY_TITLE).forEachRemaining(System.out::println);
 
-            printHeader("Insert/update movie and a actors for that movie", "killr.ensureMovie(\"m100000\", \"Manos: The Hands of Fate\",...).ensureActor(...)");
+            printHeader("Insert/update movie and a actors for that movie", "killr.ensureMovie(\"m100000\", \"Manos: The Hands of Fate\",...).actor(...)");
             killr.ensureMovie("m100000", "Manos: The Hands of Fate", "USA", "Sun City Films", 1966, 70).
-                    ensureActor("p1000000", "Tom Neyman").
-                    ensureActor("p1000001", "John Reynolds").
-                    ensureActor("p1000002", "Diane Mahree").
+                    ensure(actor("p1000000", "Tom Neyman")).
+                    ensure(actor("p1000001", "John Reynolds")).
+                    ensure(actor("p1000002", "Diane Mahree")).
                     forEachRemaining(v -> System.out.println("Added 3 actors to 'Manos: The Hands of Fate'"));
 
             printHeader("Get the actors for the newly added movie", "killr.movies(\"Manos: The Hands of Fate\").actors().values(\"name\")");
