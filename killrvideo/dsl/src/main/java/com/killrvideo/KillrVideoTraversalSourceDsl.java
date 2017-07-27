@@ -71,11 +71,11 @@ public class KillrVideoTraversalSourceDsl extends GraphTraversalSource {
     }
 
     /**
-     * An overloaded step for {@link #ensureMovie(String, String, String, String, int, int)} where the "country" and
+     * An overloaded step for {@link #movie(String, String, String, String, int, int)} where the "country" and
      * "production" parameters are passed in as {@code null}.
      */
-    public GraphTraversal<Vertex, Vertex> ensureMovie(String movieId, String title, int year, int duration) {
-        return ensureMovie(movieId, title, null, null, year, duration);
+    public GraphTraversal<Vertex, Vertex> movie(String movieId, String title, int year, int duration) {
+        return movie(movieId, title, null, null, year, duration);
     }
 
     /**
@@ -86,7 +86,7 @@ public class KillrVideoTraversalSourceDsl extends GraphTraversalSource {
      * properties updated (all are mutable except for the "movieId" as defined by this DSL). If it does not exist then
      * a new "movie" vertex is added.
      */
-    public GraphTraversal<Vertex, Vertex> ensureMovie(String movieId, String title, String country, String production, int year, int duration) {
+    public GraphTraversal<Vertex, Vertex> movie(String movieId, String title, String country, String production, int year, int duration) {
         if (year < 1895) throw new IllegalArgumentException("The year of the movie cannot be before 1895");
         if (year > Year.now().getValue()) throw new IllegalArgumentException("The year of the movie can not be in the future");
         if (duration <= 0) throw new IllegalArgumentException("The duration of the movie must be greater than zero");
@@ -105,9 +105,8 @@ public class KillrVideoTraversalSourceDsl extends GraphTraversalSource {
         return traversal.
                 has(VERTEX_MOVIE, KEY_MOVIE_ID, movieId).
                 fold().
-                coalesce(
-                        __.unfold(),
-                        __.addV(VERTEX_MOVIE).property(KEY_MOVIE_ID, movieId)).
+                coalesce(__.unfold(),
+                         __.addV(VERTEX_MOVIE).property(KEY_MOVIE_ID, movieId)).
                 property(KEY_TITLE, title).
                 property(KEY_COUNTRY, c).
                 property(KEY_PRODUCTION, prod).
