@@ -1,4 +1,4 @@
-deviceId|type|os|osVersion
+deviceid|type|os|osversion
 30000000-0000-0000-0001-000000000001|tablet|ios|10.3.1
 30000000-0000-0000-0002-000000000003|computer|macos|10.12.3
 30000000-0000-0000-0015-000000000004|computer|linux|3.13.0-107-generic
