@@ -37,7 +37,7 @@ graphloader -graph fraud -address localhost fraud-mapping.groovy -inputpath ~/gr
 
 #### Legitimate - User registers and eventually places a order
 
-**Traversal to visualize:** `g.V().has("customer", "customerId", "10000000-0000-0000-0000-000000000001").emit().repeat(both()).times(4)`
+**Traversal to visualize:** `g.V().has("customer", "customerId", "10000000-0000-0000-0000-000000000001").emit().repeat(both().simplePath()).times(4)`
 
 **Scenario details**
 
@@ -60,7 +60,7 @@ Event: Order  - unique credit card - order is approved
 
 #### Suspicious - User registers and places an order with previously used device id (might be husband and wife)
 
-**Traversal to visualize:** `g.V().has("address", "address", "102 Bellevue Blvd").has("postalCode", "21201").emit().repeat(__.both()).times(4)`
+**Traversal to visualize:** `g.V().has("address", "address", "102 Bellevue Blvd").has("postalCode", "21201").emit().repeat(both().simplePath()).times(4)`
 
 **Scenario details**
 
@@ -137,7 +137,7 @@ Event: Order - credit card same as above order - order is declined
 
 #### Fraud - Order placed using the same device as an order which resulted in a chargeback
 
-**Traversal to visualize:** `g.V().has('order', 'orderId', '40000000-0000-0000-0991-000000000008').emit().repeat(both()).times(5)`
+**Traversal to visualize:** `g.V().hasLabel('order').has('orderId', '40000000-0000-0000-0991-000000000008').emit().repeat(both().simplePath()).times(5)`
 
 **Scenario details**
 
@@ -159,7 +159,7 @@ Event: Order - device id linked to a customer which is linked to a chargeback - 
 
 #### Fraud - Order placed using a credit card which is linked to a device which was used by a customer who placed an order which resulted in a chargeback
 
-**Traversal to visualize:** `g.V().has('order', 'orderId', '40000000-0000-0000-0003-000000000188').emit().repeat(both()).times(6)`
+**Traversal to visualize:** `g.V().has('order', 'orderId', '40000000-0000-0000-0003-000000000188').emit().repeat(both().simplePath()).times(6)`
 
 **Scenario details**
 
