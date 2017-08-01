@@ -62,6 +62,16 @@ Event: Order  - unique credit card - order is approved
 
 **Traversal to visualize:** `g.V().has("address", "address", "102 Bellevue Blvd").has("postalCode", "21201").emit().repeat(both().simplePath()).times(4)`
 
+**Velocity Variables**
+```
+// Direct connections
+myOrder = "40000000-0000-0000-0002-000000000002"
+myCustomerID = g.V().has("order", "orderId", myOrder).inE("places").outV().values("customerId").next()
+connectionsByAddress = g.V().has("customer", "customerId", myCustomerID).outE("hasAddress").inV().inE("hasAddress").outV().dedup().count().next()
+connectionsByIp = g.V().has("customer", "customerId", myCustomerID).outE("logsInto").inV().inE("logsInto").inV().values("ipAddress").dedup().count().next()
+connectionsByMachine = g.V().has("customer", "customerId", myCustomerID).outE("logsInto").inV().inE("logsInto").inV().outE().dedup().count().next()
+```
+
 **Scenario details**
 
 Event: Registration - unique customer name, address, email, same physical address as another customer
@@ -74,9 +84,25 @@ Event: Order - unique credit card - order is approved
 
 #### Fraud - User registers and places an order with highly used device id
 
-**Traversals to visualize:**
+**Traversals to Visualize:**
 - `g.V().has("device", "deviceId", "30000000-0000-0000-0015-000000000004").inE()`
 - `g.V().has("device", "deviceId", "30000000-0000-0000-0015-000000000004").emit().repeat(both()).times(2)`
+
+**Velocity Variables**
+```
+// Users Per Device
+degrees = 3
+myOrder = "40000000-0000-0000-0003-000000000003"
+deviceId = g.V().has("order","orderId", myOrder).values("deviceId").next()
+subgraph = g.V().has("device", "deviceId", deviceId)
+    .repeat(
+        __.bothE('using', 'logsInto')
+        .subgraph('sg').otherV()
+        .simplePath()).
+    times(degrees).cap('sg').next()
+sg = subgraph.traversal()
+usersPerDevice = sg.V().hasLabel('customer').count().next()
+```
 
 **Scenario details**
 
@@ -119,6 +145,17 @@ Event: Order - unique credit card, same customer id as above registration - orde
 
 **Traversal to visualize:** `g.V().has('creditCard', 'creditCardHashed', 'a1ab1822888276fdb587a16b2dc7b697').emit().repeat(both()).times(2)`
 
+**Velocity Variables**
+```
+// Related to a chargeback (via anything)
+degrees = 3
+numChargebacks = g.V().has('order', 'orderId', '40000000-0000-0000-0004-000000000005')
+    .emit(hasLabel("chargeback"))
+    .repeat(both())
+    .times(degrees)
+    .hasLabel("chargeback").dedup().count()
+```
+
 **Scenario details**
 
 Event: Registration - unique customer name, address, email, etc.
@@ -138,6 +175,20 @@ Event: Order - credit card same as above order - order is declined
 #### Fraud - Order placed using the same device as an order which resulted in a chargeback
 
 **Traversal to visualize:** `g.V().hasLabel('order').has('orderId', '40000000-0000-0000-0991-000000000008').emit().repeat(both().simplePath()).times(5)`
+
+**Velocity Variables**
+```
+// Related to a charge back via Machine's subgraph
+degrees = 3
+myDeviceId = g.V().has('order', 'orderId', '40000000-0000-0000-0004-000000000005').values("deviceId").next()
+subgraph = g.V().has('device', 'deviceId', myDeviceId).repeat(
+        __.bothE()
+        .subgraph('sg').otherV()
+        .simplePath()).
+    times(degrees).cap('sg').next()
+sg = subgraph.traversal()
+numChargebacksByMachine = sg.V().hasLabel('chargeback').dedup().count()
+```
 
 **Scenario details**
 
@@ -160,6 +211,20 @@ Event: Order - device id linked to a customer which is linked to a chargeback - 
 #### Fraud - Order placed using a credit card which is linked to a device which was used by a customer who placed an order which resulted in a chargeback
 
 **Traversal to visualize:** `g.V().has('order', 'orderId', '40000000-0000-0000-0003-000000000188').emit().repeat(both().simplePath()).times(6)`
+
+**Velocity Variables**
+```
+// Related to a charge back via Credit Card's subgraph (5 degrees)
+degrees = 5
+ccId = g.V().has('order', 'orderId', '40000000-0000-0000-0003-000000000188').values("creditCardHashed").next()
+subgraph = g.V().has('creditCard', 'creditCardHashed', ccId).repeat(
+        __.bothE()
+        .subgraph('sg').otherV()
+        .simplePath()).
+    times(degrees).cap('sg').next()
+sg = subgraph.traversal()
+numChargebacksbyCreditCard = sg.V().hasLabel('chargeback').dedup().count()
+```
 
 **Scenario details**
 
@@ -187,6 +252,20 @@ Event: Order (O33333) - credit card (4111 1111 1111 1111) matched to O22222, cus
 
 **Traversal to visualize:** `g.V().has('address', 'address', '650 Del Prado Drive').has('postalCode', '89005').emit().repeat(both().simplePath()).times(8)`
 
+**Velocity Variables**
+```
+// Number of credit cards or customers in network
+degrees = 9
+subgraph = g.V().has('order', 'orderId', "40000000-0000-0000-0148-000000000304").repeat(
+        __.bothE()
+        .subgraph('sg').otherV()
+        .simplePath()).
+    times(degrees).cap('sg').next()
+sg = subgraph.traversal()
+numCustomers = sg.V().hasLabel('customer').dedup().count().next()
+numCreditCards = sg.V().hasLabel('creditCard').dedup().count().next()
+```
+
 **Scenario details**
 
 Event: Registration - unique customer name, address, email, etc.
@@ -207,17 +286,12 @@ Event: Order (O44444) - Name and Email linked to customer from O33333 -- order i
 
 ## To Do:
 
-- Put in all ids into the scenario notes
-- Order resultsIn chargeback - make sure that's done in the data - make the edge
 - Take out one of the Joe Banks, possibly add other linkage
-- Add a physical address vertex
 - Scenario 2 - have more than two people at the same address
-- Link the transaction with the chargeback - in the data itself
 - Tell the story about both visualizing existing fraud/suspicion as well as building simple rules around classifying automatically - like count the number of people involved
 - Enrich the data with related to with a graph frames job as well as add grandchildren like for session->order
 - Add some indexes on things we query by so we don't need `allow_scan` enabled
 - Add credit card metadata including issuer, postal code, other location data
-- Separate out address information into a vertex to be able to traverse through it (make showing scenario 7 simpler)
 - Link customers to orders via sessions instead of separate path, remove redundant IP and device information from orders - should only be needed on associated session
 - Add geoIP information to the session data?
 - Open ticket to display better date formatting, potential workaround is to add formatted properties via groovy and display those
