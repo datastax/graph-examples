@@ -37,7 +37,7 @@ graphloader -graph fraud -address localhost fraud-mapping.groovy -inputpath ~/gr
 
 #### Legitimate - User registers and eventually places a order
 
-**Traversal to visualize:** `g.V().has("customer", "customerId", "10000000-0000-0000-0000-000000000001").emit().repeat(both().simplePath()).times(4)`
+**Traversal to Visualize:** `g.V().has("customer", "customerId", "10000000-0000-0000-0000-000000000001").emit().repeat(both().simplePath()).times(4)`
 
 **Scenario details**
 
@@ -60,7 +60,7 @@ Event: Order  - unique credit card - order is approved
 
 #### Suspicious - User registers and places an order with previously used device id (might be husband and wife)
 
-**Traversal to visualize:** `g.V().has("address", "address", "102 Bellevue Blvd").has("postalCode", "21201").emit().repeat(both().simplePath()).times(4)`
+**Traversal to Visualize:** `g.V().has("address", "address", "102 Bellevue Blvd").has("postalCode", "21201").emit().repeat(both().simplePath()).times(4)`
 
 **Velocity Variables**
 ```
@@ -143,7 +143,7 @@ Event: Order - unique credit card, same customer id as above registration - orde
 
 #### Fraud - Order placed using the same credit card as an order which resulted in a chargeback
 
-**Traversal to visualize:** `g.V().has('creditCard', 'creditCardHashed', 'a1ab1822888276fdb587a16b2dc7b697').emit().repeat(both()).times(2)`
+**Traversal to Visualize:** `g.V().has('creditCard', 'creditCardHashed', 'a1ab1822888276fdb587a16b2dc7b697').emit().repeat(both()).times(2)`
 
 **Velocity Variables**
 ```
@@ -174,7 +174,7 @@ Event: Order - credit card same as above order - order is declined
 
 #### Fraud - Order placed using the same device as an order which resulted in a chargeback
 
-**Traversal to visualize:** `g.V().hasLabel('order').has('orderId', '40000000-0000-0000-0991-000000000008').emit().repeat(both().simplePath()).times(5)`
+**Traversal to Visualize:** `g.V().hasLabel('order').has('orderId', '40000000-0000-0000-0991-000000000008').emit().repeat(both().simplePath()).times(5)`
 
 **Velocity Variables**
 ```
@@ -210,7 +210,7 @@ Event: Order - device id linked to a customer which is linked to a chargeback - 
 
 #### Fraud - Order placed using a credit card which is linked to a device which was used by a customer who placed an order which resulted in a chargeback
 
-**Traversal to visualize:** `g.V().has('order', 'orderId', '40000000-0000-0000-0003-000000000188').emit().repeat(both().simplePath()).times(6)`
+**Traversal to Visualize:** `g.V().has('order', 'orderId', '40000000-0000-0000-0003-000000000188').emit().repeat(both().simplePath()).times(6)`
 
 **Velocity Variables**
 ```
@@ -250,7 +250,7 @@ Event: Order (O33333) - credit card (4111 1111 1111 1111) matched to O22222, cus
 
 #### Suspicious - Four levels of linkage are suspicious even without a chargeback
 
-**Traversal to visualize:** `g.V().has('address', 'address', '650 Del Prado Drive').has('postalCode', '89005').emit().repeat(both().simplePath()).times(8)`
+**Traversal to Visualize:** `g.V().has('address', 'address', '650 Del Prado Drive').has('postalCode', '89005').emit().repeat(both().simplePath()).times(8)`
 
 **Velocity Variables**
 ```
