@@ -19,9 +19,9 @@
             <version>3.2.5</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.tinkerpop</groupId>
-            <artifactId>gremlin-driver</artifactId>
-            <version>3.2.5</version>
+            <groupId>com.datastax.dse</groupId>
+            <artifactId>dse-java-driver-graph</artifactId>
+            <version>1.4.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

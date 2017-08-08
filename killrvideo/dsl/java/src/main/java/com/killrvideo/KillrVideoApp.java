@@ -1,9 +1,10 @@
 package com.killrvideo;
 
-import org.apache.tinkerpop.gremlin.driver.Cluster;
-import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.apache.tinkerpop.gremlin.structure.util.empty.EmptyGraph;
+import com.datastax.driver.dse.DseCluster;
+import com.datastax.driver.dse.DseSession;
+import com.datastax.driver.dse.graph.GraphOptions;
+import com.datastax.dse.graph.api.DseGraph;
+import com.datastax.dse.graph.internal.DseRemoteConnection;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,12 +19,17 @@ import static com.killrvideo.__.actor;
 public final class KillrVideoApp {
 
     public static void main(String [] args) {
-        Graph graph = EmptyGraph.instance();
+        DseCluster dseCluster = DseCluster.builder()
+                .addContactPoint("127.0.0.1")
+                .build();
+        DseSession dseSession = dseCluster.connect();
 
-        Cluster cluster = Cluster.open();
         try {
-            DriverRemoteConnection conn = DriverRemoteConnection.using(Cluster.open(), "killrvideo.g");
-            KillrVideoTraversalSource killr = graph.traversal(KillrVideoTraversalSource.class).withRemote(conn);
+            // initialize the TraversalSource for the DSL using the DSE Java Driver
+            // https://github.com/datastax/java-dse-driver
+            KillrVideoTraversalSource killr = DseGraph.traversal(KillrVideoTraversalSource.class)
+                    .withRemote(DseRemoteConnection.builder(dseSession)
+                    .withGraphOptions(new GraphOptions().setGraphName("killrvideo")).build());
 
             printHeader("Actors for Young Guns", "killr.movies(\"Young Guns\").actors().values(\"name\")");
             List<Object> names = killr.movies("Young Guns").actors().values("name").toList();
@@ -58,7 +64,8 @@ public final class KillrVideoApp {
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            cluster.close();
+            dseSession.close();
+            dseCluster.close();
             System.exit(0);
         }
     }
