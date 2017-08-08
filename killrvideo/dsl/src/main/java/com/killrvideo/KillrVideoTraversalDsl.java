@@ -28,7 +28,7 @@ import static org.apache.tinkerpop.gremlin.structure.Column.values;
  * {@code GraphTraversalSource}.
  * <p/>
  * A DSL definition must be an interface and extend {@code GraphTraversal.Admin} and should be annotated with the
- * {@codd GremlinDsl} annotation. Methods that are added to this interface become steps that are "appended" to the
+ * {@code GremlinDsl} annotation. Methods that are added to this interface become steps that are "appended" to the
  * common steps of the Gremlin language. These methods must:
  * <ul>
  *     <li>Return a {@code GraphTraversal}</li>
