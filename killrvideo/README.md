@@ -42,7 +42,7 @@ The following steps assumes that there is a running DSE Graph instance in place.
 $ bin/dse gremlin-console -i ../graph-examples/killrvideo/schema.groovy
 ```
 
-Be sure to properly set the path to the `schema.groovy` file. Now the data can be loaded with the link:https://docs.datastax.com/en/dse/5.1/dse-dev/datastax_enterprise/graph/dgl/dglOverview.html[DSE Graph Loader]:
+Be sure to properly set the path to the `schema.groovy` file. Now the data can be loaded with the [DSE Graph Loader](https://docs.datastax.com/en/dse/5.1/dse-dev/datastax_enterprise/graph/dgl/dglOverview.html):
 
 ```text
 java -jar target/dse-graph-loader-*-uberjar.jar killrvideo/killrvideo-mapping.groovy -graph killrvideo -preparation false
