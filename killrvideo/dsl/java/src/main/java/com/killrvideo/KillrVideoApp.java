@@ -27,9 +27,8 @@ public final class KillrVideoApp {
         try {
             // initialize the TraversalSource for the DSL using the DSE Java Driver
             // https://github.com/datastax/java-dse-driver
-            KillrVideoTraversalSource killr = DseGraph.traversal(KillrVideoTraversalSource.class)
-                    .withRemote(DseRemoteConnection.builder(dseSession)
-                    .withGraphOptions(new GraphOptions().setGraphName("killrvideo")).build());
+            KillrVideoTraversalSource killr = DseGraph.traversal(dseSession,
+                    new GraphOptions().setGraphName("killrvideo"), KillrVideoTraversalSource.class);
 
             printHeader("Actors for Young Guns", "killr.movies(\"Young Guns\").actors().values(\"name\")");
             List<Object> names = killr.movies("Young Guns").actors().values("name").toList();
