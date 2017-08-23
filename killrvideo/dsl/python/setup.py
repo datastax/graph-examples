@@ -7,6 +7,7 @@ setup(
     url='https://killrvideo.github.io/',
     description='KillrVideo DSL',
     install_requires=[
+        'dse-graph',
         'gremlinpython'
     ],
     classifiers=[
