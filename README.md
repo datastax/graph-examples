@@ -28,6 +28,7 @@ Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at 
 - [graphoendodonticology](https://www.datastax.com/2017/03/graphoendodonticology) - a resource to troubleshoot your graph
 - [Reducing Computational Complexity with Correlate Traversals](https://www.datastax.com/2017/04/reducing-computational-complexity-with-correlate-traversals) - a post about calculating network centrality in various manners and the associated cost.
 - [Introducing DSE Graph Frames](http://www.datastax.com/dev/blog/dse-graph-frame) - how to use DSE Graph with Spark's GraphFrames with the associated [DseGraphFrames example](/dse-graph-frame)
+- [Learn How to Build a Domain Specific Language with DSE Graph](https://www.datastax.com/dev/blog/gremlin-dsls-in-java-with-dse-graph)
 - Large graph loading best practices, [part 1](http://www.datastax.com/dev/blog/large-graph-loading-best-practices-strategies-part-1) and [part 2](http://www.datastax.com/dev/blog/large-graph-loading-tactics-part-2)
 - Blog series from [DuyHai Doan](https://twitter.com/doanduyhai)'s blog:
   1. [Gremlin as a Stream](http://www.doanduyhai.com/blog/?p=13224)
@@ -53,7 +54,7 @@ Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at 
 
 ### Graph language drivers
 - Apache TinkerPop [Gremlin Language Variants](http://tinkerpop.apache.org/docs/current/tutorials/gremlin-language-variants/) - describes TinkerPop's idiomatic language support in the form of a fluent API
-- [Introduction to the Fluent Graph APIs](http://www.datastax.com/dev/blog/datastax-drivers-fluent-apis-for-dse-graph-are-out)
+- [Introduction to DataStax Driver Usage of Gremlin Language Variants](http://www.datastax.com/dev/blog/datastax-drivers-fluent-apis-for-dse-graph-are-out)
 - [Java](http://docs.datastax.com/en/developer/java-driver-dse/1.2/) - includes both a String based and fluent API
 - [Python](http://docs.datastax.com/en/developer/python-dse-driver/2.0/) - includes both a String based and fluent API 
 - [Node.js](http://docs.datastax.com/en/developer/nodejs-driver-dse/1.3/)
