@@ -56,7 +56,7 @@ Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at 
 - Apache TinkerPop [Gremlin Language Variants](http://tinkerpop.apache.org/docs/current/tutorials/gremlin-language-variants/) - describes TinkerPop's idiomatic language support in the form of a fluent API
 - [Introduction to DataStax Driver Usage of Gremlin Language Variants](http://www.datastax.com/dev/blog/datastax-drivers-fluent-apis-for-dse-graph-are-out)
 - [Java](http://docs.datastax.com/en/developer/java-driver-dse/1.4/) - includes both a String based and fluent API
-- [Python](http://docs.datastax.com/en/developer/python-dse-driver/2.1/ - includes both a String based and fluent API 
+- [Python](http://docs.datastax.com/en/developer/python-dse-driver/2.2/ - includes both a String based and fluent API 
 - [Node.js](http://docs.datastax.com/en/developer/nodejs-driver-dse/1.3/)
 - [C#](http://docs.datastax.com/en/developer/csharp-driver-dse/2.0/)
 - [C/C++](http://docs.datastax.com/en/developer/cpp-driver-dse/1.2/)
