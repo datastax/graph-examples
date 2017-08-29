@@ -143,7 +143,7 @@ Event: Order - unique credit card, same customer id as above registration - orde
 
 #### Fraud - Order placed using the same credit card as an order which resulted in a chargeback
 
-**Traversal to Visualize:** `g.V().has('creditcard', 'creditcardhashed', 'a1ab1822888276fdb587a16b2dc7b697').emit().repeat(both()).times(2)`
+**Traversal to Visualize:** `g.V().has('creditCard', 'creditcardhashed', 'a1ab1822888276fdb587a16b2dc7b697').emit().repeat(both()).times(2)`
 
 **Velocity Variables**
 ```

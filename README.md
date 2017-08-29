@@ -29,6 +29,15 @@ Download DSE (includes DSE Graph), DataStax Studio, and the DSE Graph Loader at 
 - [Reducing Computational Complexity with Correlate Traversals](https://www.datastax.com/2017/04/reducing-computational-complexity-with-correlate-traversals) - a post about calculating network centrality in various manners and the associated cost.
 - [Introducing DSE Graph Frames](http://www.datastax.com/dev/blog/dse-graph-frame) - how to use DSE Graph with Spark's GraphFrames with the associated [DseGraphFrames example](/dse-graph-frame)
 - Large graph loading best practices, [part 1](http://www.datastax.com/dev/blog/large-graph-loading-best-practices-strategies-part-1) and [part 2](http://www.datastax.com/dev/blog/large-graph-loading-tactics-part-2)
+- Blog series from [DuyHai Doan](https://twitter.com/doanduyhai)'s blog:
+  1. [Gremlin as a Stream](http://www.doanduyhai.com/blog/?p=13224)
+  2. [SQL to Gremlin](http://www.doanduyhai.com/blog/?p=13260)
+  3. [Recommendation Engine Traversal](http://www.doanduyhai.com/blog/?p=13285)
+  4. [Recursive Traversals](http://www.doanduyhai.com/blog/?p=13301)
+  5. [Path Object](http://www.doanduyhai.com/blog/?p=13320)
+  6. [Projection and Selection](http://www.doanduyhai.com/blog/?p=13352)
+  7. [Variable Handling](http://www.doanduyhai.com/blog/?p=13374)
+  8. [The `sack()` Operator](http://www.doanduyhai.com/blog/?p=13404)
 
 ### Presentations
 
