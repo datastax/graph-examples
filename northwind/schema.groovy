@@ -41,14 +41,14 @@ schema.propertyKey('discontinued').Boolean().single().create()
 schema.propertyKey('description').Text().single().create()
 
 // Define the vertex labels with associated properties
-schema.vertexLabel('customer').partitionKey('id').properties('customerId', 'title', 'name', 'address', 'city', 'postalCode', 'phone', 'fax', 'company').create()
-schema.vertexLabel('employee').partitionKey('id').properties('title', 'titleOfCourtesy', 'firstName', 'lastName', 'address', 'city', 'postalCode', 'extension', 'homePhone', 'hireDate', 'notes').create()
-schema.vertexLabel('order').partitionKey('id').properties('orderDate', 'shipName', 'shipAddress', 'shipCity', 'shipPostalCode', 'shippedDate', 'requiredDate', 'freight').create()
-schema.vertexLabel('item').partitionKey('id').properties('unitPrice', 'discount', 'quantity').create()
-schema.vertexLabel('product').partitionKey('id').properties('name', 'type', 'unitPrice', 'unitsInStock', 'unitsOnOrder', 'reorderLevel', 'discontinued').create()
-schema.vertexLabel('category').partitionKey('id').properties('name', 'description').create()
-schema.vertexLabel('country').partitionKey('id').properties('name').create()
-schema.vertexLabel('region').partitionKey('id').properties('name').create()
+schema.vertexLabel('customer').properties('id', 'customerId', 'title', 'name', 'address', 'city', 'postalCode', 'phone', 'fax', 'company').create()
+schema.vertexLabel('employee').properties('id', 'title', 'titleOfCourtesy', 'firstName', 'lastName', 'address', 'city', 'postalCode', 'extension', 'homePhone', 'hireDate', 'notes').create()
+schema.vertexLabel('order').properties('id', 'orderDate', 'shipName', 'shipAddress', 'shipCity', 'shipPostalCode', 'shippedDate', 'requiredDate', 'freight').create()
+schema.vertexLabel('item').properties('id', 'unitPrice', 'discount', 'quantity').create()
+schema.vertexLabel('product').properties('id', 'name', 'type', 'unitPrice', 'unitsInStock', 'unitsOnOrder', 'reorderLevel', 'discontinued').create()
+schema.vertexLabel('category').properties('id', 'name', 'description').create()
+schema.vertexLabel('country').properties('id', 'name').create()
+schema.vertexLabel('region').properties('id', 'name').create()
 
 // Define the edge labels with cardinality and how they connect vertices
 schema.edgeLabel('sold').single().connection('employee', 'order').create()
