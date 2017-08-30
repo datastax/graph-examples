@@ -19,6 +19,8 @@ import static com.killrvideo.KV.VERTEX_PERSON;
 import static org.apache.tinkerpop.gremlin.process.traversal.Order.decr;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.gt;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.lt;
+import static org.apache.tinkerpop.gremlin.process.traversal.P.without;
+import static org.apache.tinkerpop.gremlin.process.traversal.P.between;
 import static org.apache.tinkerpop.gremlin.process.traversal.Scope.local;
 import static org.apache.tinkerpop.gremlin.structure.Column.keys;
 import static org.apache.tinkerpop.gremlin.structure.Column.values;
@@ -83,7 +85,7 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
         else if (max == 0)
             return outE(EDGE_RATED).has(KEY_RATING, lt(min)).inV();
         else
-            return outE(EDGE_RATED).has(KEY_RATING, P.between(min, max)).inV();
+            return outE(EDGE_RATED).has(KEY_RATING, between(min, max)).inV();
     }
 
     /**
@@ -100,7 +102,7 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
         if (start > end) throw new IllegalArgumentException("Start age must be greater than end age");
         if (end > 120) throw new IllegalArgumentException("Now you're just being crazy");
 
-        return filter(__.outV().has(KEY_AGE, P.between(start,end))).group().by(KEY_RATING).by(__.count());
+        return filter(__.outV().has(KEY_AGE, between(start,end))).group().by(KEY_RATING).by(__.count());
     }
 
     /**
@@ -119,7 +121,7 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
         return rated(minRating, 0).
                 aggregate("seen").
                 local(__.outE(EDGE_ACTOR).sample(3).inV().fold()).
-                unfold().in(EDGE_ACTOR).where(P.without("seen")).
+                unfold().in(EDGE_ACTOR).where(without("seen")).
                 groupCount().
                 order(local).
                   by(values, decr).
