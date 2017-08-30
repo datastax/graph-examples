@@ -1,9 +1,11 @@
 VERTEX_MOVIE = 'movie'
 VERTEX_PERSON = 'person'
 VERTEX_USER = 'user'
+VERTEX_GENRE = 'genre'
 
 EDGE_ACTOR = 'actor'
 EDGE_RATED = 'rated'
+EDGE_BELONGS_TO = "belongsTo"
 
 KEY_AGE = 'age'
 KEY_COUNTRY = 'country'

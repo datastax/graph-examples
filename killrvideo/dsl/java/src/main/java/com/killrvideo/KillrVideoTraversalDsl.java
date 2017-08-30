@@ -7,9 +7,13 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.killrvideo.KV.EDGE_ACTOR;
+import static com.killrvideo.KV.EDGE_BELONGS_TO;
 import static com.killrvideo.KV.EDGE_RATED;
 import static com.killrvideo.KV.KEY_AGE;
 import static com.killrvideo.KV.KEY_NAME;
@@ -89,6 +93,24 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
     }
 
     /**
+     * Assumes a "movie" vertex and traverses to a "genre" vertex with a filter on the name of the genre. This
+     * step is meant to be used as part of a <code>filter()</code> step for movies.
+     */
+    public default GraphTraversal<S, Vertex> genre(final Genre genre, final Genre... additionalGenres) {
+        List<String> genres = Stream.concat(Stream.of(genre), Stream.of(additionalGenres))
+                .map(Genre::getName)
+                .collect(Collectors.toList());
+
+        if (genres.size() < 1)
+            throw new IllegalArgumentException("There must be at least one genre option provided");
+
+        if (genres.size() == 1)
+            return out(EDGE_BELONGS_TO).has(KEY_NAME, genres.get(0));
+        else
+            return out(EDGE_BELONGS_TO).has(KEY_NAME, P.within(genres));
+    }
+
+    /**
      * Assumes incoming "rated" edges and filters based on the age of the "user" enforcing the logic that the
      * {@code start} age should exclude minors (i.e. 18 and older). Produces a map where the key is the rating and
      * the value is the number of times that rating was given.
@@ -106,6 +128,18 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
     }
 
     /**
+     * A convenience overload for {@link #recommend(int, int, Traversal)}.
+     *
+     * @param recommendations the number of recommended movies to return
+     * @param minRating the minimum rating to allow for
+     */
+    public default GraphTraversal<S, Vertex> recommend(int recommendations, int minRating) {
+        if (recommendations <= 0) throw new IllegalArgumentException("recommendations must be greater than zero");
+
+        return recommend(recommendations, minRating, __.__());
+    }
+
+    /**
      * A simple recommendation algorithm that starts from a "user" and examines movies the user has seen filtered by
      * the {@code minRating} which removes movies that hold a rating lower than the value specified. It then samples
      * the actors in the movies the user has seen and uses that to find other movies those actors have been in that
@@ -114,17 +148,21 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
      *
      * @param recommendations the number of recommended movies to return
      * @param minRating the minimum rating to allow for
+     * @param include an anonymous traversal that must be "true" for the incoming "movie" vertex to be included in the
+     *                recommendation results
      */
-    public default GraphTraversal<S, Vertex> recommend(int recommendations, int minRating) {
+    public default GraphTraversal<S, Vertex> recommend(int recommendations, int minRating, Traversal include) {
         if (recommendations <= 0) throw new IllegalArgumentException("recommendations must be greater than zero");
 
         return rated(minRating, 0).
                 aggregate("seen").
                 local(__.outE(EDGE_ACTOR).sample(3).inV().fold()).
-                unfold().in(EDGE_ACTOR).where(without("seen")).
+                unfold().in(EDGE_ACTOR).
+                where(without("seen")).
+                where(include).
                 groupCount().
                 order(local).
-                  by(values, decr).
+                by(values, decr).
                 limit(local,recommendations).
                 select(keys).
                 unfold();

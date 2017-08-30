@@ -10,8 +10,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static com.killrvideo.Genre.COMEDY;
 import static com.killrvideo.KV.KEY_TITLE;
 import static com.killrvideo.__.actor;
+import static com.killrvideo.__.genre;
 
 /**
  * A simple console application which demonstrates some of the features of the KillrVideo DSL.
@@ -48,6 +50,9 @@ public final class KillrVideoApp {
 
             printHeader("Five Recommendations for u460", "killr.users(\"u460\").recommend(5, 7).values(KEY_TITLE)");
             killr.users("u460").recommend(5, 7).values(KEY_TITLE).forEachRemaining(System.out::println);
+
+            printHeader("Five Recommendations for u460 that are comedies", "killr.users(\"u460\").recommend(5, 7, genre(COMEDY)).values(KEY_TITLE)");
+            killr.users("u460").recommend(5, 7, genre(COMEDY)).values(KEY_TITLE).forEachRemaining(System.out::println);
 
             printHeader("Insert/update movie and a actors for that movie", "killr.movie(\"m100000\", \"Manos: The Hands of Fate\",...).actor(...)");
             killr.movie("m100000", "Manos: The Hands of Fate", "USA", "Sun City Films", 1966, 70).

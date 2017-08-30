@@ -53,6 +53,18 @@ class KillrVideoTraversal(GraphTraversal):
             return self.outE(EDGE_RATED).has(KEY_RATING, lt(minimum)).inV()
         else:
             return self.outE(EDGE_RATED).has(KEY_RATING, between(minimum, maximum)).inV()
+
+    def genre(self, *args):
+        """Assumes a "movie" vertex and traverses to a "genre" vertex with a filter on the name of the genre.
+
+        This step is meant to be used as part of a filter() step for movies."""
+
+        if len(args) < 1:
+            raise ValueError('There must be at least one genre')
+        elif len(args) == 1:
+            return self.out(EDGE_BELONGS_TO).has(KEY_NAME, args[0])
+        elif len(args) > 1:
+            return self.out(EDGE_BELONGS_TO).has(KEY_NAME, within(args))
             
     def distributionForAges(self, start, end):
         """Assumes incoming "rated" edges and filters based on the age of the "user".
@@ -69,7 +81,7 @@ class KillrVideoTraversal(GraphTraversal):
             
         return self.filter(outV().has(KEY_AGE, P.between(start, end))).group().by(KEY_RATING).by(count())
 
-    def recommend(self, recommendations, minimum_rating):
+    def recommend(self, recommendations, minimum_rating, include=AnonymousTraversal.__()):
         """A simple recommendation algorithm.
 
         Starts from a "user" and examines movies the user has seen filtered by the minimum_rating which removes
@@ -84,7 +96,9 @@ class KillrVideoTraversal(GraphTraversal):
         return (self.rated(minimum_rating, 0).
                 aggregate("seen").
                 local(outE(EDGE_ACTOR).sample(3).inV().fold()).
-                unfold().in_(EDGE_ACTOR).where(P.without(["seen"])).
+                unfold().in_(EDGE_ACTOR).
+                where(P.without(["seen"])).
+                where(include).
                 groupCount().
                 order(local).
                   by(values, decr).
@@ -154,6 +168,10 @@ class __(AnonymousTraversal):
     @classmethod
     def rated(cls, *args):
         return cls.graph_traversal(None, None, Bytecode()).rated(*args)
+
+    @classmethod
+    def genre(cls, *args):
+        return cls.graph_traversal(None, None, Bytecode()).genre(*args)
         
     @classmethod
     def byAges(cls, *args):
