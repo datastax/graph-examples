@@ -4,6 +4,21 @@ from gremlin_python.process.traversal import (Bytecode, P, Scope, Order, Column)
 from gremlin_python.process.graph_traversal import (GraphTraversalSource, GraphTraversal)
 from gremlin_python.process.graph_traversal import __ as AnonymousTraversal
 
+V = AnonymousTraversal.V
+addV = AnonymousTraversal.addV
+outE = AnonymousTraversal.outE
+outV = AnonymousTraversal.outV
+count = AnonymousTraversal.count
+unfold = AnonymousTraversal.unfold
+
+gt = P.gt
+lt = P.lt
+between = P.between
+within = P.within
+local = Scope.local
+decr = Order.decr
+values = Column.values
+keys = Column.keys
 
 class KillrVideoTraversal(GraphTraversal):
     """The KillrVideo Traversal class which exposes the available steps of the DSL."""
@@ -23,21 +38,21 @@ class KillrVideoTraversal(GraphTraversal):
 
          Provides for filtering those edges when specified. If both arguments are zero then there is no rating filter.
         """
-        if minimum < 0 or maximum > 10:
-            raise ValueError('min must be a value between 0 and 10')
-        if max < 0 or maximum > 10:
-            raise ValueError('min must be a value between 0 and 10')
+        if minimum < 0 or minimum > 10:
+            raise ValueError('minimum rating must be a value between 0 and 10')
+        if maximum < 0 or maximum > 10:
+            raise ValueError('maximum rating must be a value between 0 and 10')
         if minimum != 0 and maximum != 0 and minimum > maximum:
-            raise ValueError('min cannot be greater than max')
+            raise ValueError('minimum rating cannot be greater than maximum rating ')
             
         if minimum == 0 and maximum == 0:
             return self.out(EDGE_RATED)
         elif minimum == 0:
-            return self.outE(EDGE_RATED).has(KEY_RATING, P.gt(minimum)).inV()
+            return self.outE(EDGE_RATED).has(KEY_RATING, gt(minimum)).inV()
         elif maximum == 0:
-            return self.outE(EDGE_RATED).has(KEY_RATING, P.lt(minimum)).inV()
+            return self.outE(EDGE_RATED).has(KEY_RATING, lt(minimum)).inV()
         else:
-            return self.outE(EDGE_RATED).has(KEY_RATING, P.between(minimum, maximum)).inV()
+            return self.outE(EDGE_RATED).has(KEY_RATING, between(minimum, maximum)).inV()
             
     def byAges(self, start, end):
         """Assumes incoming "rated" edges and filters based on the age of the "user".
@@ -51,7 +66,7 @@ class KillrVideoTraversal(GraphTraversal):
         if end > 120:
             raise ValueError('Now you are just being crazy') 
             
-        return self.filter(__.outV().has(KEY_AGE, P.between(start, end))).group().by(KEY_RATING).by(__.count())
+        return self.filter(outV().has(KEY_AGE, P.between(start, end))).group().by(KEY_RATING).by(count())
 
     def recommend(self, recommendations, minimum_rating):
         """A simple recommendation algorithm.
@@ -67,13 +82,13 @@ class KillrVideoTraversal(GraphTraversal):
 
         return (self.rated(minimum_rating, 0).
                 aggregate("seen").
-                local(__.outE(EDGE_ACTOR).sample(3).inV().fold()).
+                local(outE(EDGE_ACTOR).sample(3).inV().fold()).
                 unfold().in_(EDGE_ACTOR).where(P.without(["seen"])).
                 groupCount().
-                order(Scope.local).
-                  by(Column.values, Order.decr).
-                limit(Scope.local, recommendations).
-                select(Column.keys).
+                order(local).
+                  by(values, decr).
+                limit(local, recommendations).
+                select(keys).
                 unfold())
 
     def person(self, person_id, name):
@@ -90,8 +105,8 @@ class KillrVideoTraversal(GraphTraversal):
         if name in (None, ''):
             raise ValueError('The name of the person must not be null or empty')
 
-        return (self.coalesce(__.V().has(VERTEX_PERSON, KEY_PERSON_ID, person_id),
-                              __.addV(VERTEX_PERSON).property(KEY_PERSON_ID, person_id)).
+        return (self.coalesce(V().has(VERTEX_PERSON, KEY_PERSON_ID, person_id),
+                              addV(VERTEX_PERSON).property(KEY_PERSON_ID, person_id)).
                      property(KEY_NAME, name))
 
     def actor(self, person_id, name):
@@ -168,7 +183,7 @@ class KillrVideoTraversalSource(GraphTraversalSource):
 
     def __init__(self, *args, **kwargs):
         super(KillrVideoTraversalSource, self).__init__(*args, **kwargs)
-        self.graph_traversal = KillrVideoTraversal
+        self.graph_traversal = KillrVideoTraversal   # tells the "source" the type of Traversal to spawn
         
     def movies(self, *args):
         """Gets movies by their title."""
@@ -178,7 +193,7 @@ class KillrVideoTraversalSource(GraphTraversalSource):
         if len(args) == 1:
             traversal = traversal.has(KEY_TITLE, args[0])
         elif len(args) > 1:
-            traversal = traversal.has(KEY_TITLE, P.within(args))
+            traversal = traversal.has(KEY_TITLE, within(args))
             
         return traversal
 
@@ -190,7 +205,7 @@ class KillrVideoTraversalSource(GraphTraversalSource):
         if len(args) == 1:
             traversal = traversal.has(KEY_USER_ID, args[0])
         elif len(args) > 1:
-            traversal = traversal.has(KEY_USER_ID, P.within(args))
+            traversal = traversal.has(KEY_USER_ID, within(args))
 
         return traversal
             
@@ -222,8 +237,8 @@ class KillrVideoTraversalSource(GraphTraversalSource):
         return (traversal.
                 has(VERTEX_MOVIE, KEY_MOVIE_ID, movie_id).
                 fold().
-                coalesce(__.unfold(),
-                         __.addV(VERTEX_MOVIE).property(KEY_MOVIE_ID, movie_id)).
+                coalesce(unfold(),
+                         addV(VERTEX_MOVIE).property(KEY_MOVIE_ID, movie_id)).
                 property(KEY_TITLE, title).
                 property(KEY_COUNTRY, country).
                 property(KEY_PRODUCTION, production).
