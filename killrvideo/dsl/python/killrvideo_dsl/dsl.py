@@ -54,9 +54,10 @@ class KillrVideoTraversal(GraphTraversal):
         else:
             return self.outE(EDGE_RATED).has(KEY_RATING, between(minimum, maximum)).inV()
             
-    def byAges(self, start, end):
+    def distributionForAges(self, start, end):
         """Assumes incoming "rated" edges and filters based on the age of the "user".
 
+        Produces a map where the key is the rating and the value is the number of times that rating was given.
         This step validates that the start age should exclude minors (i.e. 18 and older).
         """
         if start < 18:

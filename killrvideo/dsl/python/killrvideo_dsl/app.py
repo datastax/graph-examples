@@ -27,13 +27,13 @@ print_header('Actors for Young Guns', 'killr.movies(\'Young Guns\').actors().val
 for n in killr.movies("Young Guns").actors().values("name").toList():
     print n
 
-print_header('Ratings Distribution by Age for Young Guns', 'killr.movies(\'Young Guns\').ratings().byAges(18, 40)')
-ratingsByAge = killr.movies('Young Guns').ratings().byAges(18, 40).next()
+print_header('Ratings Distribution by Age for Young Guns', 'killr.movies(\'Young Guns\').ratings().distributionForAges(18, 40)')
+ratingsByAge = killr.movies('Young Guns').ratings().distributionForAges(18, 40).next()
 print ratingsByAge
 
-print_header('Failed Validation', 'killr.movies(\'Young Guns\').ratings().byAges(17,40)')
+print_header('Failed Validation', 'killr.movies(\'Young Guns\').ratings().distributionForAges(17,40)')
 try:
-    killr.movies('Young Guns').ratings().byAges(17,40).next()
+    killr.movies('Young Guns').ratings().distributionForAges(17, 40).next()
 except ValueError as ve:
     print ve.args
 

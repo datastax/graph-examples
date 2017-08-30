@@ -88,13 +88,14 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
 
     /**
      * Assumes incoming "rated" edges and filters based on the age of the "user" enforcing the logic that the
-     * {@code start} age should exclude minors (i.e. 18 and older).
+     * {@code start} age should exclude minors (i.e. 18 and older). Produces a map where the key is the rating and
+     * the value is the number of times that rating was given.
      *
      * @param start the start age which must be 18 or greater
      * @param end the end age
      * @return
      */
-    public default GraphTraversal<S, Map<Object,Object>> byAges(int start, int end) {
+    public default GraphTraversal<S, Map<Object,Object>> distributionForAges(int start, int end) {
         if (start < 18) throw new IllegalArgumentException("Age must be 18 or older");
         if (start > end) throw new IllegalArgumentException("Start age must be greater than end age");
         if (end > 120) throw new IllegalArgumentException("Now you're just being crazy");

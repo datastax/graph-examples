@@ -34,13 +34,13 @@ public final class KillrVideoApp {
             List<Object> names = killr.movies("Young Guns").actors().values("name").toList();
             names.forEach(System.out::println);
 
-            printHeader("Ratings Distribution by Age for Young Guns", "killr.movies(\"Young Guns\").ratings().byAges(18, 40)");
-            Map ratingsByAge = killr.movies("Young Guns").ratings().byAges(18, 40).next();
+            printHeader("Ratings Distribution by Age for Young Guns", "killr.movies(\"Young Guns\").ratings().distributionForAges(18, 40)");
+            Map ratingsByAge = killr.movies("Young Guns").ratings().distributionForAges(18, 40).next();
             System.out.println(ratingsByAge);
 
-            printHeader("Failed Validation", "killr.movies(\"Young Guns\").ratings().byAges(17,40)");
+            printHeader("Failed Validation", "killr.movies(\"Young Guns\").ratings().distributionForAges(17,40)");
             try {
-                killr.movies("Young Guns").ratings().byAges(17,40).next();
+                killr.movies("Young Guns").ratings().distributionForAges(17,40).next();
             } catch (IllegalArgumentException iae) {
                 System.out.println("Caught IllegalArgumentException: " + iae.getMessage());
                 Thread.sleep(500);
