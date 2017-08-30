@@ -3,6 +3,7 @@ from kv import *
 from gremlin_python.process.traversal import (Bytecode, P, Scope, Order, Column)
 from gremlin_python.process.graph_traversal import (GraphTraversalSource, GraphTraversal)
 from gremlin_python.process.graph_traversal import __ as AnonymousTraversal
+from aenum import Enum
 
 V = AnonymousTraversal.V
 addV = AnonymousTraversal.addV
@@ -20,20 +21,36 @@ decr = Order.decr
 values = Column.values
 keys = Column.keys
 
-# Sample three actors.
-SMALL_SAMPLE = AnonymousTraversal.outE(EDGE_ACTOR).sample(3).inV().fold()
 
-# Sample ten actors.
-LARGE_SAMPLE = AnonymousTraversal.outE(EDGE_ACTOR).sample(10).inV().fold()
+class Recommender(Enum):
 
-# Iterate all actors taking roughly 50% of them.
-FIFTY_50_SAMPLE = AnonymousTraversal.outE(EDGE_ACTOR).coin(0.5).inV().fold()
+    SMALL_SAMPLE = 1
+    """Sample three actors."""
 
-# For each rated movie take actors for 250ms.
-TIMED_SAMPLE = AnonymousTraversal.outE(EDGE_ACTOR).timeLimit(250).inV().fold()
+    LARGE_SAMPLE = 2
+    """Sample ten actors."""
 
-# Do not sample and use all the actors.
-ALL = AnonymousTraversal.outE(EDGE_ACTOR).inV().fold()
+    FIFTY_50_SAMPLE = 3
+    """Iterate all actors taking roughly 50% of them."""
+
+    TIMED_SAMPLE = 4
+    """For each rated movie take actors for 250ms."""
+
+    ALL = 5
+    """Do not sample and use all the actors."""
+
+    @property
+    def traversal(self):
+
+        switcher = {
+            Recommender.SMALL_SAMPLE: AnonymousTraversal.outE(EDGE_ACTOR).sample(3).inV().fold(),
+            Recommender.LARGE_SAMPLE: AnonymousTraversal.outE(EDGE_ACTOR).sample(10).inV().fold(),
+            Recommender.FIFTY_50_SAMPLE: AnonymousTraversal.outE(EDGE_ACTOR).coin(0.5).inV().fold(),
+            Recommender.TIMED_SAMPLE: AnonymousTraversal.outE(EDGE_ACTOR).timeLimit(250).inV().fold(),
+            Recommender.ALL: AnonymousTraversal.outE(EDGE_ACTOR).inV().fold()
+        }
+
+        return switcher.get(self)
 
 class KillrVideoTraversal(GraphTraversal):
     """The KillrVideo Traversal class which exposes the available steps of the DSL."""
@@ -96,7 +113,8 @@ class KillrVideoTraversal(GraphTraversal):
             
         return self.filter(outV().has(KEY_AGE, P.between(start, end))).group().by(KEY_RATING).by(count())
 
-    def recommend(self, recommendations, minimum_rating, include=AnonymousTraversal.__(), recommender=SMALL_SAMPLE):
+    def recommend(self, recommendations, minimum_rating, include=AnonymousTraversal.__(),
+                  recommender=Recommender.SMALL_SAMPLE):
         """A simple recommendation algorithm.
 
         Starts from a "user" and examines movies the user has seen filtered by the minimum_rating which removes
@@ -107,10 +125,12 @@ class KillrVideoTraversal(GraphTraversal):
 
         if recommendations <= 0:
             raise ValueError('recommendations must be greater than zero')
+        if not isinstance(recommender, Recommender):
+            raise ValueError('recommender argument must be of type Recommender')
 
         return (self.rated(minimum_rating, 0).
                 aggregate("seen").
-                local(recommender).
+                local(recommender.traversal).
                 unfold().in_(EDGE_ACTOR).
                 where(P.without(["seen"])).
                 where(include).

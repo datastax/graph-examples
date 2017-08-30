@@ -43,6 +43,6 @@ public enum Recommender {
     }
 
     public Traversal<?, ?> getTraversal() {
-        return t;
+        return t.asAdmin().clone();
     }
 }
