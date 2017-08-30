@@ -20,6 +20,7 @@ import static com.killrvideo.KV.KEY_NAME;
 import static com.killrvideo.KV.KEY_PERSON_ID;
 import static com.killrvideo.KV.KEY_RATING;
 import static com.killrvideo.KV.VERTEX_PERSON;
+import static com.killrvideo.Recommender.SMALL_SAMPLE;
 import static org.apache.tinkerpop.gremlin.process.traversal.Order.decr;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.gt;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.lt;
@@ -128,7 +129,7 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
     }
 
     /**
-     * A convenience overload for {@link #recommend(int, int, Traversal)}.
+     * A convenience overload for {@link #recommend(int, int, Recommender, Traversal)}.
      *
      * @param recommendations the number of recommended movies to return
      * @param minRating the minimum rating to allow for
@@ -136,7 +137,19 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
     public default GraphTraversal<S, Vertex> recommend(int recommendations, int minRating) {
         if (recommendations <= 0) throw new IllegalArgumentException("recommendations must be greater than zero");
 
-        return recommend(recommendations, minRating, __.__());
+        return recommend(recommendations, minRating, SMALL_SAMPLE, __.__());
+    }
+
+    /**
+     * A convenience overload for {@link #recommend(int, int, Recommender, Traversal)}.
+     *
+     * @param recommendations the number of recommended movies to return
+     * @param minRating the minimum rating to allow for
+     */
+    public default GraphTraversal<S, Vertex> recommend(int recommendations, int minRating, Traversal include) {
+        if (recommendations <= 0) throw new IllegalArgumentException("recommendations must be greater than zero");
+
+        return recommend(recommendations, minRating, SMALL_SAMPLE, include);
     }
 
     /**
@@ -148,21 +161,23 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
      *
      * @param recommendations the number of recommended movies to return
      * @param minRating the minimum rating to allow for
+     * @param recommender a configuration to supply to the recommendation algorithm to provide control over how
+     *                    sampling occurs when selecting the initial set of movies to consider
      * @param include an anonymous traversal that must be "true" for the incoming "movie" vertex to be included in the
      *                recommendation results
      */
-    public default GraphTraversal<S, Vertex> recommend(int recommendations, int minRating, Traversal include) {
+    public default GraphTraversal<S, Vertex> recommend(int recommendations, int minRating, Recommender recommender, Traversal include) {
         if (recommendations <= 0) throw new IllegalArgumentException("recommendations must be greater than zero");
 
         return rated(minRating, 0).
                 aggregate("seen").
-                local(__.outE(EDGE_ACTOR).sample(3).inV().fold()).
+                local(recommender.getTraversal()).
                 unfold().in(EDGE_ACTOR).
                 where(without("seen")).
                 where(include).
                 groupCount().
                 order(local).
-                by(values, decr).
+                  by(values, decr).
                 limit(local,recommendations).
                 select(keys).
                 unfold();

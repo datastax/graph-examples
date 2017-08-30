@@ -1,6 +1,7 @@
 from dsl import KillrVideoTraversalSource, __
 from kv import *
 from genre import *
+from dsl import LARGE_SAMPLE
 from gremlin_python.structure.graph import Graph
 from dse.cluster import Cluster
 from dse_graph import DseGraph, DSESessionRemoteGraphConnection
@@ -14,7 +15,7 @@ def print_header(title, subtitle=''):
         st = '[' + subtitle + ']'
         print st
 
-    line = '-' * ((len(st) if (len(st) > 0) else len(t)) - 1)
+    line = '-' * (max((len(st), len(t)) if (len(st) > 0) else len(t)) - 1)
     print line
 
 c = Cluster()
@@ -42,8 +43,12 @@ print_header('Five Recommendations for u460', 'killr.users(\'u460\').recommend(5
 for r in killr.users('u460').recommend(5, 7).values(KEY_TITLE).toList():
     print r
 
-print_header('Five Recommendations for u460 that are commedies', 'killr.users(\'u460\').recommend(5, 7, genre(COMEDY)).values(KEY_TITLE)');
+print_header('Five Recommendations for u460 that are comedies', 'killr.users(\'u460\').recommend(5, 7, genre(COMEDY)).values(KEY_TITLE)');
 for r in killr.users('u460').recommend(5, 7, __.genre(COMEDY)).values(KEY_TITLE).toList():
+    print r
+
+print_header('Five Recommendations for u460 that use larger actor sampling and are comedies', 'killr.users(\'u460\').recommend(5, 7, genre(COMEDY), LARGE_SAMPLE).values(KEY_TITLE)');
+for r in killr.users('u460').recommend(5, 7, __.genre(COMEDY), LARGE_SAMPLE).values(KEY_TITLE).toList():
     print r
 
 print_header('Insert/update movie and a actors for that movie', 'killr.movie(\'m100000\', \'Manos: The Hands of Fate\',...).actor(...)')

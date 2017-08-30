@@ -20,6 +20,21 @@ decr = Order.decr
 values = Column.values
 keys = Column.keys
 
+# Sample three actors.
+SMALL_SAMPLE = AnonymousTraversal.outE(EDGE_ACTOR).sample(3).inV().fold()
+
+# Sample ten actors.
+LARGE_SAMPLE = AnonymousTraversal.outE(EDGE_ACTOR).sample(10).inV().fold()
+
+# Iterate all actors taking roughly 50% of them.
+FIFTY_50_SAMPLE = AnonymousTraversal.outE(EDGE_ACTOR).coin(0.5).inV().fold()
+
+# For each rated movie take actors for 250ms.
+TIMED_SAMPLE = AnonymousTraversal.outE(EDGE_ACTOR).timeLimit(250).inV().fold()
+
+# Do not sample and use all the actors.
+ALL = AnonymousTraversal.outE(EDGE_ACTOR).inV().fold()
+
 class KillrVideoTraversal(GraphTraversal):
     """The KillrVideo Traversal class which exposes the available steps of the DSL."""
 
@@ -81,7 +96,7 @@ class KillrVideoTraversal(GraphTraversal):
             
         return self.filter(outV().has(KEY_AGE, P.between(start, end))).group().by(KEY_RATING).by(count())
 
-    def recommend(self, recommendations, minimum_rating, include=AnonymousTraversal.__()):
+    def recommend(self, recommendations, minimum_rating, include=AnonymousTraversal.__(), recommender=SMALL_SAMPLE):
         """A simple recommendation algorithm.
 
         Starts from a "user" and examines movies the user has seen filtered by the minimum_rating which removes
@@ -95,7 +110,7 @@ class KillrVideoTraversal(GraphTraversal):
 
         return (self.rated(minimum_rating, 0).
                 aggregate("seen").
-                local(outE(EDGE_ACTOR).sample(3).inV().fold()).
+                local(recommender).
                 unfold().in_(EDGE_ACTOR).
                 where(P.without(["seen"])).
                 where(include).
