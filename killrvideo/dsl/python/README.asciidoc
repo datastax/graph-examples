@@ -17,10 +17,7 @@ Prerequisites
 Building and Running
 --------------------
 
-[source,text]
-mvn clean install
-
-There is a small application that runs serveral traversals using the defined DSL and outputs the results to the
+There is a small application that runs several traversals using the defined DSL and outputs the results to the
 console. It can be executed as follows:
 
 [source,text]
