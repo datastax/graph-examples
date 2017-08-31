@@ -6,6 +6,7 @@ VERTEX_GENRE = 'genre'
 EDGE_ACTOR = 'actor'
 EDGE_RATED = 'rated'
 EDGE_BELONGS_TO = "belongsTo"
+EDGE_KNOWS = "knows"
 
 KEY_AGE = 'age'
 KEY_COUNTRY = 'country'

@@ -1,5 +1,6 @@
 import datetime
 from kv import *
+from genre import Genre
 from gremlin_python.process.traversal import (Bytecode, P, Scope, Order, Column)
 from gremlin_python.process.graph_traversal import (GraphTraversalSource, GraphTraversal)
 from gremlin_python.process.graph_traversal import __ as AnonymousTraversal
@@ -23,6 +24,7 @@ keys = Column.keys
 
 
 class Recommender(Enum):
+    """Configuration options for the recommend() step in the DSL"""
 
     SMALL_SAMPLE = 1
     """Sample three actors."""
@@ -93,10 +95,15 @@ class KillrVideoTraversal(GraphTraversal):
 
         if len(args) < 1:
             raise ValueError('There must be at least one genre')
-        elif len(args) == 1:
-            return self.out(EDGE_BELONGS_TO).has(KEY_NAME, args[0])
+
+        if not all(isinstance(genre, Genre) for genre in args):
+            raise ValueError('The arguments to genre() step must all be of type Genre')
+
+        if len(args) == 1:
+            return self.out(EDGE_BELONGS_TO).has(KEY_NAME, args[0].value)
         elif len(args) > 1:
-            return self.out(EDGE_BELONGS_TO).has(KEY_NAME, within(args))
+            genres = [genre.value for genre in args]
+            return self.out(EDGE_BELONGS_TO).has(KEY_NAME, within(genres))
             
     def distributionForAges(self, start, end):
         """Assumes incoming "rated" edges and filters based on the age of the "user".
