@@ -6,6 +6,8 @@ from dse.cluster import Cluster
 from dse_graph import DseGraph, DSESessionRemoteGraphConnection
 
 COMEDY = Genre.COMEDY
+genre = __.genre
+actor = __.actor
 
 
 def print_header(title, subtitle=''):
@@ -45,18 +47,18 @@ for r in killr.users('u460').recommend(5, 7).values(KEY_TITLE).toList():
     print(r)
 
 print_header('Five Recommendations for u460 that are comedies', 'killr.users(\'u460\').recommend(5, 7, genre(COMEDY)).values(KEY_TITLE)');
-for r in killr.users('u460').recommend(5, 7, __.genre(COMEDY)).values(KEY_TITLE).toList():
+for r in killr.users('u460').recommend(5, 7, genre(COMEDY)).values(KEY_TITLE).toList():
     print(r)
 
 print_header('Five Recommendations for u460 that use larger actor sampling and are comedies', 'killr.users(\'u460\').recommend(5, 7, genre(COMEDY), LARGE_SAMPLE).values(KEY_TITLE)')
-for r in killr.users('u460').recommend(5, 7, __.genre(COMEDY), Recommender.LARGE_SAMPLE).values(KEY_TITLE).toList():
+for r in killr.users('u460').recommend(5, 7, genre(COMEDY), Recommender.LARGE_SAMPLE).values(KEY_TITLE).toList():
     print(r)
 
 print_header('Insert/update movie and a actors for that movie', 'killr.movie(\'m100000\', \'Manos: The Hands of Fate\',...).actor(...)')
 (killr.movie('m100000', 'Manos: The Hands of Fate', 1966, 70, 'USA', 'Sun City Films').
-       ensure(__.actor('p1000000', 'Tom Neyman')).
-       ensure(__.actor('p1000001', 'John Reynolds')).
-       ensure(__.actor('p1000002', 'Diane Mahree')).iterate())
+       ensure(actor('p1000000', 'Tom Neyman')).
+       ensure(actor('p1000001', 'John Reynolds')).
+       ensure(actor('p1000002', 'Diane Mahree')).iterate())
 print('Added 3 actors to \'Manos: The Hands of Fate\'')
 
 print_header('Get the actors for the newly added movie', 'killr.movies(\'Manos: The Hands of Fate\').actors().values(\'name\')')
