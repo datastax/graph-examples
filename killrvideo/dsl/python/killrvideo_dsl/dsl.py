@@ -58,19 +58,20 @@ class KillrVideoTraversal(GraphTraversal):
     """The KillrVideo Traversal class which exposes the available steps of the DSL."""
 
     def actors(self):
-        """Traverses from a "movie" to an "person" over the "actor" edge."""
+        """Finds the actors in a movie by traversing from a "movie" to an "person" over the "actor" edge."""
 
         return self.out(EDGE_ACTOR).hasLabel(VERTEX_PERSON)
         
     def ratings(self):
-        """Traverses from a "movie" to a "rated" edge."""
+        """Finds the ratings in a movie by traversing from a "movie" to a "rated" edge."""
 
         return self.inE(EDGE_RATED)  
          
     def rated(self, minimum=0, maximum=0):
-        """Traverses from a "user" to a "movie" over the "rated" edge.
+        """Finds the movies a user rated by traversing from a "user" to a "movie" over the "rated" edge.
 
-         Provides for filtering those edges when specified. If both arguments are zero then there is no rating filter.
+         Provides for filtering of those "rated" edges edges by their "rating" property when argument are specified.
+         If both arguments are zero then there is no rating filter.
         """
         if minimum < 0 or minimum > 10:
             raise ValueError('minimum rating must be a value between 0 and 10')
