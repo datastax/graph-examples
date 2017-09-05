@@ -1,3 +1,4 @@
+from __future__ import print_function
 from dsl import KillrVideoTraversalSource, __, Recommender
 from kv import *
 from genre import Genre
@@ -11,14 +12,15 @@ actor = __.actor
 
 
 def print_header(title, subtitle=""):
-    st = ""
-    t = "\n* " + title
+    print()
+    t = "* " + title
     print(t)
-    if len(subtitle) > 0:
+    st = ""
+    if subtitle:
         st = "[" + subtitle + "]"
         print(st)
 
-    line = "-" * (max(len(st), len(t)) if (len(st) > 0) else len(t) - 1)
+    line = "-" * max(len(st), len(t))
     print(line)
 
 c = Cluster()
