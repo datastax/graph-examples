@@ -1,7 +1,7 @@
 from __future__ import print_function
-from dsl import KillrVideoTraversalSource, __, Recommender
-from kv import *
-from genre import Genre
+from killrvideo_dsl.dsl import KillrVideoTraversalSource, __, Recommender
+from killrvideo_dsl.kv import *
+from killrvideo_dsl.genre import Genre
 from gremlin_python.structure.graph import Graph
 from dse.cluster import Cluster
 from dse_graph import DSESessionRemoteGraphConnection
