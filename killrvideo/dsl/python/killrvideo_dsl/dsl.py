@@ -54,6 +54,7 @@ class Recommender(Enum):
 
         return switcher.get(self)
 
+
 class KillrVideoTraversal(GraphTraversal):
     """The KillrVideo Traversal class which exposes the available steps of the DSL."""
 
@@ -61,12 +62,12 @@ class KillrVideoTraversal(GraphTraversal):
         """Finds the actors in a movie by traversing from a "movie" to an "person" over the "actor" edge."""
 
         return self.out(EDGE_ACTOR).hasLabel(VERTEX_PERSON)
-        
+
     def ratings(self):
         """Finds the ratings in a movie by traversing from a "movie" to a "rated" edge."""
 
-        return self.inE(EDGE_RATED)  
-         
+        return self.inE(EDGE_RATED)
+
     def rated(self, minimum=0, maximum=0):
         """Finds the movies a user rated by traversing from a "user" to a "movie" over the "rated" edge.
 
@@ -79,7 +80,7 @@ class KillrVideoTraversal(GraphTraversal):
             raise ValueError('maximum rating must be a value between 0 and 10')
         if minimum != 0 and maximum != 0 and minimum > maximum:
             raise ValueError('minimum rating cannot be greater than maximum rating ')
-            
+
         if minimum == 0 and maximum == 0:
             return self.out(EDGE_RATED)
         elif minimum == 0:
@@ -105,8 +106,8 @@ class KillrVideoTraversal(GraphTraversal):
         elif len(args) > 1:
             genres = [genre.value for genre in args]
             return self.out(EDGE_BELONGS_TO).has(KEY_NAME, within(genres))
-            
-    def distributionForAges(self, start, end):
+
+    def distribution_for_ages(self, start, end):
         """Assumes incoming "rated" edges and filters based on the age of the "user".
 
         Produces a map where the key is the rating and the value is the number of times that rating was given.
@@ -117,8 +118,8 @@ class KillrVideoTraversal(GraphTraversal):
         if start > end:
             raise ValueError('Start age must be greater than end age')
         if end > 120:
-            raise ValueError('Now you are just being crazy') 
-            
+            raise ValueError('Now you are just being crazy')
+
         return self.filter(outV().has(KEY_AGE, P.between(start, end))).group().by(KEY_RATING).by(count())
 
     def recommend(self, recommendations, minimum_rating, include=AnonymousTraversal.__(),
@@ -144,7 +145,7 @@ class KillrVideoTraversal(GraphTraversal):
                 where(include).
                 groupCount().
                 order(local).
-                  by(values, decr).
+                by(values, decr).
                 limit(local, recommendations).
                 select(keys).
                 unfold())
@@ -164,8 +165,7 @@ class KillrVideoTraversal(GraphTraversal):
             raise ValueError('The name of the person must not be null or empty')
 
         return (self.coalesce(V().has(VERTEX_PERSON, KEY_PERSON_ID, person_id),
-                              addV(VERTEX_PERSON).property(KEY_PERSON_ID, person_id)).
-                     property(KEY_NAME, name))
+                              addV(VERTEX_PERSON).property(KEY_PERSON_ID, person_id)).property(KEY_NAME, name))
 
     def actor(self, person_id, name):
         """Gets or creates an "actor".
@@ -179,9 +179,8 @@ class KillrVideoTraversal(GraphTraversal):
         # as mentioned in the step documentation this step assumes an incoming "movie" vertex. it is immediately
         # labelled as "^movie". the addition of the caret prefix has no meaning except to provide for a unique
         # labelling space within the DSL itself.
-        return (self.as_("^movie").
-                     coalesce(__.actors().has(KEY_PERSON_ID, person_id),
-                              __.person(person_id, name).addE(EDGE_ACTOR).from_("^movie").inV()))
+        return (self.as_("^movie").coalesce(__.actors().has(KEY_PERSON_ID, person_id),
+                                            __.person(person_id, name).addE(EDGE_ACTOR).from_("^movie").inV()))
 
     def ensure(self, mutation_traversal):
         """This step is an alias for the sideEffect() step.
@@ -191,6 +190,7 @@ class KillrVideoTraversal(GraphTraversal):
 
         return self.sideEffect(mutation_traversal)
 
+
 class __(AnonymousTraversal):
     """Spawns anonymous KillrVideoTraversal instances for the DSL.
 
@@ -199,15 +199,15 @@ class __(AnonymousTraversal):
     """
 
     graph_traversal = KillrVideoTraversal
-        
+
     @classmethod
     def actors(cls):
         return cls.graph_traversal(None, None, Bytecode()).actors()
-    
+
     @classmethod
     def ratings(cls):
         return cls.graph_traversal(None, None, Bytecode()).ratings()
-        
+
     @classmethod
     def rated(cls, *args):
         return cls.graph_traversal(None, None, Bytecode()).rated(*args)
@@ -215,10 +215,10 @@ class __(AnonymousTraversal):
     @classmethod
     def genre(cls, *args):
         return cls.graph_traversal(None, None, Bytecode()).genre(*args)
-        
+
     @classmethod
-    def byAges(cls, *args):
-        return cls.graph_traversal(None, None, Bytecode()).byAges(*args)
+    def by_ages(cls, *args):
+        return cls.graph_traversal(None, None, Bytecode()).by_ages(*args)
 
     @classmethod
     def recommend(cls, *args):
@@ -246,7 +246,7 @@ class KillrVideoTraversalSource(GraphTraversalSource):
     def __init__(self, *args, **kwargs):
         super(KillrVideoTraversalSource, self).__init__(*args, **kwargs)
         self.graph_traversal = KillrVideoTraversal   # tells the "source" the type of Traversal to spawn
-        
+
     def movies(self, *args):
         """Gets movies by their title."""
 
@@ -256,7 +256,7 @@ class KillrVideoTraversalSource(GraphTraversalSource):
             traversal = traversal.has(KEY_TITLE, args[0])
         elif len(args) > 1:
             traversal = traversal.has(KEY_TITLE, within(args))
-            
+
         return traversal
 
     def users(self, *args):
@@ -270,7 +270,7 @@ class KillrVideoTraversalSource(GraphTraversalSource):
             traversal = traversal.has(KEY_USER_ID, within(args))
 
         return traversal
-            
+
     def movie(self, movie_id, title, year, duration, country="", production=""):
         """Ensures that a "movie" exists.
 
