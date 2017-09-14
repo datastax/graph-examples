@@ -7,14 +7,18 @@ create table customers (
 	firstname varchar(64),
 	lastname varchar(64),
 	email varchar(128),
+	phone varchar(64),
+	createdtime timestamp
+);
+
+create table customer_addresses (
+	customerid char(36) primary key,
 	address varchar(128),
 	city varchar(64),
 	state varchar(64),
 	postalcode varchar(64),
 	countrycode varchar(64),
-	phone varchar(64),
-	createdtime timestamp
-);
+)
 
 create table sessions (
 	sessionid char(36) primary key,
