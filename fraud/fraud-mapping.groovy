@@ -17,7 +17,7 @@ if (source == '' || source == 'file') {
     creditCards = File.csv(path + 'creditCards.csv').delimiter('|')
     devices = File.csv(path + 'devices.csv').delimiter('|')
 
-//    customerAddresses = File.json(path + 'customerAddresses.json')
+    customerAddresses = File.csv(path + 'customerAddresses.csv').delimiter('|')
     customerOrders = File.csv(path + 'customerOrders.csv').delimiter('|')
     customerSessions = File.csv(path + 'customerSessions.csv').delimiter('|')
     customerChargebacks = File.csv(path + 'customerChargebacks.csv').delimiter('|')
@@ -34,7 +34,7 @@ if (source == '' || source == 'file') {
     creditCards =   db.query 'select * from creditcards'
     devices =       db.query 'select * from devices'
 
-//    customerAddresses =     db.query 'select * from customer_addresses'
+    customerAddresses =     db.query 'select * from customer_addresses'
     customerOrders =        db.query 'select * from customer_orders'
     customerSessions =      db.query 'select * from customer_sessions'
     customerChargebacks =   db.query 'select * from customer_chargebacks'
@@ -46,22 +46,6 @@ if (source == '' || source == 'file') {
 load(customers).asVertices {
     label 'customer'
     key 'customerid'
-    ignore 'address'
-    ignore 'city'
-    ignore 'state'
-    ignore 'postalcode'
-    ignore 'countrycode'
-}
-
-load(customers).asVertices {
-    label 'address'
-    key address: 'address', postalcode: 'postalcode'
-    ignore 'customerid'
-    ignore 'firstname' 
-    ignore 'lastname'
-    ignore 'email'
-    ignore 'phone'
-    ignore 'createdtime'
 }
 
 load(sessions).asVertices {
@@ -111,6 +95,7 @@ load(orders).asEdges {
         label 'creditCard'
         key 'creditcardhashed'
     }
+    // The properties in orders are not 'usesCard' edge properties
     ignore 'createdtime'
     ignore 'outcome'
     ignore 'ipaddress'
@@ -194,6 +179,7 @@ load(orders).asEdges {
         label 'device'
         key 'deviceid'
     }
+    // The properties in this file are not meant to be edge properties
     ignore 'createdtime'
     ignore 'outcome'
     ignore 'ipaddress'
@@ -201,19 +187,29 @@ load(orders).asEdges {
     ignore 'amount'
 }
 
-// load(customerAddresses).asEdges {
-//     label 'hasAddress'
-//     outV 'customer', {
-//         label 'customer'
-//         key 'customerid'
-//     }
-//     inV 'address', {
-//         label 'address'
-//         key address: 'address', postalcode: 'postalcode'
-//     }
-//     ignore 'firstname' 
-//     ignore 'lastname'
-//     ignore 'email'
-//     ignore 'phone'
-//     ignore 'createdtime'
-// }
+load(customerAddresses).asEdges {
+    label 'hasAddress'
+    outV {
+        label 'customer'
+        key 'customerid'
+        // Don't add these properties to customer vertices
+        ignore 'address'
+        ignore 'city'
+        ignore 'state'
+        ignore 'postalcode'
+        ignore 'countrycode'
+    }
+    inV {
+        label 'address'
+        key address: 'address', postalcode: 'postalcode'
+        // Add all properties except customerid to the address vertex
+        ignore 'customerid'
+    }
+    // These are not edge properties
+    ignore 'customerid'
+    ignore 'address'
+    ignore 'city'
+    ignore 'state'
+    ignore 'postalcode'
+    ignore 'countrycode'
+}
