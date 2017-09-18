@@ -67,4 +67,3 @@ load(ratedInput).asEdges {
     }
 
 }
-
