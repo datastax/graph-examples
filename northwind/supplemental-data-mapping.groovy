@@ -1,4 +1,4 @@
-config create_schema: false, load_new: false
+config create_schema: true, load_new: false
 
 // If the user specifies an inputpath on the command-line, use that.
 // Otherwise check the data directory from the data directory from where the loader is run.
@@ -16,7 +16,7 @@ def ratedInput = File.csv(path + 'rated.csv').delimiter('|')
 //Specifies what data source to load using which mapper
 load(fbMembersInput).asVertices {
     label "networkMember"
-    key "id"
+    key "name"
 }
 
 load(identitiesInput).asEdges {
@@ -35,11 +35,11 @@ load(isFriendsWithInput).asEdges {
     label "isFriendsWith"
     outV "nameFrom", {
         label "networkMember"
-        key "id"
+        key "name"
     }
     inV "nameTo", {
         label "networkMember"
-        key "id"
+        key "name"
     }
 }
 
@@ -47,11 +47,11 @@ load(isRelatedToInput).asEdges {
     label "isRelatedTo"
     outV "nameFrom", {
         label "networkMember"
-        key "id"
+        key "name"
     }
     inV "nameTo", {
         label "networkMember"
-        key "id"
+        key "name"
     }
 }
 
@@ -65,5 +65,5 @@ load(ratedInput).asEdges {
         label "product"
         key "id"
     }
-}
 
+}
