@@ -1,3 +1,6 @@
+system.graph('northwind').create()
+:remote config alias g northwind.g
+
 // Define the possible properties for any vertex or edge label
 schema.propertyKey('id').Int().single().create()
 
