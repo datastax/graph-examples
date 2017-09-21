@@ -14,8 +14,8 @@ schema.vertexLabel("master").index("passport_index").secondary().by("passport_id
 schema.edgeLabel("is").single().connection("person", "master").create()
 
 // examples
-Vertex marko = graph.addVertex(T.label, "person", "passport_id", "1", "name", "marko", "age", 29)
-Vertex vadas = graph.addVertex(T.label, "person", "passport_id", "2", "name", "vadas", "age", 27)
-Vertex josh = graph.addVertex(T.label, "person", "passport_id", "3", "name", "josh", "age", 32)
-Vertex passport = graph.addVertex(T.label,"master" , "entity_id", java.util.UUID.randomUUID().toString() , "passport_id", "3")
-josh.addEdge("is", passport)
+//Vertex marko = graph.addVertex(T.label, "person", "passport_id", "a1", "name", "marko", "age", 29)
+//Vertex vadas = graph.addVertex(T.label, "person", "passport_id", "a2", "name", "vadas", "age", 27)
+//Vertex josh = graph.addVertex(T.label, "person", "passport_id", "a3", "name", "josh", "age", 32)
+//Vertex passport = graph.addVertex(T.label,"master" , "entity_id", java.util.UUID.randomUUID().toString() , "passport_id", "a3")
+//josh.addEdge("is", passport)
