@@ -27,7 +27,7 @@ Start the example. spark.sql.crossJoin.enabled is needed only for cartesianRecog
 
  ```bash
  sbt package 
- dse spark-submit --conf spark.sql.crossJoin.enabled=true target/scala-2.11/entity-recognition_2.11-0.1.jar
+ dse spark-submit --conf spark.sql.crossJoin.enabled=true target/scala-2.11/entity-resolution_2.11-0.1.jar
  ```
  
 see results in gremlin-console or studio
@@ -36,5 +36,5 @@ see results in gremlin-console or studio
 
 Streaming example generate random passport id and names, so you'll finally will get a really big graph
  ```bash
- dse spark-submit --conf spark.sql.crossJoin.enabled=true --class com.datastax.bdp.er.streaming.StreamingExample target/scala-2.11/entity-recognition_2.11-0.1.jar
+ dse spark-submit --conf spark.sql.crossJoin.enabled=true --class com.datastax.bdp.er.streaming.StreamingExample target/scala-2.11/entity-resolution_2.11-0.1.jar
 ```

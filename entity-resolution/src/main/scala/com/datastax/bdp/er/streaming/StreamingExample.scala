@@ -1,6 +1,6 @@
 package com.datastax.bdp.er.streaming
 
-import com.datastax.bdp.er.EntityRecognitionExample
+import com.datastax.bdp.er.EntityResolutionExample
 import com.datastax.bdp.graph.spark.graphframe._
 import org.apache.spark.sql.functions.udf
 import org.apache.spark.sql.{Row, SparkSession}
@@ -17,7 +17,7 @@ object StreamingExample {
       .config("spark.streaming.stopGracefullyOnShutdown","false").getOrCreate()
     import spark.implicits._
 
-    val graph = spark.dseGraph(EntityRecognitionExample.graphName)
+    val graph = spark.dseGraph(EntityResolutionExample.graphName)
 
     val ssc = new StreamingContext(spark.sparkContext, Seconds(1))
     val rec = new RandomReceiver(PassportNumber = 200, NameNumber = 200)
@@ -28,12 +28,12 @@ object StreamingExample {
       val updateDF = rdd.toDF("passport_id", "name")
       // update properties
       val compareUDF = udf((person: Row, entity: Row) => person.getAs[String]("passport_id") == entity.getAs[String]("passport_id") )
-      EntityRecognitionExample.cartesianRecognizer(graph,updateDF, compareUDF)
+      EntityResolutionExample.cartesianRecognizer(graph,updateDF, compareUDF)
 
       /* uncomment to switch to gremlin base code.
       val searchQuery =
         """find = g.V().has("master", "passport_id", passport_id);"""
-      EntityRecognitionExample.gremlinRecognizer(updateDF, searchQuery)
+      EntityResolutionExample.gremlinRecognizer(updateDF, searchQuery)
       */
     })
 
