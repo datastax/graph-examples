@@ -11,12 +11,12 @@ import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 import org.apache.spark.storage.StorageLevel
 
-object EntityRecognitionExample {
+object EntityResolutionExample {
   val graphName = "entity"
   var dataDir = "dsefs:///tmp"
 
   def usage(): Unit = {
-    println("Usage: dse spark-submit --conf spark.sql.crossJoin.enabled=true dse spark-submit --conf spark.sql.crossJoin.enabled=true target/scala-2.11/entity-recognition_2.11-0.1.jar <options>")
+    println("Usage: dse spark-submit --conf spark.sql.crossJoin.enabled=true dse spark-submit --conf spark.sql.crossJoin.enabled=true target/scala-2.11/entity-resolution_2.11-0.1.jar <options>")
     println("    -d <directory>     provide directory url with data example files, default is dsefs:///tmp")
     System.exit(-1)
   }
@@ -35,13 +35,13 @@ object EntityRecognitionExample {
 
     val g = spark.dseGraph(graphName)
 
-    // bulk entity recognition with simple eq join entity recognition
+    // bulk entity resolution with simple eq join entity resolution
     // similar approach will be used to merge two graphs.
     val personCsv = spark.read.csv(s"$dataDir/initial.csv").toDF("passport_id", "name")
     loadWithSimpleJoinRecognizer(g, personCsv)
 
     // gremlin OLTP base incremental update
-    // entity recognition with gremlin query
+    // entity resolution with gremlin query
     // that should be output of the ML data model
     val searchQuery =
     """find = g.V().has("master", "passport_id", passport_id);"""
@@ -63,7 +63,7 @@ object EntityRecognitionExample {
 
 
   /**
-    *  bulk entity recognition with simple join entity recognition
+    *  bulk entity resolution with simple join entity resolution
     *
     * @param g
     */
