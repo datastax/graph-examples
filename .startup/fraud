@@ -1,2 +1,3 @@
 dse gremlin-console -e fraud/schema.groovy
-#java -Xms4096M -Xmx4096M -cp /tmp/dse-graph-loader-*/dse-graph-loader-*-uberjar.jar com.datastax.dsegraphloader.cli.Executable -graph fraud -address `hostname --ip-address` fraud/fraud-map ping.groovy -inputpath /tmp/graph-examples/fraud/data
+sleep 10
+java -Xms4096M -Xmx4096M -cp /tmp/dse-graph-loader-*/dse-graph-loader-*-uberjar.jar com.datastax.dsegraphloader.cli.Executable -graph fraud -address `hostname --ip-address` /tmp/graph-examples/fraud/fraud-mapping.groovy -inputpath /tmp/graph-examples/fraud/data
