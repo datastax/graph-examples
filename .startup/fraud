@@ -1,4 +1,3 @@
 export GRAPH_EXAMPLES=/tmp/graph-examples
 dse gremlin-console -e $GRAPH_EXAMPLES/fraud/schema.groovy
-sleep 30
-java -Xms4096M -Xmx4096M -cp /tmp/dse-graph-loader-*/dse-graph-loader-*-uberjar.jar com.datastax.dsegraphloader.cli.Executable -graph fraud -address `hostname --ip-address` $GRAPH_EXAMPLES/fraud/fraud-mapping.groovy -inputpath $GRAPH_EXAMPLES/fraud/data
+#java -Xms4096M -Xmx4096M -cp /tmp/dse-graph-loader-*/dse-graph-loader-*-uberjar.jar com.datastax.dsegraphloader.cli.Executable -graph fraud -address `hostname --ip-address` $GRAPH_EXAMPLES/fraud/fraud-mapping.groovy -inputpath $GRAPH_EXAMPLES/fraud/data
