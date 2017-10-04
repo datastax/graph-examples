@@ -44,14 +44,14 @@ schema.propertyKey('discontinued').Boolean().single().ifNotExists().create()
 schema.propertyKey('description').Text().single().ifNotExists().create()
 
 // Define the vertex labels with associated properties
-schema.vertexLabel('customer').properties('id', 'customerId', 'title', 'name', 'address', 'city', 'postalCode', 'phone', 'fax', 'company').ifNotExists().create()
-schema.vertexLabel('employee').properties('id', 'title', 'titleOfCourtesy', 'firstName', 'lastName', 'address', 'city', 'postalCode', 'extension', 'homePhone', 'hireDate', 'notes').ifNotExists().create()
-schema.vertexLabel('order').properties('id', 'orderDate', 'shipName', 'shipAddress', 'shipCity', 'shipPostalCode', 'shippedDate', 'requiredDate', 'freight').ifNotExists().create()
-schema.vertexLabel('item').properties('id', 'unitPrice', 'discount', 'quantity').ifNotExists().create()
-schema.vertexLabel('product').properties('id', 'name', 'type', 'unitPrice', 'unitsInStock', 'unitsOnOrder', 'reorderLevel', 'discontinued').ifNotExists().create()
-schema.vertexLabel('category').properties('id', 'name', 'description').ifNotExists().create()
-schema.vertexLabel('country').properties('id', 'name').ifNotExists().create()
-schema.vertexLabel('region').properties('id', 'name').ifNotExists().create()
+schema.vertexLabel('customer').partitionKey('id').properties('customerId', 'title', 'name', 'address', 'city', 'postalCode', 'phone', 'fax', 'company').ifNotExists().create()
+schema.vertexLabel('employee').partitionKey('id').properties('title', 'titleOfCourtesy', 'firstName', 'lastName', 'address', 'city', 'postalCode', 'extension', 'homePhone', 'hireDate', 'notes').ifNotExists().create()
+schema.vertexLabel('order').partitionKey('id').properties('orderDate', 'shipName', 'shipAddress', 'shipCity', 'shipPostalCode', 'shippedDate', 'requiredDate', 'freight').ifNotExists().create()
+schema.vertexLabel('item').partitionKey('id').properties('unitPrice', 'discount', 'quantity').ifNotExists().create()
+schema.vertexLabel('product').partitionKey('id').properties('name', 'type', 'unitPrice', 'unitsInStock', 'unitsOnOrder', 'reorderLevel', 'discontinued').ifNotExists().create()
+schema.vertexLabel('category').partitionKey('id').properties('name', 'description').ifNotExists().create()
+schema.vertexLabel('country').partitionKey('id').properties('name').ifNotExists().create()
+schema.vertexLabel('region').partitionKey('id').properties('name').ifNotExists().create()
 
 // Define the edge labels with cardinality and how they connect vertices
 schema.edgeLabel('sold').single().connection('employee', 'order').ifNotExists().create()
@@ -62,13 +62,6 @@ schema.edgeLabel('livesInRegion').single().connection('customer', 'region').ifNo
 schema.edgeLabel('inCategory').single().connection('product', 'category').ifNotExists().create()
 schema.edgeLabel('is').single().connection('item', 'product').ifNotExists().create()
 schema.edgeLabel('reportsTo').single().connection('employee', 'employee').ifNotExists().create()
-
-// Add materialized views for what are essentially alternate keys to the data
-schema.vertexLabel('customer').index('byCustomerId').materialized().by('customerId').ifNotExists().add()
-schema.vertexLabel('product').index('byName').materialized().by('name').ifNotExists().add()
-schema.vertexLabel('category').index('byName').materialized().by('name').ifNotExists().add()
-schema.vertexLabel('country').index('byName').materialized().by('name').ifNotExists().add()
-schema.vertexLabel('region').index('byName').materialized().by('name').ifNotExists().add()
 
 // Add a search index on product and customer name to be able to things like regex or fuzzy searching by name
 schema.vertexLabel('customer').index('search').search().by('name').ifNotExists().add()

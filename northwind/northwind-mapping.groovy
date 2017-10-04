@@ -1,4 +1,4 @@
-//Configures the data loader to create the schema
+// Use the separate schema.groovy to create the schema
 config create_schema: false, load_new: true
 
 inputfile = 'northwind.kryo'

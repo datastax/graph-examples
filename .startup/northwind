@@ -1,2 +1,2 @@
 dse gremlin-console -e northwind/schema.groovy
-/tmp/dse-graph-loader*/graphloader -graph northwind -address `hostname --ip-address` northwind/northwind-mapping.groovy -inputpath northwind/data -preparation false
+/tmp/dse-graph-loader*/graphloader -graph northwind -address `hostname --ip-address` northwind/northwind-mapping.groovy -inputpath northwind/data

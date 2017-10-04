@@ -44,6 +44,8 @@ graphloader -graph northwind -address localhost northwind-mapping.groovy -inputp
 
 ## Supplemental data
 
+### Supplemental data is not currently working as we change to custom vertex ids
+
 Some supplemental data has been added in csv files to provide some more connectivity within the data.  It is generated data,
 that includes things like relationships between customers (isRelatedTo and isFriendsWith), customer product ratings (rated),
 and so forth.  The relationships include the relationship type, the friendships include an affinity score, and the identities
