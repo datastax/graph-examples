@@ -27,7 +27,7 @@ c = Cluster()
 session = c.connect()
 
 # initialize the TraversalSource for the DSL using the DSE Java Driver
-# https://github.com/datastax/java-dse-driver
+# https://github.com/datastax/python-dse-driver
 killr = Graph().traversal(KillrVideoTraversalSource).withRemote(DSESessionRemoteGraphConnection(session, "killrvideo"))
 
 print_header("Actors for Young Guns", "killr.movies('Young Guns').actors().values('name')")
