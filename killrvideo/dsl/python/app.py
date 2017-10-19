@@ -26,7 +26,7 @@ def print_header(title, subtitle=""):
 c = Cluster()
 session = c.connect()
 
-# initialize the TraversalSource for the DSL using the DSE Java Driver
+# initialize the TraversalSource for the DSL using the DSE Python Driver
 # https://github.com/datastax/python-dse-driver
 killr = Graph().traversal(KillrVideoTraversalSource).withRemote(DSESessionRemoteGraphConnection(session, "killrvideo"))
 
