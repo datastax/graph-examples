@@ -22,4 +22,4 @@ console. It can be executed as follows:
 
 [source,text]
 pip install dse-graph
-python killrvideo_dsl/app.py
+python app.py
