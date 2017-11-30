@@ -1,3 +1,14 @@
 *.iml
 target/
 .idea/
+[Dd]ebug/
+[Rr]elease/
+[Oo]bj/
+*.suo
+*.user
+.vscode/
+.vs/
+*nupkg
+NuGet.Config
+nuget.exe
+
