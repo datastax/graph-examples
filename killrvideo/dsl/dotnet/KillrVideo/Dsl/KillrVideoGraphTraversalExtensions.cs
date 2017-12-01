@@ -2,7 +2,7 @@
 using Gremlin.Net.Process.Traversal;
 using Gremlin.Net.Structure;
 
-using static KillrVideo.Dsl.KV;
+using static KillrVideo.Dsl.Kv;
 
 namespace KillrVideo.Dsl
 {
@@ -13,7 +13,7 @@ namespace KillrVideo.Dsl
         /// </summary>
         public static GraphTraversal<Vertex,Vertex> Actors(this GraphTraversal<Vertex,Vertex> t) 
         {
-            return t.Out(EDGE_ACTOR).HasLabel(VERTEX_PERSON);
+            return t.Out(EdgeActor).HasLabel(VertexPerson);
         }
     }
 }

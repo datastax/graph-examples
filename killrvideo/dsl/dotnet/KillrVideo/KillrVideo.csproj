@@ -3,8 +3,8 @@
   <PropertyGroup Label="Build">
     <TargetFramework>netcoreapp1.0</TargetFramework>
     <DebugType>portable</DebugType>
-    <AssemblyName>KillrVideo.Dsl</AssemblyName>
-    <PackageId>KillrVideo.Dsl</PackageId>
+    <AssemblyName>KillrVideo</AssemblyName>
+    <PackageId>KillrVideo</PackageId>
     <RuntimeFrameworkVersion>1.0.4</RuntimeFrameworkVersion>
   </PropertyGroup>
 

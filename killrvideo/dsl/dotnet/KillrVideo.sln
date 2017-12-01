@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KillrVideo.Dsl", "KillrVideo.Dsl\KillrVideo.Dsl.csproj", "{CAA4ABB3-A816-4864-A6E9-5AFAE5642FBE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KillrVideo.App", "KillrVideo.App\KillrVideo.App.csproj", "{E7C54C5B-6554-4C7A-9CF0-54BEAC8C3718}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KillrVideo", "KillrVideo\KillrVideo.csproj", "{CAA4ABB3-A816-4864-A6E9-5AFAE5642FBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

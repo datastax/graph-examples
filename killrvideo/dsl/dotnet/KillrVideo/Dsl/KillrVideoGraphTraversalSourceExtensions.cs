@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Gremlin.Net.Process.Traversal;
 using Gremlin.Net.Structure;
 
-using static KillrVideo.Dsl.KV;
+using static KillrVideo.Dsl.Kv;
 
 namespace KillrVideo.Dsl
 {
@@ -17,14 +17,14 @@ namespace KillrVideo.Dsl
             var titles = new List<string>();
             titles.Add(title);
             titles.AddRange(additionalTitles);
-            GraphTraversal<Vertex,Vertex> t = g.V().HasLabel(VERTEX_MOVIE);
+            GraphTraversal<Vertex,Vertex> t = g.V().HasLabel(VertexMovie);
             if (titles.Count == 1) 
             {
-                t = t.Has(KEY_TITLE, titles[0]);
+                t = t.Has(KeyTitle, titles[0]);
             } 
             else if (titles.Count > 1) 
             {
-                t = t.Has(KEY_TITLE, P.Within(titles.ToArray()));
+                t = t.Has(KeyTitle, P.Within(titles.ToArray()));
             }
             return t;
         }
