@@ -6,10 +6,12 @@
     <AssemblyName>KillrVideo</AssemblyName>
     <PackageId>KillrVideo</PackageId>
     <RuntimeFrameworkVersion>1.0.4</RuntimeFrameworkVersion>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Gremlin.Net" Version="3.3.0-rc1" />
+    <PackageReference Include="Dse" Version="2.1.0" />
   </ItemGroup>
 
 </Project>
