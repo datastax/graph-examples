@@ -1,5 +1,4 @@
-KillrVideo DSL
-==============
+== KillrVideo DSL
 
 This is a Java starter project that shows how to build a Domain Specific Language (DSL) for
 link:http://tinkerpop.apache.org/[Apache TinkerPop's] Gremlin graph traversal language.
@@ -14,16 +13,14 @@ archetype to get started execute the following command with Maven:
 mvn archetype:generate -DarchetypeGroupId=org.apache.tinkerpop -DarchetypeArtifactId=gremlin-archetype-dsl -DarchetypeVersion=3.2.5 -DgroupId=com.my -DartifactId=app -Dversion=0.1 -DinteractiveMode=false
 ```
 
-Prerequisites
--------------
+=== Prerequisites
 
 * Java 8 Update 40+
 * link:https://maven.apache.org/[Maven 3.x]
 * A running instance of link:https://www.datastax.com/products/datastax-enterprise-graph[DSE Graph]
 ** Load the `graph-examples/killrvideo` data as specified in the link:https://github.com/datastax/graph-examples/blob/master/killrvideo/README.md[README]
 
-Building and Running
---------------------
+=== Building and Running
 
 [source,text]
 mvn clean install
