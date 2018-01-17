@@ -4,12 +4,13 @@ import com.datastax.driver.dse.DseCluster;
 import com.datastax.driver.dse.DseSession;
 import com.datastax.driver.dse.graph.GraphOptions;
 import com.datastax.dse.graph.api.DseGraph;
-import com.datastax.dse.graph.internal.DseRemoteConnection;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static com.killrvideo.Enrichment.IN_DEGREE;
+import static com.killrvideo.Enrichment.OUT_DEGREE;
 import static com.killrvideo.Genre.COMEDY;
 import static com.killrvideo.KV.KEY_TITLE;
 import static com.killrvideo.Recommender.LARGE_SAMPLE;
@@ -57,6 +58,9 @@ public final class KillrVideoApp {
 
             printHeader("Five Recommendations for u460 that use larger actor sampling and are comedies", "killr.users(\"u460\").recommend(5, 7, genre(COMEDY)).values(KEY_TITLE)");
             killr.users("u460").recommend(5, 7, LARGE_SAMPLE, genre(COMEDY)).values(KEY_TITLE).forEachRemaining(System.out::println);
+
+            printHeader("Include some additional graph statistics about Young Guns", "killr.movies(\"Young Guns\").enrich(IN_DEGREE, OUT_DEGREE)");
+            killr.movies("Young Guns").enrich(IN_DEGREE, OUT_DEGREE).forEachRemaining(System.out::println);
 
             printHeader("Insert/update movie and a actors for that movie", "killr.movie(\"m100000\", \"Manos: The Hands of Fate\",...).actor(...)");
             killr.movie("m100000", "Manos: The Hands of Fate", "USA", "Sun City Films", 1966, 70).

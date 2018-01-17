@@ -1,7 +1,7 @@
 import datetime
 from kv import *
 from genre import Genre
-from gremlin_python.process.traversal import (Bytecode, P, Scope, Order, Column)
+from gremlin_python.process.traversal import (Bytecode, P, Scope, Order, Column, T)
 from gremlin_python.process.graph_traversal import (GraphTraversalSource, GraphTraversal)
 from gremlin_python.process.graph_traversal import __ as AnonymousTraversal
 from aenum import Enum
@@ -50,6 +50,45 @@ class Recommender(Enum):
             Recommender.FIFTY_50_SAMPLE: AnonymousTraversal.outE(EDGE_ACTOR).coin(0.5).inV().fold(),
             Recommender.TIMED_SAMPLE: AnonymousTraversal.outE(EDGE_ACTOR).timeLimit(250).inV().fold(),
             Recommender.ALL: AnonymousTraversal.outE(EDGE_ACTOR).inV().fold()
+        }
+
+        return switcher.get(self)
+
+
+class Enrichment(Enum):
+    """Provides for pre-built data enrichment options for the enrich() step.
+
+    These options will include extra information about the Vertex when output from that step. Note that the enrichment
+    examples presented here are examples to demonstrate this concept. The primary lesson here is to show how one might
+    merge map results as part of a DSL.These enrichment options may not be suitable for traversals in production
+    systems as counting all edges might add an unreasonable amount of time to an otherwise fast traversal.
+    """
+
+    VERTEX = 1
+    """Include the Vertex itself as a value in the enriched output which might be helpful if additional 
+       traversing on that element is required."""
+
+    IN_DEGREE = 2
+    """The number of incoming edges on the Vertex"""
+
+    OUT_DEGREE = 3
+    """The number of outgoing edges on the Vertex"""
+
+    DEGREE = 4
+    """The total number of edges on the Vertex"""
+
+    DISTRIBUTION = 5
+    """Calculates the edge label distribution for the Vertex"""
+
+    @property
+    def traversal(self):
+
+        switcher = {
+            Enrichment.VERTEX: AnonymousTraversal.project("_vertex").by(),
+            Enrichment.IN_DEGREE: AnonymousTraversal.project("_inDegree").by(__.inE().count()),
+            Enrichment.OUT_DEGREE: AnonymousTraversal.project("_outDegree").by(__.outE().count()),
+            Enrichment.DEGREE: AnonymousTraversal.project("_degree").by(__.bothE().count()),
+            Enrichment.DISTRIBUTION: AnonymousTraversal.project("_distribution").by(__.bothE().groupCount().by(T.label))
         }
 
         return switcher.get(self)
@@ -149,6 +188,24 @@ class KillrVideoTraversal(GraphTraversal):
                 limit(local, recommendations).
                 select(keys).
                 unfold())
+
+    def enrich(self, *args):
+        """
+        Expects an incoming Vertex converts it to a Dictionary and folds additional data into it based on the
+        specified Enrichment values passed to it.
+        """
+
+        if not all(isinstance(enrichment, Enrichment) for enrichment in args):
+            raise ValueError('The arguments to enrichment() step must all be of type Enrichment')
+
+        enrichments = [enrichment.traversal for enrichment in args]
+        enrichments.append(__.valueMap(True))
+
+        return (self.union(*enrichments).
+                unfold().
+                group().
+                by(keys).
+                by(__.select(values).unfold()))
 
     def person(self, person_id, name):
         """Gets or creates a "person"

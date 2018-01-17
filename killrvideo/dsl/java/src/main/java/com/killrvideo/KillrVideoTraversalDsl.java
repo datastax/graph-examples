@@ -7,6 +7,7 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -181,6 +182,24 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
                 limit(local,recommendations).
                 select(keys).
                 unfold();
+    }
+
+    /**
+     * Expects an incoming {@code Vertex} converts it to a {@code Map} and folds additional data into that {@code Map}
+     * based on the specified {@link Enrichment} values passed to it.
+     *
+     * @param enrichments the additional data to calculate and include for each {code Vertex}
+     */
+    public default GraphTraversal<S, Map<Object,Object>> enrich(Enrichment... enrichments) {
+        Object[] objs = Stream.concat(Stream.of(enrichments).map(Enrichment::getTraversal),
+                                      Stream.of(__.valueMap(true))).toArray();
+        Traversal[] enrichmentTraversals = Arrays.copyOf(objs, objs.length, Traversal[].class);
+
+        return union(enrichmentTraversals).
+                unfold().
+                group().
+                  by(keys).
+                  by(__.select(values).unfold());
     }
 
     /**

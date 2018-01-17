@@ -1,5 +1,5 @@
 from __future__ import print_function
-from killrvideo_dsl.dsl import KillrVideoTraversalSource, __, Recommender
+from killrvideo_dsl.dsl import KillrVideoTraversalSource, __, Recommender, Enrichment
 from killrvideo_dsl.kv import *
 from killrvideo_dsl.genre import Genre
 from gremlin_python.structure.graph import Graph
@@ -7,6 +7,8 @@ from dse.cluster import Cluster
 from dse_graph import DSESessionRemoteGraphConnection
 
 COMEDY = Genre.COMEDY
+IN_DEGREE = Enrichment.IN_DEGREE
+OUT_DEGREE = Enrichment.OUT_DEGREE
 genre = __.genre
 actor = __.actor
 
@@ -22,6 +24,7 @@ def print_header(title, subtitle=""):
 
     line = "-" * max(len(st), len(t))
     print(line)
+
 
 c = Cluster()
 session = c.connect()
@@ -54,6 +57,10 @@ for r in killr.users("u460").recommend(5, 7, genre(COMEDY)).values(KEY_TITLE).to
 
 print_header("Five Recommendations for u460 that use larger actor sampling and are comedies", "killr.users('u460').recommend(5, 7, genre(COMEDY), LARGE_SAMPLE).values(KEY_TITLE)")
 for r in killr.users("u460").recommend(5, 7, genre(COMEDY), Recommender.LARGE_SAMPLE).values(KEY_TITLE).toList():
+    print(r)
+
+print_header("Include some additional graph statistics about Young Guns", "killr.movies('Young Guns').enrich(IN_DEGREE, OUT_DEGREE)")
+for r in killr.movies('Young Guns').enrich(IN_DEGREE, OUT_DEGREE).toList():
     print(r)
 
 print_header("Insert/update movie and a actors for that movie", "killr.movie('m100000', 'Manos: The Hands of Fate',...).actor(...)")
