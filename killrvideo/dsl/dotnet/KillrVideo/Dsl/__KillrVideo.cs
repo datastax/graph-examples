@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Gremlin.Net.Process.Traversal;
 using Gremlin.Net.Structure;
 
+using static Gremlin.Net.Process.Traversal.P;
 using static KillrVideo.Dsl.Kv;
 
 namespace KillrVideo.Dsl
@@ -36,6 +37,28 @@ namespace KillrVideo.Dsl
             return __.Coalesce<Vertex>(__.V().Has(VertexPerson, KeyPersonId, personId),
                                       __.AddV(VertexPerson).Property(KeyPersonId, personId)).
                    Property(KeyName, name);
+        }
+
+        /// <summary>
+        ///  Assumes a "movie" vertex and traverses to a "genre" vertex with a filter on the name of the genre. This step is meant 
+        /// to be used as part of a <code>filter()</code> step for movies.
+        /// </summary>
+        public static GraphTraversal<object,object> Genre(Genre genre, params Genre[] additionalGenres) 
+        {
+            var genres = new List<string>();
+            genres.Add(GenreLookup.Names[genre]);
+            foreach(Genre current in additionalGenres) 
+            {
+                genres.Add(GenreLookup.Names[current]);
+            }
+
+            if (genres.Count < 1)
+                throw new ArgumentException("There must be at least one genre option provided");
+
+            if (genres.Count == 1)
+                return __.Out(EdgeBelongsTo).Map<object>(__.Identity()).Has(KeyName, genres[0]);
+            else
+                return __.Out(EdgeBelongsTo).Map<object>(__.Identity()).Has(KeyName, Within(genres));
         }
     }
 }
