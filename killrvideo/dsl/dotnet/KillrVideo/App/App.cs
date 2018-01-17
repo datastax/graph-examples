@@ -13,10 +13,12 @@ namespace KillrVideo.App
     public class App {
         public static void Main() {
             var graph = new Graph();
-            var killr = graph.Traversal().WithRemote(new DriverRemoteConnection(new GremlinClient(new GremlinServer("localhost", 8182))));
+            var killr = graph.Traversal().WithRemote(new DriverRemoteConnection(
+                new GremlinClient(new GremlinServer("localhost", 8182), mimeType:GremlinClient.GraphSON2MimeType), 
+                "killrvideo.g"));
 
             PrintHeader("Actors for Young Guns", "killr.Movies(\"Young Guns\").Actors().Values(\"name\")");
-            IList<object> names = killr.Movies("Young Guns").Actors().Values<object>("name").ToList();
+            var names = killr.Movies("Young Guns").Actors().Values<String>("name").ToList();
             foreach (object item in names)
             {
                 Console.WriteLine(item);

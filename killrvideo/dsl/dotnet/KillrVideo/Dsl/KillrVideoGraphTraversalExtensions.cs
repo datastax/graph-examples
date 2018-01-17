@@ -130,12 +130,30 @@ namespace KillrVideo.Dsl
                      Unfold<Vertex>().In(EdgeActor).
                      Where(Without("seen")).
                      Where(include).
-                     GroupCount().
+                     GroupCount<Vertex>().
                      Order(Local).
                        By(Values, Decr).
                      Limit<IDictionary<Vertex,long>>(Local,recommendations).
                      Select<Vertex>(Keys).
                      Unfold<Vertex>();
+        }
+
+        /// <summary>
+        /// Expects an incoming <code>Vertex</code> converts it to a <code>IDictionary</code> and folds additional data into it
+        /// based on the specified <code>Enrichment</code> values passed to it.
+        /// </summary>
+        public static GraphTraversal<Vertex, IDictionary<object,object>> enrich(this GraphTraversal<Vertex,Vertex> t, params Enrichment[] enrichments) 
+        {
+            var enrichmentTraversals = new ITraversal[enrichments.Length + 1];
+            enrichmentTraversals[0] = __.ValueMap<String,object>(true);
+            if (enrichments.Length > 0)
+                enrichments.CopyTo(enrichmentTraversals, 1);
+
+            return t.Union<IDictionary<object,object>>(enrichmentTraversals).
+                     Unfold<object>().
+                     Group<object,object>().
+                       By(Keys).
+                       By(__.Select<object>(Values).Unfold<object>());
         }
 
         /// <summary>

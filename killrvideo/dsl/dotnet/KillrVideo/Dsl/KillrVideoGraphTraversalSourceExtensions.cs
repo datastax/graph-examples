@@ -73,7 +73,7 @@ namespace KillrVideo.Dsl
             // and properties.
             return g.V().
                 Has(VertexMovie, KeyMovieId, movieId).
-                Fold<List<Vertex>>().
+                Fold().
                 Coalesce<Vertex>(__.Unfold<Vertex>(),
                                  __.AddV(VertexMovie).Property(KeyMovieId, movieId)).
                 Property(KeyTitle, title).

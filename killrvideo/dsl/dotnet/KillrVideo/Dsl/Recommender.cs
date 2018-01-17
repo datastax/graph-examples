@@ -23,13 +23,13 @@ namespace KillrVideo.Dsl
 
     public static class RecommenderLookup 
     {
-        public static readonly Dictionary<Recommender,GraphTraversal<object,List<Vertex>>> Traversals = new Dictionary<Recommender, GraphTraversal<object,List<Vertex>>>
+        public static readonly Dictionary<Recommender,GraphTraversal<object,IList<Vertex>>> Traversals = new Dictionary<Recommender, GraphTraversal<object,IList<Vertex>>>
         {
-            {Recommender.SmallSample, __.OutE(EdgeActor).Sample(3).InV().Fold<List<Vertex>>()},
-            {Recommender.LargeSample, __.OutE(EdgeActor).Sample(10).InV().Fold<List<Vertex>>()},
-            {Recommender.Fifty50Sample, __.OutE(EdgeActor).Coin(0.5).InV().Fold<List<Vertex>>()},
-            {Recommender.TimedSample, __.OutE(EdgeActor).TimeLimit(250).InV().Fold<List<Vertex>>()},
-            {Recommender.All, __.OutE(EdgeActor).InV().Fold<List<Vertex>>()}
+            {Recommender.SmallSample, __.OutE(EdgeActor).Sample(3).InV().Fold()},
+            {Recommender.LargeSample, __.OutE(EdgeActor).Sample(10).InV().Fold()},
+            {Recommender.Fifty50Sample, __.OutE(EdgeActor).Coin(0.5).InV().Fold()},
+            {Recommender.TimedSample, __.OutE(EdgeActor).TimeLimit(250).InV().Fold()},
+            {Recommender.All, __.OutE(EdgeActor).InV().Fold()}
         };
     }
 }
