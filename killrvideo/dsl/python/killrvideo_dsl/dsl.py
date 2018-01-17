@@ -282,6 +282,10 @@ class __(AnonymousTraversal):
         return cls.graph_traversal(None, None, Bytecode()).recommend(*args)
 
     @classmethod
+    def enrich(cls, *args):
+        return cls.graph_traversal(None, None, Bytecode()).enrich(*args)
+
+    @classmethod
     def person(cls, *args):
         return cls.graph_traversal(None, None, Bytecode()).person(*args)
 
