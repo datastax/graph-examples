@@ -41,7 +41,7 @@ namespace KillrVideo.App
             
             PrintHeader("Ratings Distribution by Age for Young Guns", "killr.Movies(\"Young Guns\").Ratings().DistributionForAges(18, 40)");
             IDictionary<string,long> ratingsByAge = killr.Movies("Young Guns").Ratings().DistributionForAges(18, 40).Next();
-            var pairs = String.Join(", ", ratingsByAge.Select(kvp => kvp.Key + ":" + kvp.Value.ToString()));
+            var pairs = String.Join(", ", ratingsByAge.Select(kvp => kvp.Key + "=" + kvp.Value.ToString()));
             Console.WriteLine($"[{pairs}]");
 
             PrintHeader("Failed Validation", "killr.Movies(\"Young Guns\").Ratings().DistributionForAges(17,40)");
@@ -55,7 +55,6 @@ namespace KillrVideo.App
             results = killr.Users("u460").Recommend(5, 7).Values<string>(KeyTitle).ToList();
             results.ToList().ForEach(r => Console.WriteLine(r));
 
-            /*
             PrintHeader("Five Recommendations for u460 that are comedies", "killr.Users(\"u460\").Recommend(5, 7, Genre(COMEDY)).Values(KEY_TITLE)");
             results = killr.Users("u460").Recommend(5, 7, Genre(Comedy)).Values<string>(KeyTitle).ToList();
             results.ToList().ForEach(r => Console.WriteLine(r));
@@ -66,8 +65,10 @@ namespace KillrVideo.App
 
             PrintHeader("Include some additional graph statistics about Young Guns", "killr.movies(\"Young Guns\").enrich(IN_DEGREE, OUT_DEGREE)");
             IDictionary<object,object> enriched = killr.Movies("Young Guns").enrich(InDegree, OutDegree).Next();
-            Console.WriteLine(enriched);
+            pairs = String.Join(", ", enriched.Select(kvp => kvp.Key + "=" + kvp.Value.ToString()));
+            Console.WriteLine($"[{pairs}]");
 
+            /*
             PrintHeader("Insert/update movie and a actors for that movie", "killr.movie(\"m100000\", \"Manos: The Hands of Fate\",...).actor(...)"); 
             results = killr.Movie("m100000", "Manos: The Hands of Fate", "USA", "Sun City Films", 1966, 70).
                     Ensure(Actor("p1000000", "Tom Neyman")).
@@ -101,5 +102,6 @@ namespace KillrVideo.App
             string line = new string('-', string.IsNullOrEmpty(st) ? t.Length : st.Length);
             Console.WriteLine(line);
         }
+        
     }
 }

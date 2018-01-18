@@ -28,10 +28,10 @@ namespace KillrVideo.Dsl
         public static readonly Dictionary<Enrichment,GraphTraversal<object,IDictionary<String,object>>> Traversals = new Dictionary<Enrichment, GraphTraversal<object,IDictionary<String,object>>>
         {
             {Enrichment.Vertex, __.Project<object>("_vertex").By()},
-            {Enrichment.InDegree, __.Project<object>("_vertex").By(__.InE().Count())},
-            {Enrichment.OutDegree, __.Project<object>("_vertex").By(__.OutE().Count())},
-            {Enrichment.Degree, __.Project<object>("_vertex").By(__.BothE().Count())},
-            {Enrichment.Distribution, __.Project<object>("_vertex").By(__.BothE().GroupCount<string>().By(T.Label))},
+            {Enrichment.InDegree, __.Project<object>("_inDegree").By(__.InE().Count())},
+            {Enrichment.OutDegree, __.Project<object>("_outDegree").By(__.OutE().Count())},
+            {Enrichment.Degree, __.Project<object>("_degree").By(__.BothE().Count())},
+            {Enrichment.Distribution, __.Project<object>("_distribution").By(__.BothE().GroupCount<string>().By(T.Label))},
         };
     }
 }

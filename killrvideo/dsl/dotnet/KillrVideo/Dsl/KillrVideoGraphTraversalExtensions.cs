@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Gremlin.Net.Process.Traversal;
 using Gremlin.Net.Structure;
@@ -127,7 +128,7 @@ namespace KillrVideo.Dsl
                      Aggregate("seen").
                      Local<List<Vertex>>(RecommenderLookup.Traversals[recommender]).
                      Unfold<Vertex>().In(EdgeActor).
-                     Where(Without("seen")).
+                     Where(Without(new List<string>{"seen"})).
                      Where(include).
                      GroupCount<Vertex>().
                      Order(Local).
@@ -146,7 +147,7 @@ namespace KillrVideo.Dsl
             var enrichmentTraversals = new ITraversal[enrichments.Length + 1];
             enrichmentTraversals[0] = __.ValueMap<object>(true);
             if (enrichments.Length > 0)
-                enrichments.CopyTo(enrichmentTraversals, 1);
+                enrichments.Select(e => EnrichmentLookup.Traversals[e]).ToArray().CopyTo(enrichmentTraversals, 1);
 
             return t.Union<IDictionary<object,object>>(enrichmentTraversals).
                      Unfold<object>().
