@@ -10,7 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Gremlin.Net" Version="3.3.1" />
+    <PackageReference Include="Gremlin.Net" Version="3.2.7" />
+    <PackageReference Include="Dse.Graph" Version="1.0.0"/>
     <PackageReference Include="Dse" Version="2.1.0" />
   </ItemGroup>
 

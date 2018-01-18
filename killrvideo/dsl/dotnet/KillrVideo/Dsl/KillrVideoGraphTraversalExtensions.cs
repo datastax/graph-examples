@@ -85,14 +85,13 @@ namespace KillrVideo.Dsl
         /// <summary>
         /// Calls <code>rated(int, int)</code> with both arguments as zero.
         /// </summary>
-        public static GraphTraversal<Edge,IDictionary<object,long>> DistributionForAges(this GraphTraversal<Vertex,Edge> t, int start, int end) 
+        public static GraphTraversal<Vertex,IDictionary<string,long>> DistributionForAges(this GraphTraversal<Vertex,Edge> t, int start, int end) 
         {
             if (start < 18) throw new ArgumentException("Age must be 18 or older");
             if (start > end) throw new ArgumentException("Start age must be greater than end age");
             if (end > 120) throw new ArgumentException("Now you're just being crazy");
 
-            // return t.Filter(__.OutV().Has(KeyAge, Between(start,end))).Group().By(KeyRating).By(__.Count());
-            return null;
+            return t.Filter(__.OutV().Has(KeyAge, Between(start,end))).Group<string,long>().By(KeyRating).By(__.Count());
         }
 
         /// <summary>
@@ -145,7 +144,7 @@ namespace KillrVideo.Dsl
         public static GraphTraversal<Vertex, IDictionary<object,object>> enrich(this GraphTraversal<Vertex,Vertex> t, params Enrichment[] enrichments) 
         {
             var enrichmentTraversals = new ITraversal[enrichments.Length + 1];
-            enrichmentTraversals[0] = __.ValueMap<String,object>(true);
+            enrichmentTraversals[0] = __.ValueMap<object>(true);
             if (enrichments.Length > 0)
                 enrichments.CopyTo(enrichmentTraversals, 1);
 
