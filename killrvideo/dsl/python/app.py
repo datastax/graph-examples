@@ -63,12 +63,12 @@ print_header("Include some additional graph statistics about Young Guns", "killr
 for r in killr.movies('Young Guns').enrich(IN_DEGREE, OUT_DEGREE).toList():
     print(r)
 
-print_header("Insert/update movie and a actors for that movie", "killr.movie('m100000', 'Manos: The Hands of Fate',...).actor(...)")
+print_header("Insert/update movie and actors for that movie", "killr.movie('m100000', 'Manos: The Hands of Fate',...).actor(...)")
 (killr.movie("m100000", "Manos: The Hands of Fate", 1966, 70, "USA", "Sun City Films").
        ensure(actor("p1000000", "Tom Neyman")).
        ensure(actor("p1000001", "John Reynolds")).
        ensure(actor("p1000002", "Diane Mahree")).iterate())
-print("Added 3 actors to 'Manos: The Hands of Fate'")
+print("Updated 'Manos: The Hands of Fate'")
 
 print_header("Get the actors for the newly added movie", "killr.movies('Manos: The Hands of Fate').actors().values('name')")
 for n in killr.movies("Manos: The Hands of Fate").actors().values("name").toList():
