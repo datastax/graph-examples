@@ -200,7 +200,7 @@ namespace KillrVideo.Dsl
         /// This step is an alias for the <code>SideEffect()</code> step. As an alias, it makes certain aspects of the DSL more
         /// readable.
         /// </summary>
-        public static GraphTraversal<S,E> Ensure<S,E>(this GraphTraversal<S,E> t, GraphTraversal<S,E> mutationTraversal) {
+        public static GraphTraversal<S,E> Ensure<S,S1,E>(this GraphTraversal<S,E> t, GraphTraversal<S1,E> mutationTraversal) {
             return t.SideEffect(mutationTraversal);
         }
     }

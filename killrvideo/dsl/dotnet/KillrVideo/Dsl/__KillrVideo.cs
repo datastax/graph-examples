@@ -60,5 +60,27 @@ namespace KillrVideo.Dsl
             else
                 return __.Out(EdgeBelongsTo).Map<object>(__.Identity()).Has(KeyName, Within(genres));
         }
+
+        /// <summary>
+        /// Gets or creates a "actor".
+        ///
+        /// In this schema, an actor is a "person" vertex with an incoming "actor" edge from a "movie" vertex. This step
+        /// therefore assumes that the incoming stream is a "movie" vertex and actors will be attached to that. This step
+        /// checks for existence of the "actor" edge first before adding and if found will return the existing one. It
+        /// further ensures the existence of the "person" vertex as provided by the <code>person()</code>.
+        /// step.
+        /// </summary>
+        public static GraphTraversal<object,Vertex> Actor(string personId, string name) 
+        {
+            // no validation here as it would just duplicate what is happening in person(). 
+            //
+            // as mentioned in the javadocs this step assumes an incoming "movie" vertex. it is immediately labelled as
+            // "^movie". the addition of the caret prefix has no meaning except to provide for a unique labelling space
+            // within the DSL itself.
+            
+            return __.As("^movie").
+                     Coalesce<Vertex>(__KillrVideo.Actors().Has(VertexPerson, personId),
+                                      __KillrVideo.Person(personId, name).AddE(EdgeActor).From("^movie").InV());
+        }
     }
 }

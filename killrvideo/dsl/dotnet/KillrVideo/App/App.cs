@@ -68,19 +68,16 @@ namespace KillrVideo.App
             pairs = String.Join(", ", enriched.Select(kvp => kvp.Key + "=" + kvp.Value.ToString()));
             Console.WriteLine($"[{pairs}]");
 
-            /*
             PrintHeader("Insert/update movie and a actors for that movie", "killr.movie(\"m100000\", \"Manos: The Hands of Fate\",...).actor(...)"); 
-            results = killr.Movie("m100000", "Manos: The Hands of Fate", "USA", "Sun City Films", 1966, 70).
-                    Ensure(Actor("p1000000", "Tom Neyman")).
-                    Ensure(Actor("p1000001", "John Reynolds")).
-                    Ensure(Actor("p1000002", "Diane Mahree")).
-                    forEachRemaining(v -> Console.WriteLine("Added 3 actors to 'Manos: The Hands of Fate'"));
-            results.ToList().ForEach(r => Console.WriteLine(r));
+            killr.Movie("m100000", "Manos: The Hands of Fate", 1966, 70, "USA", "Sun City Films").
+                    Ensure<Gremlin.Net.Structure.Vertex,object,Gremlin.Net.Structure.Vertex>(__KillrVideo.Actor("p1000000", "Tom Neyman")).
+                    Ensure<Gremlin.Net.Structure.Vertex,object,Gremlin.Net.Structure.Vertex>(__KillrVideo.Actor("p1000001", "John Reynolds")).
+                    Ensure<Gremlin.Net.Structure.Vertex,object,Gremlin.Net.Structure.Vertex>(__KillrVideo.Actor("p1000002", "Diane Mahree")).
+                    Iterate();
 
             PrintHeader("Get the actors for the newly added movie", "killr.movies(\"Manos: The Hands of Fate\").actors().values(\"name\")");
-            results = killr.movies("Manos: The Hands of Fate").actors().values("name").toList();
+            results = killr.Movies("Manos: The Hands of Fate").Actors().Values<String>("name").ToList();
             results.ToList().ForEach(r => Console.WriteLine(r));
-            */
         }
 
         private static void PrintHeader(string title) 
