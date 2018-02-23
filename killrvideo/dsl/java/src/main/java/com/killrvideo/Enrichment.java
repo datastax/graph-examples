@@ -12,41 +12,65 @@ import java.util.Map;
  * how one might merge map results as part of a DSL.These enrichment options may not be suitable for traversals in
  * production systems as counting all edges might add an unreasonable amount of time to an otherwise fast traversal.
  */
-public enum Enrichment {
+public class Enrichment<K> {
+
+    private Traversal<Object, Map<K,Object>> t;
+
+    Enrichment(Traversal<Object, Map<K,Object>> t) {
+        this.t = t;
+    }
+
+    public Traversal<Object, Map<K,Object>> getTraversal() {
+        return t.asAdmin().clone();
+    }
 
     /**
      * Include the {@code Vertex} itself as a value in the enriched output which might be helpful if additional
      * traversing on that element is required.
      */
-    VERTEX(__.project("_vertex").by()),
+    public static Enrichment vertex() {
+        return new Enrichment<>(__.project("_vertex").by());
+    }
 
     /**
      * The number of incoming edges on the {@code Vertex}.
      */
-    IN_DEGREE(__.project("_inDegree").by(__.inE().count())),
+    public static Enrichment inDegree() {
+        return new Enrichment<>(__.project("_inDegree").by(__.inE().count()));
+    }
 
     /**
      * The number of outgoing edges on the {@code Vertex}.
      */
-    OUT_DEGREE(__.project("_outDegree").by(__.outE().count())),
+    public static Enrichment outDegree() {
+        return new Enrichment<>(__.project("_outDegree").by(__.outE().count()));
+    }
 
     /**
-         * The total number of in and out edges on the {@code Vertex}.
+     * The total number of in and out edges on the {@code Vertex}.
      */
-    DEGREE(__.project("_degree").by(__.bothE().count())),
+    public static Enrichment degree() {
+        return new Enrichment<>(__.project("_degree").by(__.bothE().count()));
+    }
 
     /**
      * Calculates the edge label distribution for the {@code Vertex}.
      */
-    DISTRIBUTION(__.project("_distribution").by(__.bothE().groupCount().by(T.label)));
-
-    private Traversal<Object, Map<String,Object>> t;
-
-    Enrichment(Traversal<Object, Map<String,Object>> t) {
-        this.t = t;
+    public static Enrichment distribution() {
+        return new Enrichment<>(__.project("_distribution").by(__.bothE().groupCount().by(T.label)));
     }
 
-    public Traversal<Object, Map<String,Object>> getTraversal() {
-        return t.asAdmin().clone();
+    /**
+     * Chooses the keys to include in the output and assumes that id and label should not be included.
+     */
+    public static Enrichment values(String... keys) {
+        return values(false, keys);
+    }
+
+    /**
+     * Chooses the keys to include in the output and determines if id and label are included with them.
+     */
+    public static Enrichment values(boolean includeIdLabel, String... propertyKeys) {
+        return new Enrichment<>(__.map(__.valueMap(true, propertyKeys)));
     }
 }

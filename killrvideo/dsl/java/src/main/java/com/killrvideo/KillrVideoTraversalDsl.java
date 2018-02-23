@@ -4,6 +4,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.GremlinDsl;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 
@@ -191,15 +192,19 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
      * @param enrichments the additional data to calculate and include for each {code Vertex}
      */
     public default GraphTraversal<S, Map<Object,Object>> enrich(Enrichment... enrichments) {
-        Object[] objs = Stream.concat(Stream.of(enrichments).map(Enrichment::getTraversal),
-                                      Stream.of(__.valueMap(true))).toArray();
+        Object[] objs = Stream.of(enrichments).map(Enrichment::getTraversal).toArray();
         Traversal[] enrichmentTraversals = Arrays.copyOf(objs, objs.length, Traversal[].class);
 
+        // since this graph has no multi-properties, it's nicer to clean up the results of a valueMap() by flattening
+        // the list with one value that is naturally returned by that step. note that id is handled differently
+        // as the DSE Graph id is Map oriented.
         return union(enrichmentTraversals).
                 unfold().
                 group().
                   by(keys).
-                  by(__.select(values).unfold());
+                  by(__.choose(__.select(keys).is(T.id),
+                               __.select(values),
+                               __.select(values).unfold()));
     }
 
     /**

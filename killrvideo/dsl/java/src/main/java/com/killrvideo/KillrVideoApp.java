@@ -9,8 +9,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static com.killrvideo.Enrichment.IN_DEGREE;
-import static com.killrvideo.Enrichment.OUT_DEGREE;
+import static com.killrvideo.Enrichment.inDegree;
+import static com.killrvideo.Enrichment.outDegree;
+import static com.killrvideo.Enrichment.values;
 import static com.killrvideo.Genre.COMEDY;
 import static com.killrvideo.KV.KEY_TITLE;
 import static com.killrvideo.Recommender.LARGE_SAMPLE;
@@ -60,13 +61,13 @@ public final class KillrVideoApp {
             killr.users("u460").recommend(5, 7, LARGE_SAMPLE, genre(COMEDY)).values(KEY_TITLE).forEachRemaining(System.out::println);
 
             printHeader("Include some additional graph statistics about Young Guns", "killr.movies(\"Young Guns\").enrich(IN_DEGREE, OUT_DEGREE)");
-            killr.movies("Young Guns").enrich(IN_DEGREE, OUT_DEGREE).forEachRemaining(System.out::println);
+            killr.movies("Young Guns").enrich(values("title","year"), inDegree(), outDegree()).forEachRemaining(System.out::println);
 
             printHeader("Insert/update movie and actors for that movie", "killr.movie(\"m100000\", \"Manos: The Hands of Fate\",...).actor(...)");
             killr.movie("m100000", "Manos: The Hands of Fate", "USA", "Sun City Films", 1966, 70).
                     ensure(actor("p1000000", "Tom Neyman")).
                     ensure(actor("p1000001", "John Reynolds")).
-                    ensure(actor("p1000002", "Diane Mahree")).iterate()
+                    ensure(actor("p1000002", "Diane Mahree")).iterate();
             System.out.println("Updated 'Manos: The Hands of Fate'");
 
             printHeader("Get the actors for the newly added movie", "killr.movies(\"Manos: The Hands of Fate\").actors().values(\"name\")");
