@@ -101,7 +101,7 @@ class Enrichment(object):
         return Enrichment(AnonymousTraversal.project("_distribution").by(__.bothE().groupCount().by(T.label)))
 
     @classmethod
-    def values(cls, *args):
+    def only(cls, *args):
         """Chooses the keys to include in the output and determines if id and label are included with them"""
 
         return Enrichment(AnonymousTraversal.map(AnonymousTraversal.valueMap(*args)))

@@ -63,14 +63,14 @@ public class Enrichment<K> {
     /**
      * Chooses the keys to include in the output and assumes that id and label should not be included.
      */
-    public static Enrichment values(String... keys) {
-        return values(false, keys);
+    public static Enrichment only(String... keys) {
+        return only(false, keys);
     }
 
     /**
      * Chooses the keys to include in the output and determines if id and label are included with them.
      */
-    public static Enrichment values(boolean includeIdLabel, String... propertyKeys) {
-        return new Enrichment<>(__.map(__.valueMap(true, propertyKeys)));
+    public static Enrichment only(boolean includeIdLabel, String... propertyKeys) {
+        return new Enrichment<>(__.map(__.valueMap(includeIdLabel, propertyKeys)));
     }
 }
