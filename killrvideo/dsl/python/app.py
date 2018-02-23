@@ -7,8 +7,9 @@ from dse.cluster import Cluster
 from dse_graph import DSESessionRemoteGraphConnection
 
 COMEDY = Genre.COMEDY
-IN_DEGREE = Enrichment.IN_DEGREE
-OUT_DEGREE = Enrichment.OUT_DEGREE
+in_degree = Enrichment.in_degree
+out_degree = Enrichment.out_degree
+values = Enrichment.values
 genre = __.genre
 actor = __.actor
 
@@ -59,8 +60,8 @@ print_header("Five Recommendations for u460 that use larger actor sampling and a
 for r in killr.users("u460").recommend(5, 7, genre(COMEDY), Recommender.LARGE_SAMPLE).values(KEY_TITLE).toList():
     print(r)
 
-print_header("Include some additional graph statistics about Young Guns", "killr.movies('Young Guns').enrich(IN_DEGREE, OUT_DEGREE)")
-for r in killr.movies('Young Guns').enrich(IN_DEGREE, OUT_DEGREE).toList():
+print_header("Include some additional graph statistics about Young Guns", "killr.movies('Young Guns').enrich(values('title','year', in_degree(), out_degree())")
+for r in killr.movies('Young Guns').enrich(values(True, "title", "year"), in_degree(), out_degree()).toList():
     print(r)
 
 print_header("Insert/update movie and actors for that movie", "killr.movie('m100000', 'Manos: The Hands of Fate',...).actor(...)")

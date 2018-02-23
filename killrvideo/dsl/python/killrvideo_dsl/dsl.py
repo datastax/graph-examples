@@ -55,7 +55,7 @@ class Recommender(Enum):
         return switcher.get(self)
 
 
-class Enrichment(Enum):
+class Enrichment(object):
     """Provides for pre-built data enrichment options for the enrich() step.
 
     These options will include extra information about the Vertex when output from that step. Note that the enrichment
@@ -64,34 +64,47 @@ class Enrichment(Enum):
     systems as counting all edges might add an unreasonable amount of time to an otherwise fast traversal.
     """
 
-    VERTEX = 1
-    """Include the Vertex itself as a value in the enriched output which might be helpful if additional 
-       traversing on that element is required."""
+    def __init__(self, traversal):
+        self.traversal = traversal
 
-    IN_DEGREE = 2
-    """The number of incoming edges on the Vertex"""
+    @classmethod
+    def vertex(cls):
+        """Include the Vertex itself as a value in the enriched output
 
-    OUT_DEGREE = 3
-    """The number of outgoing edges on the Vertex"""
+         Might be helpful if additional traversing on that element is required.
+        """
 
-    DEGREE = 4
-    """The total number of edges on the Vertex"""
+        return Enrichment(AnonymousTraversal.project("_vertex").by())
 
-    DISTRIBUTION = 5
-    """Calculates the edge label distribution for the Vertex"""
+    @classmethod
+    def in_degree(cls):
+        """The number of incoming edges on the Vertex"""
 
-    @property
-    def traversal(self):
+        return Enrichment(AnonymousTraversal.project("_inDegree").by(__.inE().count()))
 
-        switcher = {
-            Enrichment.VERTEX: AnonymousTraversal.project("_vertex").by(),
-            Enrichment.IN_DEGREE: AnonymousTraversal.project("_inDegree").by(__.inE().count()),
-            Enrichment.OUT_DEGREE: AnonymousTraversal.project("_outDegree").by(__.outE().count()),
-            Enrichment.DEGREE: AnonymousTraversal.project("_degree").by(__.bothE().count()),
-            Enrichment.DISTRIBUTION: AnonymousTraversal.project("_distribution").by(__.bothE().groupCount().by(T.label))
-        }
+    @classmethod
+    def out_degree(cls):
+        """The number of outgoing edges on the Vertex"""
 
-        return switcher.get(self)
+        return Enrichment(AnonymousTraversal.project("_outDegree").by(__.outE().count()))
+
+    @classmethod
+    def degree(cls):
+        """The total number of edges on the Vertex"""
+
+        return Enrichment(AnonymousTraversal.project("_degree").by(__.bothE().count()))
+
+    @classmethod
+    def distribution(cls):
+        """Calculates the edge label distribution for the Vertex"""
+
+        return Enrichment(AnonymousTraversal.project("_distribution").by(__.bothE().groupCount().by(T.label)))
+
+    @classmethod
+    def values(cls, *args):
+        """Chooses the keys to include in the output and determines if id and label are included with them"""
+
+        return Enrichment(AnonymousTraversal.map(AnonymousTraversal.valueMap(*args)))
 
 
 class KillrVideoTraversal(GraphTraversal):
@@ -199,13 +212,17 @@ class KillrVideoTraversal(GraphTraversal):
             raise ValueError('The arguments to enrichment() step must all be of type Enrichment')
 
         enrichments = [enrichment.traversal for enrichment in args]
-        enrichments.append(__.valueMap(True))
 
+        # since this graph has no multi-properties, it's nicer to clean up the results of a valueMap() by flattening
+        # the list with one value that is naturally returned by that step. note that id is handled differently
+        # as the DSE Graph id is Map oriented.
         return (self.union(*enrichments).
                 unfold().
                 group().
                 by(keys).
-                by(__.select(values).unfold()))
+                by(__.choose(__.select(keys).is_(T.id),
+                             __.select(values),
+                             __.select(values).unfold())))
 
     def person(self, person_id, name):
         """Gets or creates a "person"
