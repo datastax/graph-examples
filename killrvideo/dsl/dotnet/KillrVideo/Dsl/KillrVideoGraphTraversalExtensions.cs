@@ -142,18 +142,19 @@ namespace KillrVideo.Dsl
         /// Expects an incoming <code>Vertex</code> converts it to a <code>IDictionary</code> and folds additional data into it
         /// based on the specified <code>Enrichment</code> values passed to it.
         /// </summary>
-        public static GraphTraversal<Vertex, IDictionary<object,object>> enrich(this GraphTraversal<Vertex,Vertex> t, params Enrichment[] enrichments) 
+        public static GraphTraversal<Vertex, IDictionary<object,object>> enrich<K>(this GraphTraversal<Vertex,Vertex> t, params Enrichment[] enrichments) 
         {
-            var enrichmentTraversals = new ITraversal[enrichments.Length + 1];
-            enrichmentTraversals[0] = __.ValueMap<object>(true);
+            var enrichmentTraversals = new ITraversal[enrichments.Length];
             if (enrichments.Length > 0)
-                enrichments.Select(e => EnrichmentLookup.Traversals[e]).ToArray().CopyTo(enrichmentTraversals, 1);
+                enrichments.Select(e => e.getTraversal()).ToArray().CopyTo(enrichmentTraversals, 0);
 
             return t.Union<IDictionary<object,object>>(enrichmentTraversals).
                      Unfold<object>().
                      Group<object,object>().
                        By(Keys).
-                       By(__.Select<object>(Values).Unfold<object>());
+                       By(__.Choose<object>(__.Select<object>(Keys).Is(T.Id),
+                                            __.Select<object>(Values),
+                                            __.Select<object>(Values).Unfold<object>()));
         }
 
         /// <summary>
