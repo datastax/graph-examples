@@ -9,6 +9,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -186,25 +187,46 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
     }
 
     /**
-     * Expects an incoming {@code Vertex} converts it to a {@code Map} and folds additional data into that {@code Map}
-     * based on the specified {@link Enrichment} values passed to it.
+     * Expects an incoming {@code Vertex} and projects it to a {@code Map} with the specified {@link Enrichment} values
+     * passed to it. The {@code id} and {@code label} are included.
      *
      * @param enrichments the additional data to calculate and include for each {code Vertex}
      */
-    public default GraphTraversal<S, Map<Object,Object>> enrich(Enrichment... enrichments) {
-        Object[] objs = Stream.of(enrichments).map(Enrichment::getTraversal).toArray();
-        Traversal[] enrichmentTraversals = Arrays.copyOf(objs, objs.length, Traversal[].class);
+    public default GraphTraversal<S, Map<String,Object>> enrich(Enrichment... enrichments) {
+        return enrich(true, enrichments);
+    }
 
-        // since this graph has no multi-properties, it's nicer to clean up the results of a valueMap() by flattening
-        // the list with one value that is naturally returned by that step. note that id is handled differently
-        // as the DSE Graph id is Map oriented.
-        return union(enrichmentTraversals).
-                unfold().
-                group().
-                  by(keys).
-                  by(__.choose(__.select(keys).is(T.id),
-                               __.select(values),
-                               __.select(values).unfold()));
+    /**
+     * Expects an incoming {@code Vertex} and projects it to a {@code Map} with the specified {@link Enrichment} values
+     * passed to it.
+     *
+     * @param includeIdLabel adds the {@code id} and {@code label} when {@code true}
+     * @param enrichments the additional data to calculate and include for each {code Vertex}
+     */
+    public default GraphTraversal<S, Map<String,Object>> enrich(boolean includeIdLabel, Enrichment... enrichments) {
+        List<GraphTraversal> projectTraversals = Stream.of(enrichments).map(Enrichment::getTraversals).
+                flatMap(Collection::stream).collect(Collectors.toList());
+        if (includeIdLabel) {
+            projectTraversals.add(__.id());
+            projectTraversals.add(__.label());
+        }
+
+        List<String> keys = Stream.of(enrichments).map(Enrichment::getProjectedKey).
+                flatMap(Collection::stream).collect(Collectors.toList());
+        if (includeIdLabel) {
+            keys.add("id");
+            keys.add("label");
+        }
+
+        String[] projectKeys = new String[keys.size() - 1];
+        projectKeys = keys.subList(1, keys.size()).toArray(projectKeys);
+
+        GraphTraversal t = project(keys.get(0), projectKeys);
+        for (GraphTraversal projectTraversal : projectTraversals) {
+            t = t.by(projectTraversal);
+        }
+
+        return t;
     }
 
     /**

@@ -139,22 +139,33 @@ namespace KillrVideo.Dsl
         }
 
         /// <summary>
-        /// Expects an incoming <code>Vertex</code> converts it to a <code>IDictionary</code> and folds additional data into it
-        /// based on the specified <code>Enrichment</code> values passed to it.
+        /// Expects an incoming <code>Vertex</code> and projects it to a <code>Map</code> with the specified <code>Enrichment</code>>
+        /// values passed to it.
         /// </summary>
-        public static GraphTraversal<Vertex, IDictionary<object,object>> enrich<K>(this GraphTraversal<Vertex,Vertex> t, params Enrichment[] enrichments) 
+        public static GraphTraversal<Vertex, IDictionary<string,object>> enrich(this GraphTraversal<Vertex,Vertex> t, bool includeIdLabel, params Enrichment[] enrichments) 
         {
-            var enrichmentTraversals = new ITraversal[enrichments.Length];
-            if (enrichments.Length > 0)
-                enrichments.Select(e => e.getTraversal()).ToArray().CopyTo(enrichmentTraversals, 0);
+            var projectTraversals = enrichments.Select(e => e.getTraversal()).SelectMany(i => i).ToList();
+            if (includeIdLabel) 
+            {
+                projectTraversals.Add(__.Id());
+                projectTraversals.Add(__.Map<object>(__.Label()));
+            }
 
-            return t.Union<IDictionary<object,object>>(enrichmentTraversals).
-                     Unfold<object>().
-                     Group<object,object>().
-                       By(Keys).
-                       By(__.Choose<object>(__.Select<object>(Keys).Is(T.Id),
-                                            __.Select<object>(Values),
-                                            __.Select<object>(Values).Unfold<object>()));
+            var keys = enrichments.Select(e => e.getProjectedKeys()).SelectMany(i => i).ToList();
+            if (includeIdLabel) 
+            {
+                keys.Add("id");
+                keys.Add("label");
+            }
+
+            var projectedKeys = keys.GetRange(1, keys.Count() - 1).ToArray();
+            var te = t.Project<object>(keys.First(), projectedKeys);
+            foreach (GraphTraversal<object,object> projectTraversal in projectTraversals) 
+            {
+                te = te.By(projectTraversal);
+            }
+
+            return te;
         }
 
         /// <summary>

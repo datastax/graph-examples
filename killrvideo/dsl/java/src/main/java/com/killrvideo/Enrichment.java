@@ -1,9 +1,15 @@
 package com.killrvideo;
 
 import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.T;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Provides for pre-built data enrichment options for the {@link KillrVideoTraversalDsl#enrich(Enrichment...)}
@@ -12,16 +18,26 @@ import java.util.Map;
  * how one might merge map results as part of a DSL.These enrichment options may not be suitable for traversals in
  * production systems as counting all edges might add an unreasonable amount of time to an otherwise fast traversal.
  */
-public class Enrichment<K> {
+public class Enrichment {
 
-    private Traversal<Object, Map<K,Object>> t;
+    private List<String> projectedKey;
 
-    Enrichment(Traversal<Object, Map<K,Object>> t) {
-        this.t = t;
+    private List<GraphTraversal> traversals;
+
+    private Enrichment(String projectedKeys, GraphTraversal... traversals) {
+        this(Collections.singletonList(projectedKeys), traversals);
     }
 
-    public Traversal<Object, Map<K,Object>> getTraversal() {
-        return t.asAdmin().clone();
+    private Enrichment(List<String> projectedKeys, GraphTraversal... traversals) {
+        this(projectedKeys, Stream.of(traversals).collect(Collectors.toList()));
+    }
+
+    private Enrichment(List<String> projectedKeys, List<GraphTraversal> traversals) {
+        if (projectedKeys.size() != traversals.size())
+            throw new IllegalArgumentException("projectedKeys and traversals arguments must have an equal number of elements");
+        
+        this.projectedKey = projectedKeys;
+        this.traversals = traversals;
     }
 
     /**
@@ -29,48 +45,50 @@ public class Enrichment<K> {
      * traversing on that element is required.
      */
     public static Enrichment vertex() {
-        return new Enrichment<>(__.project("_vertex").by());
+        return new Enrichment(KV.KEY_VERTEX, __.identity());
     }
 
     /**
      * The number of incoming edges on the {@code Vertex}.
      */
     public static Enrichment inDegree() {
-        return new Enrichment<>(__.project("_inDegree").by(__.inE().count()));
+        return new Enrichment(KV.KEY_IN_DEGREE, __.inE().count());
     }
 
     /**
      * The number of outgoing edges on the {@code Vertex}.
      */
     public static Enrichment outDegree() {
-        return new Enrichment<>(__.project("_outDegree").by(__.outE().count()));
+        return new Enrichment(KV.KEY_OUT_DEGREE, __.outE().count());
     }
 
     /**
      * The total number of in and out edges on the {@code Vertex}.
      */
     public static Enrichment degree() {
-        return new Enrichment<>(__.project("_degree").by(__.bothE().count()));
+        return new Enrichment(KV.KEY_DEGREE, __.bothE().count());
     }
 
     /**
      * Calculates the edge label distribution for the {@code Vertex}.
      */
     public static Enrichment distribution() {
-        return new Enrichment<>(__.project("_distribution").by(__.bothE().groupCount().by(T.label)));
+        return new Enrichment(KV.KEY_DISTRIBUTION, __.bothE().groupCount().by(T.label));
     }
 
     /**
-     * Chooses the keys to include in the output and assumes that id and label should not be included.
+     * Chooses the keys to include in the output.
      */
-    public static Enrichment only(String... keys) {
-        return only(false, keys);
+    public static Enrichment keys(String... propertyKeys) {
+        List<GraphTraversal> projectTraversals = Stream.of(propertyKeys).map(__::values).collect(Collectors.toList());
+        return new Enrichment(Arrays.asList(propertyKeys), projectTraversals);
     }
 
-    /**
-     * Chooses the keys to include in the output and determines if id and label are included with them.
-     */
-    public static Enrichment only(boolean includeIdLabel, String... propertyKeys) {
-        return new Enrichment<>(__.map(__.valueMap(includeIdLabel, propertyKeys)));
+    public List<String> getProjectedKey() {
+        return projectedKey;
+    }
+
+    public List<GraphTraversal> getTraversals() {
+        return traversals.stream().map(t -> t.asAdmin().clone()).collect(Collectors.toList());
     }
 }

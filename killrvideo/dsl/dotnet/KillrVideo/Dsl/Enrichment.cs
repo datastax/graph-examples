@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Gremlin.Net.Process.Traversal;
 using Gremlin.Net.Structure;
@@ -16,73 +17,79 @@ namespace KillrVideo.Dsl
     /// </summary>
     public class Enrichment 
     {
-        private GraphTraversal<object,IDictionary<object,object>> traversal;
+        private List<string> projectedKeys;
+        private List<GraphTraversal<object,object>> traversals;
 
-        private Enrichment(GraphTraversal<object,IDictionary<object,object>> traversal) 
+        private Enrichment(string projectedKeys, GraphTraversal<object,object> traversal) : 
+            this(new List<string>() { projectedKeys }, new List<GraphTraversal<object,object>>() {traversal }) 
         {
-            this.traversal = traversal;
         }
 
-        public GraphTraversal<object, IDictionary<object,object>> getTraversal() 
+        private Enrichment(List<string> projectedKeys, List<GraphTraversal<object,object>> traversals) 
         {
-            return traversal;
+            this.projectedKeys = projectedKeys;
+            this.traversals = traversals;
         }
 
-        /**
-        * Include the {@code Vertex} itself as a value in the enriched output which might be helpful if additional
-        * traversing on that element is required.
-        */
+        public List<GraphTraversal<object,object>> getTraversal() 
+        {
+            return traversals;
+        }
+
+        public List<string> getProjectedKeys() 
+        {
+            return projectedKeys;
+        }
+
+        /// <summary>
+        /// Include the <code>Vertex</code> itself as a value in the enriched output which might be helpful if additional
+        /// traversing on that element is required.
+        /// </summary>
         public static Enrichment Vertex() 
         {
-            return new Enrichment(__.Map<IDictionary<object,object>>(__.Project<object>("_vertex").By()));
+            return new Enrichment(KeyVertex, __.Identity());
         }
-
-        /**
-        * The number of incoming edges on the {@code Vertex}.
-        */
+        
+        /// <summary>
+        /// The number of incoming edges on the <code>Vertex</code>.
+        /// </summary>
         public static Enrichment InDegree() 
         {
-            return new Enrichment(__.Map<IDictionary<object,object>>(__.Project<object>("_inDegree").By(__.InE().Count())));
+            return new Enrichment(KeyInDegree, __.Map<object>(__.InE().Count()));
         }
 
-        /**
-        * The number of outgoing edges on the {@code Vertex}.
-        */
+        
+        /// <summary>
+        /// The number of outgoing edges on the <code>Vertex</code>.
+        /// </summary>
         public static Enrichment OutDegree() 
         {
-            return new Enrichment(__.Map<IDictionary<object,object>>(__.Project<object>("_outDegree").By(__.OutE().Count())));
+            return new Enrichment(KeyOutDegree, __.Map<object>(__.OutE().Count()));
         }
 
-        /**
-        * The total number of in and out edges on the {@code Vertex}.
-        */
+        /// <summary>
+        /// The total number of in and out edges on the <code>Vertex</code>.
+        /// </summary>
         public static Enrichment Degree() 
         {
-            return new Enrichment(__.Map<IDictionary<object,object>>(__.Project<object>("_degree").By(__.BothE().Count())));
+            return new Enrichment(KeyDegree, __.Map<object>(__.BothE().Count()));
         }
 
-        /**
-        * Calculates the edge label distribution for the {@code Vertex}.
-        */
+        /// <summary>
+        /// Calculates the edge label distribution for the <code>Vertex</code>>.
+        /// </summary>
         public static Enrichment Distribution() 
         {
-            return new Enrichment(__.Map<IDictionary<object,object>>(__.Project<object>("_distribution").By(__.BothE().GroupCount<string>().By(T.Label))));
+            return new Enrichment(KeyDistribution, __.Map<object>(__.BothE().GroupCount<string>().By(T.Label)));
         }
 
-        /**
-        * Chooses the keys to include in the output and assumes that id and label should not be included.
-        */
-        public static Enrichment Only(params String[] keys) 
+        /// <summary>
+        /// Chooses the keys to include in the output.
+        /// </summary>
+        public static Enrichment Keys(params string[] keys) 
         {
-            return Only(false, keys);
-        }
-
-        /**
-        * Chooses the keys to include in the output and determines if id and label are included with them.
-        */
-        public static Enrichment Only(bool includeIdLabel, params String[] propertyKeys) 
-        {
-            return new Enrichment(__.Map<IDictionary<object,object>>(__.Map<IDictionary<object,object>>(__.ValueMap<object>(true, propertyKeys))));
+            var valueTraversals = keys.Select(k => __.Values<object>(k)).ToList();
+            return new Enrichment(keys.ToList(), valueTraversals);
         }
     }
 }

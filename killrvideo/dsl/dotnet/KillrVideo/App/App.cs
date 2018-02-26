@@ -15,6 +15,9 @@ using static KillrVideo.Dsl.Genre;
 using static KillrVideo.Dsl.Recommender;
 using static KillrVideo.Dsl.__KillrVideo;
 using static KillrVideo.Dsl.Enrichment;
+using static Gremlin.Net.Process.Traversal.__;
+using static Gremlin.Net.Process.Traversal.Column;
+using static Gremlin.Net.Process.Traversal.T;
 
 using Vertex = Gremlin.Net.Structure.Vertex;
 
@@ -62,8 +65,8 @@ namespace KillrVideo.App
             results = killr.Users("u460").Recommend(5, 7, LargeSample, Genre(Comedy)).Values<string>(KeyTitle).ToList();
             PrintItems(results);
 
-            PrintHeader("Include some additional graph statistics about Young Guns", "killr.movies(\"Young Guns\").enrich(Only(true, \"title\", \"year\"), InDegree(), OutDegree())");
-            IDictionary<object,object> enriched = killr.Movies("Young Guns").enrich<object>(Only(true, "title", "age"), InDegree(), OutDegree()).Next();
+            PrintHeader("Include some additional graph statistics about Young Guns", "killr.Movies(\"Young Guns\").Enrich(true, Keys(\"title\", \"year\"), InDegree(), OutDegree())");
+            IDictionary<string,object> enriched = killr.Movies("Young Guns").enrich(true, Keys("title", "year"), InDegree(), OutDegree()).Next();
             pairs = String.Join(", ", enriched.Select(kvp => kvp.Key + "=" + kvp.Value.ToString()));
             Console.WriteLine($"[{pairs}]");
 

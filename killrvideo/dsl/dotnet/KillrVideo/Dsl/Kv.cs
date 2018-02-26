@@ -18,14 +18,19 @@ namespace KillrVideo.Dsl
 
         public const String KeyAge = "age";
         public const String KeyCountry = "country";
+        public const String KeyDegree = "_degree";
         public const String KeyDuration = "duration";
+        public const String KeyInDegree = "_inDegree";
         public const String KeyMovieId = "movieId";
         public const String KeyName = "name";
+        public const String KeyOutDegree = "_outDegree";
+        public const String KeyDistribution = "_distribution";
         public const String KeyPersonId = "personId";
         public const String KeyProduction = "production";
         public const String KeyRating = "rating";
         public const String KeyTitle = "title";
         public const String KeyUserId = "userId";
+        public const String KeyVertex = "_vertex";
         public const String KeyYear = "year";
     }
 }

@@ -64,8 +64,9 @@ class Enrichment(object):
     systems as counting all edges might add an unreasonable amount of time to an otherwise fast traversal.
     """
 
-    def __init__(self, traversal):
-        self.traversal = traversal
+    def __init__(self, keys, traversals):
+        self.keys = keys
+        self.traversals = traversals
 
     @classmethod
     def vertex(cls):
@@ -74,37 +75,37 @@ class Enrichment(object):
          Might be helpful if additional traversing on that element is required.
         """
 
-        return Enrichment(AnonymousTraversal.project("_vertex").by())
+        return Enrichment([KEY_VERTEX], [AnonymousTraversal.identity()])
 
     @classmethod
     def in_degree(cls):
         """The number of incoming edges on the Vertex"""
 
-        return Enrichment(AnonymousTraversal.project("_inDegree").by(__.inE().count()))
+        return Enrichment([KEY_IN_DEGREE], [AnonymousTraversal.inE().count()])
 
     @classmethod
     def out_degree(cls):
         """The number of outgoing edges on the Vertex"""
 
-        return Enrichment(AnonymousTraversal.project("_outDegree").by(__.outE().count()))
+        return Enrichment([KEY_OUT_DEGREE], [AnonymousTraversal.outE().count()])
 
     @classmethod
     def degree(cls):
         """The total number of edges on the Vertex"""
 
-        return Enrichment(AnonymousTraversal.project("_degree").by(__.bothE().count()))
+        return Enrichment([KEY_DEGREE], [AnonymousTraversal.bothE().count()])
 
     @classmethod
     def distribution(cls):
         """Calculates the edge label distribution for the Vertex"""
 
-        return Enrichment(AnonymousTraversal.project("_distribution").by(__.bothE().groupCount().by(T.label)))
+        return Enrichment([KEY_DISTRIBUTION], [AnonymousTraversal.bothE().groupCount().by(T.label)])
 
     @classmethod
-    def only(cls, *args):
-        """Chooses the keys to include in the output and determines if id and label are included with them"""
+    def keys(cls, *args):
+        """Chooses the keys to include in the output."""
 
-        return Enrichment(AnonymousTraversal.map(AnonymousTraversal.valueMap(*args)))
+        return Enrichment(args, list(map(lambda k: AnonymousTraversal.values(k), args)))
 
 
 class KillrVideoTraversal(GraphTraversal):
@@ -202,27 +203,29 @@ class KillrVideoTraversal(GraphTraversal):
                 select(keys).
                 unfold())
 
-    def enrich(self, *args):
+    def enrich(self, include_id_label, *args):
         """
-        Expects an incoming Vertex converts it to a Dictionary and folds additional data into it based on the
-        specified Enrichment values passed to it.
+        Expects an incoming Vertex and projects it to a Map with the specified Enrichment values passed to it.
         """
 
         if not all(isinstance(enrichment, Enrichment) for enrichment in args):
             raise ValueError('The arguments to enrichment() step must all be of type Enrichment')
 
-        enrichments = [enrichment.traversal for enrichment in args]
+        project_traversals = [t for enrichment in args for t in enrichment.traversals]
+        if include_id_label:
+            project_traversals.append(__.id())
+            project_traversals.append(__.label())
 
-        # since this graph has no multi-properties, it's nicer to clean up the results of a valueMap() by flattening
-        # the list with one value that is naturally returned by that step. note that id is handled differently
-        # as the DSE Graph id is Map oriented.
-        return (self.union(*enrichments).
-                unfold().
-                group().
-                by(keys).
-                by(__.choose(__.select(keys).is_(T.id),
-                             __.select(values),
-                             __.select(values).unfold())))
+        project_keys = [k for enrichment in args for k in enrichment.keys]
+        if include_id_label:
+            project_keys.append("id")
+            project_keys.append("label")
+
+        et = self.project(*project_keys)
+        for pt in project_traversals:
+            et = self.by(pt)
+
+        return et
 
     def person(self, person_id, name):
         """Gets or creates a "person"
