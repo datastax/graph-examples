@@ -31,7 +31,7 @@ namespace KillrVideo.Dsl
             this.traversals = traversals;
         }
 
-        public List<GraphTraversal<object,object>> getTraversal() 
+        public List<GraphTraversal<object,object>> getTraversals() 
         {
             return traversals;
         }

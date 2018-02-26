@@ -144,7 +144,7 @@ namespace KillrVideo.Dsl
         /// </summary>
         public static GraphTraversal<Vertex, IDictionary<string,object>> enrich(this GraphTraversal<Vertex,Vertex> t, bool includeIdLabel, params Enrichment[] enrichments) 
         {
-            var projectTraversals = enrichments.Select(e => e.getTraversal()).SelectMany(i => i).ToList();
+            var projectTraversals = enrichments.Select(e => e.getTraversals()).SelectMany(i => i).ToList();
             if (includeIdLabel) 
             {
                 projectTraversals.Add(__.Id());
