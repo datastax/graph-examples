@@ -14,6 +14,7 @@ import static com.killrvideo.Enrichment.keys;
 import static com.killrvideo.Enrichment.outDegree;
 import static com.killrvideo.Genre.COMEDY;
 import static com.killrvideo.KV.KEY_TITLE;
+import static com.killrvideo.KV.KEY_YEAR;
 import static com.killrvideo.Recommender.LARGE_SAMPLE;
 import static com.killrvideo.__.actor;
 import static com.killrvideo.__.genre;
@@ -60,8 +61,8 @@ public final class KillrVideoApp {
             printHeader("Five Recommendations for u460 that use larger actor sampling and are comedies", "killr.users(\"u460\").recommend(5, 7, genre(COMEDY)).values(KEY_TITLE)");
             killr.users("u460").recommend(5, 7, LARGE_SAMPLE, genre(COMEDY)).values(KEY_TITLE).forEachRemaining(System.out::println);
 
-            printHeader("Include some additional graph statistics about Young Guns", "killr.movies(\"Young Guns\").enrich(true, keys(\"title\",\"year\")    , inDegree(), outDegree())");
-            killr.movies("Young Guns").enrich(true, keys("title","year"), inDegree(), outDegree()).forEachRemaining(System.out::println);
+            printHeader("Include some additional graph statistics about Young Guns", "killr.movies(\"Young Guns\").enrich(true, keys(KEY_TITLE, KEY_YEAR), inDegree(), outDegree())");
+            killr.movies("Young Guns").enrich(true, keys(KEY_TITLE, KEY_YEAR), inDegree(), outDegree()).forEachRemaining(System.out::println);
 
             printHeader("Insert/update movie and actors for that movie", "killr.movie(\"m100000\", \"Manos: The Hands of Fate\",...).actor(...)");
             killr.movie("m100000", "Manos: The Hands of Fate", "USA", "Sun City Films", 1966, 70).
