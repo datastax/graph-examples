@@ -211,11 +211,15 @@ class KillrVideoTraversal(GraphTraversal):
         if not all(isinstance(enrichment, Enrichment) for enrichment in args):
             raise ValueError('The arguments to enrichment() step must all be of type Enrichment')
 
+        # get the traversals associated with each enrichment and flatten them to the traversals that
+        # will be passed to the by() modulators
         project_traversals = [t for enrichment in args for t in enrichment.traversals]
         if include_id_label:
             project_traversals.append(__.id())
             project_traversals.append(__.label())
 
+        # the keys should occur in the same order as the by() modulators - like the traversals above the list of
+        # keys per enrichment are flattened so as to be passed to the project() step
         project_keys = [k for enrichment in args for k in enrichment.keys]
         if include_id_label:
             project_keys.append("id")

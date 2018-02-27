@@ -204,6 +204,8 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
      * @param enrichments the additional data to calculate and include for each {code Vertex}
      */
     public default GraphTraversal<S, Map<String,Object>> enrich(boolean includeIdLabel, Enrichment... enrichments) {
+        // get the traversals associated with each enrichment and flatten them to the traversals that
+        // will be passed to the by() modulators 
         List<GraphTraversal> projectTraversals = Stream.of(enrichments).map(Enrichment::getTraversals).
                 flatMap(Collection::stream).collect(Collectors.toList());
         if (includeIdLabel) {
@@ -211,6 +213,8 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
             projectTraversals.add(__.label());
         }
 
+        // the keys should occur in the same order as the by() modulators - like the traversals above the list of
+        // keys per enrichment are flattened so as to be passed to the project() step
         List<String> keys = Stream.of(enrichments).map(Enrichment::getProjectedKey).
                 flatMap(Collection::stream).collect(Collectors.toList());
         if (includeIdLabel) {
@@ -218,6 +222,8 @@ public interface KillrVideoTraversalDsl<S, E> extends GraphTraversal.Admin<S, E>
             keys.add("label");
         }
 
+        // the project() step has a signature that does not allow for an empty set of keys. the first key in the list
+        // needs to be passed explicitly followed by a the rest of the list as varargs
         String[] projectKeys = new String[keys.size() - 1];
         projectKeys = keys.subList(1, keys.size()).toArray(projectKeys);
 
