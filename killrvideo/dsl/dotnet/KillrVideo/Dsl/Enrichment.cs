@@ -31,12 +31,12 @@ namespace KillrVideo.Dsl
             this.traversals = traversals;
         }
 
-        public List<GraphTraversal<object,object>> getTraversals() 
+        public List<GraphTraversal<object,object>> GetTraversals() 
         {
             return traversals;
         }
 
-        public List<string> getProjectedKeys() 
+        public List<string> GetProjectedKeys() 
         {
             return projectedKeys;
         }
