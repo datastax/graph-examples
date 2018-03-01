@@ -66,7 +66,7 @@ namespace KillrVideo.App
             PrintItems(results);
 
             PrintHeader("Include some additional graph statistics about Young Guns", "killr.Movies(\"Young Guns\").Enrich(true, Keys(KeyTitle, KeyYear), InDegree(), OutDegree())");
-            IDictionary<string,object> enriched = killr.Movies("Young Guns").enrich(true, Keys(KeyTitle, KeyYear), InDegree(), OutDegree()).Next();
+            IDictionary<string,object> enriched = killr.Movies("Young Guns").Enrich(true, Keys(KeyTitle, KeyYear), InDegree(), OutDegree()).Next();
             pairs = String.Join(", ", enriched.Select(kvp => kvp.Key + "=" + kvp.Value.ToString()));
             Console.WriteLine($"[{pairs}]");
 

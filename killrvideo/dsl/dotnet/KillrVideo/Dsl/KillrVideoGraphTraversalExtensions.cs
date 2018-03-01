@@ -142,7 +142,7 @@ namespace KillrVideo.Dsl
         /// Expects an incoming <code>Vertex</code> and projects it to a <code>Map</code> with the specified <code>Enrichment</code>>
         /// values passed to it.
         /// </summary>
-        public static GraphTraversal<Vertex, IDictionary<string,object>> enrich(this GraphTraversal<Vertex,Vertex> t, bool includeIdLabel, params Enrichment[] enrichments) 
+        public static GraphTraversal<Vertex, IDictionary<string,object>> Enrich(this GraphTraversal<Vertex,Vertex> t, bool includeIdLabel, params Enrichment[] enrichments) 
         {
             var projectTraversals = enrichments.Select(e => e.getTraversals()).SelectMany(i => i).ToList();
             if (includeIdLabel) 
