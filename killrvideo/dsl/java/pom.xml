@@ -14,11 +14,6 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.apache.tinkerpop</groupId>
-            <artifactId>gremlin-core</artifactId>
-            <version>3.2.6</version>
-        </dependency>
-        <dependency>
             <groupId>com.datastax.dse</groupId>
             <artifactId>dse-java-driver-graph</artifactId>
             <version>1.4.0</version>
