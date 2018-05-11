@@ -12,5 +12,13 @@ This generates a random messages stream. The stream is handled and stored in the
 
  ```bash
  sbt package 
- dse spark-submit target/scala-2.11/dse-graph-frame\_2.11-0.1.jar
+ dse spark-submit target/scala-2.11/dse-graph-frame_2.11-0.1.jar
  ```
+
+UDF usage example:
+
+ ```bash
+ sbt package
+ dse spark-submit --class com.datastax.bdp.graphframe.example.UDFExample target/scala-2.11/dse-graph-frame_2.11-0.1.jar
+ ```
+
