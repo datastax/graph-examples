@@ -5,8 +5,14 @@ This is a fraud detection use case using a graph intended for the financial indu
 
 ## Create the schema
 
-Included is a [schema.groovy] file.  You can create your graph in Studio and copy and paste the schema statements
-to run there.  Alternately, the statements can be run by running `dse gremlin-console -e schema.groovy`
+Included is a [schema.groovy](schema.groovy) file.  You can create your graph in Studio and copy and paste the schema statements
+to run there.
+
+Alternately, the statements can be run by running:
+
+```
+dse gremlin-console -e schema.groovy
+```
 
 ## Example loading
 
@@ -29,9 +35,9 @@ graphloader -graph fraud -address localhost fraud-mapping.groovy -inputpath ~/gr
 
 Make sure you have the [mysql jdbc jar](https://dev.mysql.com/downloads/connector/j/) to connect to mysql (or any relational database as a data source).
 
-Load the data into mysql using the script to create the schema ([mysql-schema.sql]) and to populate the data ([mysql-import-data.sql]).
+Load the data into mysql using the script to create the schema ([mysql-schema.sql](mysql-schema.sql)) and to populate the data ([mysql-import-data.sql](mysql-import-data.sql)).
 
-Set the db host, user, and password in [fraud-mapping.groovy] and run:
+Set the db host, user, and password in [fraud-mapping.groovy](fraud-mapping.groovy) and run:
 
 ```
 graphloader -graph fraud -address localhost fraud-mapping.groovy -source db
@@ -43,7 +49,7 @@ You can also load through Spark with DseGraphFrame constructs and convenience me
 this method, see this blog post [Introducing Dse Graph Frames](https://www.datastax.com/dev/blog/dse-graph-frame).  For an additional
 example, see [here](https://github.com/pmehra7/dseGraphFrameLoad).
 
-Included is a [src] directory with the [src/main/scala/com/datastax/fraud/DataImport.scala] class that imports the data either from
+Included is a [src](src) directory with the [DataImport.scala](src/main/scala/com/datastax/fraud/DataImport.scala) class that imports the data either from
 files in dsefs or from an external relational database (in this case MySql).
 
 #### Loading from files in dsefs
@@ -65,13 +71,13 @@ put /local/path/to/data/customerAddresses.csv /data/
 put /local/path/to/data/orderChargebacks.csv /data/
 ```
 
-Then build the scala class with the [pom.xml]: 
+Then build the scala class with the [pom.xml](pom.xml): 
 
 ```
 mvn clean package
 ```
 
-Then run it with
+Then run it with:
 
 ```
 dse spark-submit --class com.datastax.fraud.DataImport target/data-import-1.0-SNAPSHOT.jar
@@ -82,18 +88,18 @@ dse spark-submit --class com.datastax.fraud.DataImport target/data-import-1.0-SN
 Make sure you have the [mysql jdbc jar](https://dev.mysql.com/downloads/connector/j/) to connect to mysql (or any relational database as a data source)
 and put the jar in your dse lib directory on each dse instance. 
 
-Load the data into mysql using the script to create the schema ([mysql-schema.sql]) and to populate the data ([mysql-import-data.sql]).
+Load the data into mysql using the script to create the schema ([mysql-schema.sql](mysql-schema.sql)) and to populate the data ([mysql-import-data.sql](mysql-import-data.sql)).
 
-Modify the [src/main/scala/com/datastax/fraud/DataImport.scala] file to change the `source` to `db` and to indicate the db host, 
+Modify the [DataImport.scala](src/main/scala/com/datastax/fraud/DataImport.scala) file to change the `source` to `db` and to indicate the db host, 
 db name, username, and password for your db.
 
-Build the scala class with the [pom.xml]:
+Build the scala class with the [pom.xml](pom.xml):
 
 ```
 mvn clean package
 ``` 
 
-Run the import tool with
+Run the import tool with:
 
 ```
 dse spark-submit --class com.datastax.fraud.DataImport target/data-import-1.0-SNAPSHOT.jar
