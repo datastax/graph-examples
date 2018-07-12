@@ -1,7 +1,7 @@
 package com.datastax.fraud
 
 import com.datastax.bdp.graph.spark.graphframe._
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
 
@@ -10,6 +10,11 @@ object DataImport {
   def main(args: Array[String]):Unit = {
 
     val graphName = "fraud"
+    val source = "file"
+//    val source = "db"
+    val dbHost = "localhost"
+    val dbName = "fraud"
+    val dbPassword = "foo"
 
     val spark = SparkSession
       .builder
@@ -19,77 +24,118 @@ object DataImport {
 
     val g = spark.dseGraph(graphName)
 
-    // Create Schemas for DataSets
-    def customerSchema():StructType = {
-      StructType(Array(
-        StructField("customerid", StringType, true),
-        StructField("firstname", StringType, true),
-        StructField("lastname", StringType, true),
-        StructField("email", StringType, true),
-        StructField("address", StringType, true),
-        StructField("city", StringType, true),
-        StructField("state", StringType, true),
-        StructField("postalcode", StringType, true),
-        StructField("countrycode", StringType, true),
-        StructField("phone", StringType, true),
-        StructField("createdtime", TimestampType, true)
-      ))
+    var customers:DataFrame = null
+    var sessions:DataFrame = null
+    var orders:DataFrame = null
+    var chargebacks:DataFrame = null
+    var creditcards:DataFrame = null
+    var devices:DataFrame = null
+
+    var customerOrders:DataFrame = null
+    var orderChargebacks:DataFrame = null
+    var customerSessions:DataFrame = null
+    var customerChargebacks:DataFrame = null
+    var customerAddresses:DataFrame = null
+
+    if (source == "file") {
+
+      // Create Schemas for DataSets where explicit types are necessary
+      // (Sometimes inferring the schema doesn't yield the correct type)
+      def customerSchema():StructType = {
+        StructType(Array(
+          StructField("customerid", StringType, true),
+          StructField("firstname", StringType, true),
+          StructField("lastname", StringType, true),
+          StructField("email", StringType, true),
+          StructField("address", StringType, true),
+          StructField("city", StringType, true),
+          StructField("state", StringType, true),
+          StructField("postalcode", StringType, true),
+          StructField("countrycode", StringType, true),
+          StructField("phone", StringType, true),
+          StructField("createdtime", TimestampType, true)
+        ))
+      }
+
+      def sessionSchema():StructType = {
+        StructType(Array(
+          StructField("sessionid", StringType, true),
+          StructField("deviceid", StringType, true),
+          StructField("ipaddress", StringType, true),
+          StructField("createdtime", TimestampType, true)
+        ))
+      }
+
+      def orderSchema():StructType = {
+        StructType(Array(
+          StructField("orderid", StringType, true),
+          StructField("createdtime", TimestampType, true),
+          StructField("outcome", StringType, true),
+          StructField("creditcardhashed", StringType, true),
+          StructField("ipaddress", StringType, true),
+          StructField("amount", DoubleType, true),
+          StructField("deviceid", StringType, true)
+        ))
+      }
+
+      def chargebackSchema():StructType = {
+        StructType(Array(
+          StructField("chargebacknumber", IntegerType, true),
+          StructField("amount", DoubleType, true),
+          StructField("createdtime", TimestampType, true),
+          StructField("creditcardhashed", StringType, true)
+        ))
+      }
+
+      // If we try to infer the schema, it thinks the postal code is an integer
+      def addressSchema():StructType = {
+        StructType(Array(
+          StructField("customerid", StringType, true),
+          StructField("address", StringType, true),
+          StructField("city", StringType, true),
+          StructField("state", StringType, true),
+          StructField("postalcode", StringType, true),
+          StructField("countrycode", StringType, true)
+        ))
+      }
+
+      customers = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").schema(customerSchema()).load("dsefs:///data/customers.csv")
+      sessions = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").schema(sessionSchema()).load("dsefs:///data/sessions.csv")
+      orders = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").schema(orderSchema()).load("dsefs:///data/orders.csv")
+      chargebacks = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").schema(chargebackSchema()).load("dsefs:///data/chargebacks.csv")
+      creditcards = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/creditCards.csv")
+      devices = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/devices.csv")
+
+      customerOrders = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/customerOrders.csv")
+      orderChargebacks = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/orderChargebacks.csv")
+      customerSessions = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/customerSessions.csv")
+      customerChargebacks = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/customerChargebacks.csv")
+      customerAddresses = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").schema(addressSchema()).load("dsefs:///data/customerAddresses.csv")
+
+    } else if (source == "db") {
+
+      // Read from MySQL
+      val connection="jdbc:mysql://" + dbHost + "/" + dbName
+      val mysqlProps = new java.util.Properties
+      mysqlProps.setProperty("user", "root")
+      mysqlProps.setProperty("password", dbPassword)
+
+      customers = spark.sqlContext.read.jdbc(connection,"customers",mysqlProps)
+      sessions = spark.sqlContext.read.jdbc(connection,"sessions",mysqlProps)
+      orders = spark.sqlContext.read.jdbc(connection, "orders", mysqlProps)
+      chargebacks = spark.sqlContext.read.jdbc(connection, "chargebacks", mysqlProps)
+      creditcards = spark.sqlContext.read.jdbc(connection, "creditcards", mysqlProps)
+      devices = spark.sqlContext.read.jdbc(connection, "devices", mysqlProps)
+
+      customerOrders = spark.sqlContext.read.jdbc(connection, "customer_orders", mysqlProps)
+      orderChargebacks = spark.sqlContext.read.jdbc(connection, "order_chargebacks", mysqlProps)
+      customerSessions = spark.sqlContext.read.jdbc(connection, "customer_sessions", mysqlProps)
+      customerChargebacks = spark.sqlContext.read.jdbc(connection, "customer_chargebacks", mysqlProps)
+      customerAddresses = spark.sqlContext.read.jdbc(connection, "customer_addresses", mysqlProps)
+
+    } else {
+      throw new Exception("Source \"" + source + "\" is not valid.")
     }
-
-    def sessionSchema():StructType = {
-      StructType(Array(
-        StructField("sessionid", StringType, true),
-        StructField("deviceid", StringType, true),
-        StructField("ipaddress", StringType, true),
-        StructField("createdtime", TimestampType, true)
-      ))
-    }
-
-    def orderSchema():StructType = {
-      StructType(Array(
-        StructField("orderid", StringType, true),
-        StructField("createdtime", TimestampType, true),
-        StructField("outcome", StringType, true),
-        StructField("creditcardhashed", StringType, true),
-        StructField("ipaddress", StringType, true),
-        StructField("amount", DoubleType, true),
-        StructField("deviceid", StringType, true)
-      ))
-    }
-
-    def chargebackSchema():StructType = {
-      StructType(Array(
-        StructField("chargebacknumber", IntegerType, true),
-        StructField("amount", DoubleType, true),
-        StructField("createdtime", TimestampType, true),
-        StructField("creditcardhashed", StringType, true)
-      ))
-    }
-
-    def addressSchema():StructType = {
-      StructType(Array(
-        StructField("customerid", StringType, true),
-        StructField("address", StringType, true),
-        StructField("city", StringType, true),
-        StructField("state", StringType, true),
-        StructField("postalcode", StringType, true),
-        StructField("countrycode", StringType, true)
-      ))
-    }
-
-    // Read CSV Files (unless we need specific data types, we will infer the schema)
-    val customers = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").schema(customerSchema()).load("dsefs:///data/customers.csv")
-    val sessions = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").schema(sessionSchema()).load("dsefs:///data/sessions.csv")
-    val orders = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").schema(orderSchema()).load("dsefs:///data/orders.csv")
-    val chargebacks = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").schema(chargebackSchema()).load("dsefs:///data/chargebacks.csv")
-    val creditcards = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/creditCards.csv")
-    val devices = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/devices.csv")
-
-    val customerOrders = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/customerOrders.csv")
-    val orderChargebacks = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/orderChargebacks.csv")
-    val customerSessions = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/customerSessions.csv")
-    val customerChargebacks = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/customerChargebacks.csv")
-    val customerAddresses = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").schema(addressSchema()).load("dsefs:///data/customerAddresses.csv")
 
     // WRITE OUT VERTICES
     println("\nWriting customer vertices")

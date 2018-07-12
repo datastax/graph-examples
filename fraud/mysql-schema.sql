@@ -17,8 +17,8 @@ create table customer_addresses (
 	city varchar(64),
 	state varchar(64),
 	postalcode varchar(64),
-	countrycode varchar(64),
-)
+	countrycode varchar(64)
+);
 
 create table sessions (
 	sessionid char(36) primary key,

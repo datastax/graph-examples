@@ -3,8 +3,8 @@ into table fraud.customers
 fields terminated by '|' escaped by ''
 ignore 1 lines;
 
-load data local infile '~/repos/graph-examples/fraud/data/customersAddresses.csv'
-into table fraud.customers_addresses
+load data local infile '~/repos/graph-examples/fraud/data/customerAddresses.csv'
+into table fraud.customer_addresses
 fields terminated by '|' escaped by ''
 ignore 1 lines;
 
