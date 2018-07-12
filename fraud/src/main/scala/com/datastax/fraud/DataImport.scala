@@ -14,6 +14,7 @@ object DataImport {
 //    val source = "db"
     val dbHost = "localhost"
     val dbName = "fraud"
+    val dbUser = "root"
     val dbPassword = "foo"
 
     val spark = SparkSession
@@ -117,7 +118,7 @@ object DataImport {
       // Read from MySQL
       val connection="jdbc:mysql://" + dbHost + "/" + dbName
       val mysqlProps = new java.util.Properties
-      mysqlProps.setProperty("user", "root")
+      mysqlProps.setProperty("user", dbUser)
       mysqlProps.setProperty("password", dbPassword)
 
       customers = spark.sqlContext.read.jdbc(connection,"customers",mysqlProps)
@@ -137,7 +138,7 @@ object DataImport {
       throw new Exception("Source \"" + source + "\" is not valid.")
     }
 
-    // WRITE OUT VERTICES
+    // Write out vertices
     println("\nWriting customer vertices")
     g.updateVertices(customers.withColumn("~label", lit("customer")))
 
@@ -158,7 +159,7 @@ object DataImport {
 
     println("\nWriting customer addresses")
     val addressVertices = customerAddresses.withColumn("~label", lit("address"))
-    // Address has a composite column and requires the idColumn syntax
+    // Address has a composite key (address, postalcode) and requires the idColumn syntax
     g.updateVertices(addressVertices.select(
       g.idColumn(
         col("~label"),
@@ -172,7 +173,7 @@ object DataImport {
       col("postalcode"))
     )
 
-    // WRITE OUT EDGES
+    // Write out edges
     println("\nWriting customer places order edges")
     val customerOrderEdges = customerOrders.withColumn("srcLabel", lit("customer")).withColumn("dstLabel", lit("order")).withColumn("edgeLabel", lit("places"))
     g.updateEdges(customerOrderEdges.select(g.idColumn(col("srcLabel"), col("customerid")) as "src", g.idColumn(col("dstLabel"), col("orderid")) as "dst", col("edgeLabel") as "~label"))
@@ -207,7 +208,7 @@ object DataImport {
 
     println("\nWriting customer has address edges")
     val customerAddressEdges = customerAddresses.withColumn("srcLabel", lit("customer")).withColumn("dstLabel", lit("address")).withColumn("edgeLabel", lit("hasAddress"))
-    // This edge connects a to a vertex label(address) that has a composite column
+    // This edge connects a to a vertex label (address) that has a composite key (address, postalcode)
     g.updateEdges(customerAddressEdges.select(
       g.idColumn(
         col("srcLabel"),
