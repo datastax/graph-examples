@@ -88,7 +88,7 @@ object DataImport {
         ))
       }
 
-      // If we try to infer the schema, it thinks the postal code is an integer
+      // If we try to infer the schema, it thinks the postal code should be an integer
       def addressSchema():StructType = {
         StructType(Array(
           StructField("customerid", StringType, true),
@@ -208,7 +208,7 @@ object DataImport {
 
     println("\nWriting customer has address edges")
     val customerAddressEdges = customerAddresses.withColumn("srcLabel", lit("customer")).withColumn("dstLabel", lit("address")).withColumn("edgeLabel", lit("hasAddress"))
-    // This edge connects a to a vertex label (address) that has a composite key (address, postalcode)
+    // This edge connects to a vertex label (address) that has a composite key (address, postalcode)
     g.updateEdges(customerAddressEdges.select(
       g.idColumn(
         col("srcLabel"),

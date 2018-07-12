@@ -1,15 +1,19 @@
+
 # Fraud
 
 This is a fraud detection use case using a graph intended for the financial industry.
 
 ## Create the schema
 
-Included is a `schema.groovy` file.  You can create your graph in Studio and copy and paste the schema statements
-to run there.  Alternately, the statements can be run from the gremlin console.
+Included is a [schema.groovy] file.  You can create your graph in Studio and copy and paste the schema statements
+to run there.  Alternately, the statements can be run by running `dse gremlin-console -e schema.groovy`
 
 ## Example loading
 
-Example of loading the fraud data:
+### DataStax Graph Loader
+
+#### Loading from local csv/json files
+Example of loading the fraud data using the DataStax graph loader:
 
 ```
 # From the fraud directory
@@ -21,7 +25,83 @@ graphloader -graph fraud -address localhost fraud-mapping.groovy
 graphloader -graph fraud -address localhost fraud-mapping.groovy -inputpath ~/graph-examples/fraud/data/
 ```
 
+#### Loading from a relational database
+
+Make sure you have the [mysql jdbc jar](https://dev.mysql.com/downloads/connector/j/) to connect to mysql (or any relational database as a data source).
+
+Load the data into mysql using the script to create the schema ([mysql-schema.sql]) and to populate the data ([mysql-import-data.sql]).
+
+Set the db host, user, and password in [fraud-mapping.groovy] and run:
+
+```
+graphloader -graph fraud -address localhost fraud-mapping.groovy -source db
+```
+
+### DseGraphFrame and Spark loading
+
+You can also load through Spark with DseGraphFrame constructs and convenience methods.  For more in depth information about
+this method, see this blog post [Introducing Dse Graph Frames](https://www.datastax.com/dev/blog/dse-graph-frame).  For an additional
+example, see [here](https://github.com/pmehra7/dseGraphFrameLoad).
+
+Included is a [src] directory with the [src/main/scala/com/datastax/fraud/DataImport.scala] class that imports the data either from
+files in dsefs or from an external relational database (in this case MySql).
+
+#### Loading from files in dsefs
+
+Copy the files from the data directory into dsefs by going into the dsefs shell using `dse fs` and running the following:
+
+```
+mkdir /data/
+put /local/path/to/data/customers.csv /data/
+put /local/path/to/data/orders.csv /data/
+put /local/path/to/data/sessions.csv /data/
+put /local/path/to/data/creditCards.csv /data/
+put /local/path/to/data/chargebacks.csv /data/
+put /local/path/to/data/devices.csv /data/
+put /local/path/to/data/customerOrders.csv /data/
+put /local/path/to/data/customerSessions.csv /data/
+put /local/path/to/data/customerChargebacks.csv /data/
+put /local/path/to/data/customerAddresses.csv /data/
+put /local/path/to/data/orderChargebacks.csv /data/
+```
+
+Then build the scala class with the [pom.xml]: 
+
+```
+mvn clean package
+```
+
+Then run it with
+
+```
+dse spark-submit --class com.datastax.fraud.DataImport target/data-import-1.0-SNAPSHOT.jar
+```
+
+#### Loading from a relational database
+
+Make sure you have the [mysql jdbc jar](https://dev.mysql.com/downloads/connector/j/) to connect to mysql (or any relational database as a data source)
+and put the jar in your dse lib directory on each dse instance. 
+
+Load the data into mysql using the script to create the schema ([mysql-schema.sql]) and to populate the data ([mysql-import-data.sql]).
+
+Modify the [src/main/scala/com/datastax/fraud/DataImport.scala] file to change the `source` to `db` and to indicate the db host, 
+db name, username, and password for your db.
+
+Build the scala class with the [pom.xml]:
+
+```
+mvn clean package
+``` 
+
+Run the import tool with
+
+```
+dse spark-submit --class com.datastax.fraud.DataImport target/data-import-1.0-SNAPSHOT.jar
+```
+
 ## Scenarios
+
+Now that you have the data loaded, here are the transaction scenarios that are represented:
 
 - [Scenario 1](#scenario1): Legitimate - User registers and eventually places a order
 - [Scenario 2](#scenario2): Suspicious - User registers and places an order with previously used device id (might be husband and wife)
