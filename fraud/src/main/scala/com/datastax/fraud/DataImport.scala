@@ -100,18 +100,18 @@ object DataImport {
         ))
       }
 
-      customers = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").schema(customerSchema()).load("dsefs:///data/customers.csv")
-      sessions = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").schema(sessionSchema()).load("dsefs:///data/sessions.csv")
-      orders = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").schema(orderSchema()).load("dsefs:///data/orders.csv")
-      chargebacks = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").schema(chargebackSchema()).load("dsefs:///data/chargebacks.csv")
-      creditcards = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/creditCards.csv")
-      devices = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/devices.csv")
+      customers = spark.read.format("csv").option("header", "true").option("delimiter", "|").schema(customerSchema()).load("dsefs:///data/customers.csv")
+      sessions = spark.read.format("csv").option("header", "true").option("delimiter", "|").schema(sessionSchema()).load("dsefs:///data/sessions.csv")
+      orders = spark.read.format("csv").option("header", "true").option("delimiter", "|").schema(orderSchema()).load("dsefs:///data/orders.csv")
+      chargebacks = spark.read.format("csv").option("header", "true").option("delimiter", "|").schema(chargebackSchema()).load("dsefs:///data/chargebacks.csv")
+      creditcards = spark.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/creditCards.csv")
+      devices = spark.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/devices.csv")
 
-      customerOrders = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/customerOrders.csv")
-      orderChargebacks = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/orderChargebacks.csv")
-      customerSessions = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/customerSessions.csv")
-      customerChargebacks = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/customerChargebacks.csv")
-      customerAddresses = spark.sqlContext.read.format("csv").option("header", "true").option("delimiter", "|").schema(addressSchema()).load("dsefs:///data/customerAddresses.csv")
+      customerOrders = spark.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/customerOrders.csv")
+      orderChargebacks = spark.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/orderChargebacks.csv")
+      customerSessions = spark.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/customerSessions.csv")
+      customerChargebacks = spark.read.format("csv").option("header", "true").option("delimiter", "|").option("inferSchema", "true").load("dsefs:///data/customerChargebacks.csv")
+      customerAddresses = spark.read.format("csv").option("header", "true").option("delimiter", "|").schema(addressSchema()).load("dsefs:///data/customerAddresses.csv")
 
     } else if (source == "db") {
 
@@ -121,18 +121,18 @@ object DataImport {
       mysqlProps.setProperty("user", dbUser)
       mysqlProps.setProperty("password", dbPassword)
 
-      customers = spark.sqlContext.read.jdbc(connection,"customers",mysqlProps)
-      sessions = spark.sqlContext.read.jdbc(connection,"sessions",mysqlProps)
-      orders = spark.sqlContext.read.jdbc(connection, "orders", mysqlProps)
-      chargebacks = spark.sqlContext.read.jdbc(connection, "chargebacks", mysqlProps)
-      creditcards = spark.sqlContext.read.jdbc(connection, "creditcards", mysqlProps)
-      devices = spark.sqlContext.read.jdbc(connection, "devices", mysqlProps)
+      customers = spark.read.jdbc(connection,"customers",mysqlProps)
+      sessions = spark.read.jdbc(connection,"sessions",mysqlProps)
+      orders = spark.read.jdbc(connection, "orders", mysqlProps)
+      chargebacks = spark.read.jdbc(connection, "chargebacks", mysqlProps)
+      creditcards = spark.read.jdbc(connection, "creditcards", mysqlProps)
+      devices = spark.read.jdbc(connection, "devices", mysqlProps)
 
-      customerOrders = spark.sqlContext.read.jdbc(connection, "customer_orders", mysqlProps)
-      orderChargebacks = spark.sqlContext.read.jdbc(connection, "order_chargebacks", mysqlProps)
-      customerSessions = spark.sqlContext.read.jdbc(connection, "customer_sessions", mysqlProps)
-      customerChargebacks = spark.sqlContext.read.jdbc(connection, "customer_chargebacks", mysqlProps)
-      customerAddresses = spark.sqlContext.read.jdbc(connection, "customer_addresses", mysqlProps)
+      customerOrders = spark.read.jdbc(connection, "customer_orders", mysqlProps)
+      orderChargebacks = spark.read.jdbc(connection, "order_chargebacks", mysqlProps)
+      customerSessions = spark.read.jdbc(connection, "customer_sessions", mysqlProps)
+      customerChargebacks = spark.read.jdbc(connection, "customer_chargebacks", mysqlProps)
+      customerAddresses = spark.read.jdbc(connection, "customer_addresses", mysqlProps)
 
     } else {
       throw new Exception("Source \"" + source + "\" is not valid.")
