@@ -54,7 +54,7 @@ files in dsefs or from an external relational database (in this case MySql).
 
 #### Loading from files in dsefs
 
-Copy the files from the data directory into dsefs by going into the dsefs shell using `dse fs` and running the following:
+Copy the files from the local data directory into dsefs.  Go into the dsefs shell using `dse fs` and run the following:
 
 ```
 mkdir /data/
