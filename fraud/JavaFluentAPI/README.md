@@ -10,4 +10,4 @@ java -jar fraud.jar
 
 or optionally specify an the local ip  address
 
-
+java -jar fraud.jar 1.2.3.4
