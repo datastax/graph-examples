@@ -25,6 +25,10 @@
 
     </dependencies>
 
+  <properties>
+    <jar.finalName>fraud</jar.finalName>
+  </properties>
+         
     <build>
         <plugins>
             <plugin>
