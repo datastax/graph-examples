@@ -8,6 +8,6 @@ Invoke by connecting to node0 and invoking fraud.jar as follows:
 
 java -jar fraud.jar
 
-or optionally specify an the local ip address
+or optionally specify an the local ip  address
 
 java -jar fraud.jar  <ip address>
