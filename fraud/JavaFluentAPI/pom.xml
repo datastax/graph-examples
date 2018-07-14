@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.datastax.fraud</groupId>
-    <artifactId>graph-fraud</artifactId>
+    <artifactId>fraud</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Fraud Graph Sample Code</name>
 
@@ -25,10 +25,6 @@
 
     </dependencies>
 
-  <properties>
-    <jar.finalName>fraud</jar.finalName>
-  </properties>
-         
     <build>
         <plugins>
             <plugin>
