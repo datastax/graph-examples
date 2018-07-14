@@ -4,13 +4,13 @@ The application will default to connecting to a DataStax Enterprise cluster usin
 insert 2 vertices and an edge between them.  The app will then execute a traversal to return the
 address for the customer just added.
 
-To build, execute the following:
+To build, execute the following in the JavaFluentAPI directory::
 
 ```
-mvn clean package
+./build-example.sh
 ```
 
-Invoke as follows in the JavaFluentAPI directory (by default it connects to `node0`):
+Invoke as follows in the JavaFluentAPI directory (by default it connects to `node0):
 
 ```
 ./run-example.sh
