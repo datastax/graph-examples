@@ -4,10 +4,18 @@ The application will default to connecting to a DataStax Enterprise cluster usin
 insert 2 vertices and an edge between them.  The app will then execute a traversal to return the
 address for the customer just added.
 
-Invoke by connecting to node0 and invoking fraud.jar as follows:
+To build, execute the following:
 
-java -jar fraud.jar
+```
+mvn clean package
+```
 
-or optionally specify an the local ip  address
+Invoke as follows in the JavaFluentAPI directory (by default it connects to `node0`):
 
-java -jar fraud.jar 1.2.3.4
+```
+./run-example.sh
+```
+
+or optionally specify a hostname or ip address:
+
+./run-example.sh 1.2.3.4
