@@ -18,4 +18,6 @@ Invoke as follows in the JavaFluentAPI directory (by default it connects to `nod
 
 or optionally specify a hostname or ip address:
 
+```
 ./run-example.sh 1.2.3.4
+```
