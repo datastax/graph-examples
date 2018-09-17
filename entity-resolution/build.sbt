@@ -8,6 +8,7 @@ scalaVersion := "2.11.8"
 val dseVersion = "5.1.2"
 
 resolvers += "DataStax Repo" at "https://repo.datastax.com/public-repos/"
+resolvers += Resolver.mavenLocal // for testing
 
 mainClass in (Compile, packageBin) := Some("com.datastax.bdp.er.EntityResolutionExample")
 
