@@ -4,11 +4,11 @@ The following metrics are common Gremlin queries that our customers run. This ta
 
 | Graph Invariant Name        | Definition           | Computational Complexity  | Gremlin |
 | ------------- |:-------------:| :-----:| :-----|
-| Order    | The number of vertices `v` in a graph `G` | P | `g.V().`<br>`     count()` |
-| Size     | The number of edges `e` in a graph `G` | P | `g.E().count() = m` |
-| Degree | The number of edges incident to a vertex | P | `g.V("{someVertex}").bothE().count()` |
-| Minimum Degree | The smallest degree of all vertices in G | P | `g.V().groupCount().by(bothE().count()).order(local).by(values, incr).limit(1)` |
-| Maximum Degree | The largest degree of all vertices in G | P | `g.V().groupCount().by(bothE().count()).order(local).by(values, decr).limit(1)` |
-| Average Degree | Average degree of all vertices in G | P | `(2*m)/n` |
-| Degree Distribution | For all vertices in the graph, the probability distribution of their degrees over the whole network. | P | `g.V().groupCount().by(outE()).order(local).by(values, decr)` |
-| Distribution of Vertices (Edges) per Label | The number of vertices (edges) per vertex (edge) label | P | `g.V/E().groupCount().by(label).order(local).by(values, decr)` |
+| Order    | The number of vertices `v` in a graph `G` | P | `g.V().`<br>&nbsp; &nbsp; `count()` |
+| Size     | The number of edges `e` in a graph `G` | P | `g.E().`<br>&nbsp; &nbsp; `count()` |
+| Degree | The number of edges incident to a vertex | P | `g.V("{someVertex}").`<br>&nbsp; &nbsp; `bothE().`<br>&nbsp; &nbsp; `count()` |
+| Minimum Degree | The smallest degree of all vertices in G | P | `g.V().`<br>&nbsp; &nbsp; `groupCount().`<br>&nbsp; &nbsp; `by(bothE().`<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; `count()).`<br>&nbsp; &nbsp; `order(local).`<br>&nbsp; &nbsp; `by(values, incr).`<br>&nbsp; &nbsp; `limit(1)` |
+| Maximum Degree | The largest degree of all vertices in G | P | `g.V().`<br>&nbsp; &nbsp; `groupCount().`<br>&nbsp; &nbsp; `by(bothE().`<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; `count()).`<br>&nbsp; &nbsp; `order(local).`<br>&nbsp; &nbsp; `by(values, decr).`<br>&nbsp; &nbsp; `limit(1)`  |
+| Average Degree | Average degree of all vertices in G | P | `(2*Size)/Order` |
+| Degree Distribution | For all vertices in the graph, the probability distribution of their degrees over the whole network. | P | `g.V().`<br>&nbsp; &nbsp; `groupCount().`<br>&nbsp; &nbsp; `by(outE()).`<br>&nbsp; &nbsp; `order(local).`<br>&nbsp; &nbsp; `by(values, decr)` |
+| Distribution of Vertices (Edges) per Label | The number of vertices (edges) per vertex (edge) label | P | `g.V/E().`<br>&nbsp; &nbsp; `groupCount().`<br>&nbsp; &nbsp; `by(label).`<br>&nbsp; &nbsp; `order(local).`<br>&nbsp; &nbsp; `by(values, decr)` |
