@@ -12,3 +12,4 @@ The following metrics are common Gremlin queries that our customers run. This ta
 | Average Degree | Average degree of all vertices in G | P | `(2*Size)/Order` |
 | Degree Distribution | For all vertices in the graph, the probability distribution of their degrees over the whole network. | P | `g.V().`<br>&nbsp; &nbsp; `groupCount().`<br>&nbsp; &nbsp; `by(outE()).`<br>&nbsp; &nbsp; `order(local).`<br>&nbsp; &nbsp; `by(values, decr)` |
 | Distribution of Vertices (Edges) per Label | The number of vertices (edges) per vertex (edge) label | P | `g.V/E().`<br>&nbsp; &nbsp; `groupCount().`<br>&nbsp; &nbsp; `by(label).`<br>&nbsp; &nbsp; `order(local).`<br>&nbsp; &nbsp; `by(values, decr)` |
+| <img width=400/> |  |  | <img width=500/>|
