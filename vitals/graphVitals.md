@@ -4,7 +4,7 @@ The following metrics are common Gremlin queries that our customers run. This ta
 
 | Graph Invariant Name        | Definition           | Computational Complexity  | Gremlin |
 | ------------- |:-------------:| :-----:| :-----|
-| Order    | The number of vertices `v` in a graph `G` | P | `g.V().count() = n` |
+| Order    | The number of vertices `v` in a graph `G` | P | `g.V().`<br>`     count()` |
 | Size     | The number of edges `e` in a graph `G` | P | `g.E().count() = m` |
 | Degree | The number of edges incident to a vertex | P | `g.V("{someVertex}").bothE().count()` |
 | Minimum Degree | The smallest degree of all vertices in G | P | `g.V().groupCount().by(bothE().count()).order(local).by(values, incr).limit(1)` |
