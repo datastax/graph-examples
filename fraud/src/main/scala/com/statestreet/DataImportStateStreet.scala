@@ -195,7 +195,7 @@ object DataImportStateStreet {
 
       println("\nWriting semiparent vertices")
       timeIt("semiparent vertices", g.updateVertices("semiparent", semiparentDF))
-/*
+
       println("\nWriting subparent vertices")
       timeIt("subparent vertices", g.updateVertices("subparent", subparentDF))
 
@@ -225,7 +225,7 @@ object DataImportStateStreet {
 
       println("\nWriting values vertices")
       timeIt("values vertices", g.updateVertices("vals", valsDF))
-*/
+
     } else {
       println("\nUsing the old API")
       println("\nWriting superparent vertices")
@@ -383,7 +383,7 @@ object DataImportStateStreet {
 
     if (useNewAPI) {
       println("\nUsing the new API")
-/*
+
       println("\nWriting childitem valyear edges")
       timeIt("childitem valyear edges", g.updateEdges(
         "childitem",
@@ -527,7 +527,7 @@ object DataImportStateStreet {
           col("connect_month")
         )
       ))
-*/
+
     } else {
       println("\nUsing the old API")
       println("\nWriting childitem valyear edges")
