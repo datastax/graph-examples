@@ -4,13 +4,14 @@ import com.datastax.bdp.graph.spark.graphframe._
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
+import org.apache.spark.sql.Row
 
 
 object DataImportStateStreet {
   def main(args: Array[String]):Unit = {
 
     val graphName = "statestreet"
-    val inputPath = "dsefs:///street/"
+    val inputPath = "dsefs:///statestreet/"
     // We're trying to avoid DSP-17870 where we don't evict the cache causing OOMs
     val cache = false
     val labelStr = "~label"
@@ -19,12 +20,11 @@ object DataImportStateStreet {
         true
       } else {
         args(0) match {
-          case "newapi" => true
+          case "new" => true
           case _ => false
         }
       }
-    } // we need to make this accessible via the cmdline
-    //println(s"testing and debugging: args: ${args(0)}, args.size: ${args.size}")
+    }
 
     val spark = SparkSession
       .builder
@@ -168,14 +168,19 @@ object DataImportStateStreet {
     var valmonthDF:DataFrame = spark.read.format("csv").option("header", "true").schema(valmonthSchema).load(inputPath + "valmonth.csv")
     var valsDF:DataFrame = spark.read.format("csv").option("header", "true").schema(valsSchema).load(inputPath + "values.csv")
 
-    def timeIt[T](code: => T): T = {
+    val schema = StructType(List(StructField("Element", StringType, true), StructField("Runtime(sec)", StringType, true)))
+
+    var runtimes = spark.createDataFrame(spark.sparkContext.makeRDD(List(Row(null,null))), schema).na.drop
+
+    def timeIt[T](test: String, code: => T): T = {
       val start = System.currentTimeMillis
       try {
         code
       } finally {
         val end = System.currentTimeMillis
         val runtimeInSec = (end - start)/1000.0
-        println(s"Runtime: ${runtimeInSec} secs")
+        val newRow = spark.createDataFrame(spark.sparkContext.makeRDD(List(Row(test, runtimeInSec.toString))), schema)
+        runtimes = runtimes.union(newRow)
       }
     }
 
@@ -183,107 +188,87 @@ object DataImportStateStreet {
     if (useNewAPI) {
       println("\nUsing the new API")
       println("\nWriting superparent vertices")
-      //g.updateVertices(superparentDF.withColumn(labelStr, lit("superparent")), Seq("superparent"), cache)
-      timeIt(g.updateVertices("superparent", superparentDF))
+      timeIt("superparent vertices", g.updateVertices("superparent", superparentDF))
 
       println("\nWriting parent vertices")
-      //g.updateVertices(parentDF.withColumn(labelStr, lit("parent")), Seq("parent"), cache)
-      timeIt(g.updateVertices("parent", parentDF))
+      timeIt("parent vertices", g.updateVertices("parent", parentDF))
 
       println("\nWriting semiparent vertices")
-      //g.updateVertices(semiparentDF.withColumn(labelStr, lit("semiparent")), Seq("semiparent"), cache)
-      timeIt(g.updateVertices("semiparent", semiparentDF))
-
+      timeIt("semiparent vertices", g.updateVertices("semiparent", semiparentDF))
+/*
       println("\nWriting subparent vertices")
-      //g.updateVertices(subparentDF.withColumn(labelStr, lit("subparent")), Seq("subparent"), cache)
-      timeIt(g.updateVertices("subparent", subparentDF))
+      timeIt("subparent vertices", g.updateVertices("subparent", subparentDF))
 
       println("\nWriting topchild vertices")
-      //g.updateVertices(topchildDF.withColumn(labelStr, lit("topchild")), Seq("topchild"), cache)
-      timeIt(g.updateVertices("topchild", topchildDF))
+      timeIt("topchild vertices", g.updateVertices("topchild", topchildDF))
 
       println("\nWriting childnums vertices")
-      //g.updateVertices(childnumsDF.withColumn(labelStr, lit("childnums")), Seq("childnums"), cache)
-      timeIt(g.updateVertices("childnums", childnumsDF))
+      timeIt("childnums vertices", g.updateVertices("childnums", childnumsDF))
 
-      // This one takes ~3min
       println("\nWriting numsyear vertices")
-      //g.updateVertices(numsyearDF.withColumn(labelStr, lit("numsyear")), Seq("numsyear"), cache)
-      timeIt(g.updateVertices("numsyear", numsyearDF))
+      timeIt("numsyear vertices", g.updateVertices("numsyear", numsyearDF))
 
-      // This one takes ~35min
       println("\nWriting numsmonth vertices")
-      //g.updateVertices(numsmonthDF.withColumn(labelStr, lit("numsmonth")), Seq("numsmonth"), cache)
-      timeIt(g.updateVertices("numsmonth", numsmonthDF))
+      timeIt("numsmonth vertices", g.updateVertices("numsmonth", numsmonthDF))
 
-      // This one has taken 9.5hrs and running at ~39% complete according to task completion in the Spark UI
       println("\nWriting nums vertices")
-      //g.updateVertices(numsDF.withColumn(labelStr, lit("nums")), Seq("nums"), cache)
-      timeIt(g.updateVertices("nums", numsDF))
+      timeIt("nums vertices", g.updateVertices("nums", numsDF))
 
       println("\nWriting childitem vertices")
-      //g.updateVertices(childitemDF.withColumn(labelStr, lit("childitem")), Seq("childitem"), cache)
-      timeIt(g.updateVertices("childitem", childitemDF))
+      timeIt("childitem vertices", g.updateVertices("childitem", childitemDF))
 
       println("\nWriting valyear vertices")
-      //g.updateVertices(valyearDF.withColumn(labelStr, lit("valyear")), Seq("valyear"), cache)
-      timeIt(g.updateVertices("valyear", valyearDF))
+      timeIt("valyear vertices", g.updateVertices("valyear", valyearDF))
 
       println("\nWriting valmonth vertices")
-      //g.updateVertices(valmonthDF.withColumn(labelStr, lit("valmonth")), Seq("valmonth"), cache)
-      timeIt(g.updateVertices("valmonth", valmonthDF))
+      timeIt("valmonth vertices", g.updateVertices("valmonth", valmonthDF))
 
       println("\nWriting values vertices")
-      //g.updateVertices(valsDF.withColumn(labelStr, lit("vals")), Seq("vals"), cache)
-      timeIt(g.updateVertices("vals", valsDF))
-
+      timeIt("values vertices", g.updateVertices("vals", valsDF))
+*/
     } else {
       println("\nUsing the old API")
       println("\nWriting superparent vertices")
-      timeIt(g.updateVertices(superparentDF.withColumn(labelStr, lit("superparent")), Seq("superparent"), cache))
+      timeIt("superparent vertices", g.updateVertices(superparentDF.withColumn(labelStr, lit("superparent")), Seq("superparent"), cache))
 
       println("\nWriting parent vertices")
-      timeIt(g.updateVertices(parentDF.withColumn(labelStr, lit("parent")), Seq("parent"), cache))
+      timeIt("parent vertices", g.updateVertices(parentDF.withColumn(labelStr, lit("parent")), Seq("parent"), cache))
 
       println("\nWriting semiparent vertices")
-      timeIt(g.updateVertices(semiparentDF.withColumn(labelStr, lit("semiparent")), Seq("semiparent"), cache))
+      timeIt("semiparent vertices", g.updateVertices(semiparentDF.withColumn(labelStr, lit("semiparent")), Seq("semiparent"), cache))
 
       println("\nWriting subparent vertices")
-      timeIt(g.updateVertices(subparentDF.withColumn(labelStr, lit("subparent")), Seq("subparent"), cache))
+      timeIt("subparent vertices", g.updateVertices(subparentDF.withColumn(labelStr, lit("subparent")), Seq("subparent"), cache))
 
       println("\nWriting topchild vertices")
-      timeIt(g.updateVertices(topchildDF.withColumn(labelStr, lit("topchild")), Seq("topchild"), cache))
+      timeIt("topchild vertices", g.updateVertices(topchildDF.withColumn(labelStr, lit("topchild")), Seq("topchild"), cache))
 
       println("\nWriting childnums vertices")
-      timeIt(g.updateVertices(childnumsDF.withColumn(labelStr, lit("childnums")), Seq("childnums"), cache))
+      timeIt("childnums vertices", g.updateVertices(childnumsDF.withColumn(labelStr, lit("childnums")), Seq("childnums"), cache))
 
       println("\nWriting numsyear vertices")
-      timeIt(g.updateVertices(numsyearDF.withColumn(labelStr, lit("numsyear")), Seq("numsyear"), cache))
+      timeIt("numsyear vertices", g.updateVertices(numsyearDF.withColumn(labelStr, lit("numsyear")), Seq("numsyear"), cache))
 
       println("\nWriting numsmonth vertices")
-      timeIt(g.updateVertices(numsmonthDF.withColumn(labelStr, lit("numsmonth")), Seq("numsmonth"), cache))
+      timeIt("numsmonth vertices", g.updateVertices(numsmonthDF.withColumn(labelStr, lit("numsmonth")), Seq("numsmonth"), cache))
 
       println("\nWriting nums vertices")
-      timeIt(g.updateVertices(numsDF.withColumn(labelStr, lit("nums")), Seq("nums"), cache))
+      timeIt("nums vertices", g.updateVertices(numsDF.withColumn(labelStr, lit("nums")), Seq("nums"), cache))
 
       println("\nWriting childitem vertices")
-      timeIt(g.updateVertices(childitemDF.withColumn(labelStr, lit("childitem")), Seq("childitem"), cache))
+      timeIt("childitem vertices", g.updateVertices(childitemDF.withColumn(labelStr, lit("childitem")), Seq("childitem"), cache))
 
       println("\nWriting valyear vertices")
-      timeIt(g.updateVertices(valyearDF.withColumn(labelStr, lit("valyear")), Seq("valyear"), cache))
+      timeIt("valyear vertices", g.updateVertices(valyearDF.withColumn(labelStr, lit("valyear")), Seq("valyear"), cache))
 
       println("\nWriting valmonth vertices")
-      timeIt(g.updateVertices(valmonthDF.withColumn(labelStr, lit("valmonth")), Seq("valmonth"), cache))
+      timeIt("valmonth vertices", g.updateVertices(valmonthDF.withColumn(labelStr, lit("valmonth")), Seq("valmonth"), cache))
 
       println("\nWriting values vertices")
-      timeIt(g.updateVertices(valsDF.withColumn(labelStr, lit("vals")), Seq("vals"), cache))
+      timeIt("values vertices", g.updateVertices(valsDF.withColumn(labelStr, lit("vals")), Seq("vals"), cache))
     }
 
     println("\nDone writing vertices")
-
-//    println("\nExiting prematurely for testing")
-//    System.exit(0)
-
     println("\nNow writing edges")
 
     val childitemValyearSchema:StructType = {
@@ -398,21 +383,9 @@ object DataImportStateStreet {
 
     if (useNewAPI) {
       println("\nUsing the new API")
-//      println("\nWriting childitem valyear edges")
-//      val childitem_valyear_edges = childitem_valyear_df.withColumn("srcLabel", lit("childitem")).withColumn("dstLabel", lit("valyear")).withColumn("edgeLabel", lit("childitem_valyear"))
-//      g.updateEdges(childitem_valyear_edges.select(
-//        g.idColumn(
-//          col("srcLabel"),
-//          col("childitem_id")
-//        ) as "src",
-//        g.idColumn(
-//          col("dstLabel"),
-//          col("valyear_id")
-//        ) as "dst",
-//        col("edgeLabel") as labelStr,
-//        col("connect_year")
-//      ), cache)
-      timeIt(g.updateEdges(
+/*
+      println("\nWriting childitem valyear edges")
+      timeIt("childitem valyear edges", g.updateEdges(
         "childitem",
         "childitem_valyear",
         "valyear",
@@ -424,20 +397,7 @@ object DataImportStateStreet {
       ))
 
       println("\nWriting childnums childitem edges")
-//      var childnums_childitem_edges = childnums_childitem_df.withColumn("srcLabel", lit("childnums")).withColumn("dstLabel", lit("childitem")).withColumn("edgeLabel", lit("childnums_childitem"))
-//      g.updateEdges(childnums_childitem_edges.select(
-//        g.idColumn(
-//          col("srcLabel"),
-//          col("childnums_id")
-//        ) as "src",
-//        g.idColumn(
-//          col("dstLabel"),
-//          col("childitem_id")
-//        ) as "dst",
-//        col("edgeLabel") as labelStr,
-//        col("connect_date")
-//      ), cache)
-      timeIt(g.updateEdges(
+      timeIt("childnums childitem edges", g.updateEdges(
         "childnums",
         "childnums_childitem",
         "childitem",
@@ -449,21 +409,7 @@ object DataImportStateStreet {
       ))
 
       println("\nWriting childnums numsyear edges")
-//      var childnums_numsyear_edges = childnums_numsyear_df.withColumn("srcLabel", lit("childnums")).withColumn("dstLabel", lit("numsyear")).withColumn("edgelabel", lit("childnums_numsyear"))
-//      g.updateEdges(childnums_numsyear_edges.select(
-//        g.idColumn(
-//          col("srcLabel"),
-//          col("childnums_id")
-//        ) as "src",
-//        g.idColumn(
-//          col("dstLabel"),
-//          col("numsyear_id")
-//        ) as "dst",
-//        col("edgeLabel") as labelStr,
-//        col("connect_year")
-//      ), cache)
-      // Important to include whatever remaining columns originally specified (e.g. col("connect_year"))
-      timeIt(g.updateEdges(
+      timeIt("childnums numsyear edges", g.updateEdges(
         "childnums",
         "childnums_numsyear",
         "numsyear",
@@ -475,20 +421,7 @@ object DataImportStateStreet {
       ))
 
       println("\nWriting numsmonth nums edges")
-//      var numsmonth_nums_edges = numsmonth_nums_df.withColumn("srcLabel", lit("numsmonth")).withColumn("dstLabel", lit("nums")).withColumn("edgelabel", lit("numsmonth_nums"))
-//      g.updateEdges(numsmonth_nums_edges.select(
-//        g.idColumn(
-//          col("srcLabel"),
-//          col("numsmonth_id")
-//        ) as "src",
-//        g.idColumn(
-//          col("dstLabel"),
-//          col("nums_id")
-//        ) as "dst",
-//        col("edgeLabel") as labelStr,
-//        col("connect_date")
-//      ), cache)
-      timeIt(g.updateEdges(
+      timeIt("numsmonth nums edges", g.updateEdges(
         "numsmonth",
         "numsmonth_nums",
         "nums",
@@ -500,20 +433,7 @@ object DataImportStateStreet {
       ))
 
       println("\nWriting numsyear numsmonth edges")
-//      var numsyear_numsmonth_edges = numsyear_numsmonth_df.withColumn("srcLabel", lit("numsyear")).withColumn("dstLabel", lit("numsmonth")).withColumn("edgeLabel", lit("numsyear_numsmonth"))
-//      g.updateEdges(numsyear_numsmonth_edges.select(
-//        g.idColumn(
-//          col("srcLabel"),
-//          col("numsyear_id")
-//        ) as "src",
-//        g.idColumn(
-//          col("dstLabel"),
-//          col("numsmonth_id")
-//        ) as "dst",
-//        col("edgeLabel") as labelStr,
-//        col("connect_month")
-//      ), cache)
-      timeIt(g.updateEdges(
+      timeIt("numsyear numsmonth edges", g.updateEdges(
         "numsyear",
         "numsyear_numsmonth",
         "numsmonth",
@@ -525,20 +445,7 @@ object DataImportStateStreet {
       ))
 
       println("\nWriting parent semiparent edges")
-//      val parent_semiparent_edges = parent_semiparent_df.withColumn("srcLabel", lit("parent")).withColumn("dstLabel", lit("semiparent")).withColumn("edgeLabel", lit("parent_semiparent"))
-//      g.updateEdges(parent_semiparent_edges.select(
-//        g.idColumn(
-//          col("srcLabel"),
-//          col("parent_id")
-//        ) as "src",
-//        g.idColumn(
-//          col("dstLabel"),
-//          col("semiparent_id")
-//        ) as "dst",
-//        col("edgeLabel") as labelStr,
-//        col("connect_date")
-//      ), cache)
-      timeIt(g.updateEdges(
+      timeIt("parent semiparent edges", g.updateEdges(
         "parent",
         "parent_semiparent",
         "semiparent",
@@ -550,20 +457,7 @@ object DataImportStateStreet {
       ))
 
       println("\nWriting semiparent subparent edges")
-//      val semiparent_subparent_edges = semiparent_subparent_df.withColumn("srcLabel", lit("semiparent")).withColumn("dstLabel", lit("subparent")).withColumn("edgeLabel", lit("semiparent_subparent"))
-//      g.updateEdges(semiparent_subparent_edges.select(
-//        g.idColumn(
-//          col("srcLabel"),
-//          col("semiparent_id")
-//        ) as "src",
-//        g.idColumn(
-//          col("dstLabel"),
-//          col("subparent_id")
-//        ) as "dst",
-//        col("edgeLabel") as labelStr,
-//        col("connect_date")
-//      ), cache)
-      timeIt(g.updateEdges(
+      timeIt("semiparent subparent edges", g.updateEdges(
         "semiparent",
         "semiparent_subparent",
         "subparent",
@@ -575,20 +469,7 @@ object DataImportStateStreet {
       ))
 
       println("\nWriting subparent topchild edges")
-//      val subparent_topchild_edges = subparent_topchild_df.withColumn("srcLabel", lit("subparent")).withColumn("dstLabel", lit("topchild")).withColumn("edgeLabel", lit("subparent_topchild"))
-//      g.updateEdges(subparent_topchild_edges.select(
-//        g.idColumn(
-//          col("srcLabel"),
-//          col("subparent_id")
-//        ) as "src",
-//        g.idColumn(
-//          col("dstLabel"),
-//          col("topchild_id")
-//        ) as "dst",
-//        col("edgeLabel") as labelStr,
-//        col("connect_date")
-//      ), cache)
-      timeIt(g.updateEdges(
+      timeIt("subparent topchild edges", g.updateEdges(
         "subparent",
         "subparent_topchild",
         "topchild",
@@ -600,20 +481,7 @@ object DataImportStateStreet {
       ))
 
       println("\nWriting superparent parent edges")
-//      val superparent_parent_edges = superparent_parent_df.withColumn("srcLabel", lit("superparent")).withColumn("dstLabel", lit("parent")).withColumn("edgeLabel", lit("superparent_parent"))
-//      g.updateEdges(superparent_parent_edges.select(
-//        g.idColumn(
-//          col("srcLabel"),
-//          col("superparent_id")
-//        ) as "src",
-//        g.idColumn(
-//          col("dstLabel"),
-//          col("parent_id")
-//        ) as "dst",
-//        col("edgeLabel") as labelStr,
-//        col("connect_date")
-//      ), cache)
-      timeIt(g.updateEdges(
+      timeIt("superparent parent edges", g.updateEdges(
         "superparent",
         "superparent_parent",
         "parent",
@@ -625,20 +493,7 @@ object DataImportStateStreet {
       ))
 
       println("\nWriting topchild childnums edges")
-//      val topchild_childnums_edges = topchild_childnums_df.withColumn("srcLabel", lit("topchild")).withColumn("dstLabel", lit("childnums")).withColumn("edgeLabel", lit("topchild_childnums"))
-//      g.updateEdges(topchild_childnums_edges.select(
-//        g.idColumn(
-//          col("srcLabel"),
-//          col("topchild_id")
-//        ) as "src",
-//        g.idColumn(
-//          col("dstLabel"),
-//          col("childnums_id")
-//        ) as "dst",
-//        col("edgeLabel") as labelStr,
-//        col("connect_date")
-//      ), cache)
-      timeIt(g.updateEdges(
+      timeIt("topchild childnums edges", g.updateEdges(
         "topchild",
         "topchild_childnums",
         "childnums",
@@ -650,20 +505,7 @@ object DataImportStateStreet {
       ))
 
       println("\nWriting valmonth vals edges")
-//      var valmonth_vals_edges = valmonth_vals_df.withColumn("srcLabel", lit("valmonth")).withColumn("dstLabel", lit("vals")).withColumn("edgeLabel", lit("valmonth_vals"))
-//      g.updateEdges(valmonth_vals_edges.select(
-//        g.idColumn(
-//          col("srclabel"),
-//          col("childitem_id") as "valmonth_id"
-//        ) as "src",
-//        g.idColumn(
-//          col("dstLabel"),
-//          col("vals_id")
-//        ) as "dst",
-//        col("edgeLabel") as labelStr,
-//        col("connect_date")
-//      ), cache)
-      timeIt(g.updateEdges(
+      timeIt("valmonth vals edges", g.updateEdges(
         "valmonth",
         "valmonth_vals",
         "vals",
@@ -675,20 +517,7 @@ object DataImportStateStreet {
       ))
 
       println("\nWriting valyear valmonth edges")
-//      var valyear_valmonth_edges = valyear_valmonth_df.withColumn("srcLabel", lit("valyear")).withColumn("dstLabel", lit("valmonth")).withColumn("edgeLabel", lit("valyear_valmonth"))
-//      g.updateEdges(valyear_valmonth_edges.select(
-//        g.idColumn(
-//          col("srcLabel"),
-//          col("valyear_id")
-//        ) as "src",
-//        g.idColumn(
-//          col("dstLabel"),
-//          col("valmonth_id")
-//        ) as "dst",
-//        col("edgeLabel") as labelStr,
-//        col("connect_month")
-//      ), cache)
-      timeIt(g.updateEdges(
+      timeIt("valyear valmonth edges", g.updateEdges(
         "valyear",
         "valyear_valmonth",
         "valmonth",
@@ -698,11 +527,12 @@ object DataImportStateStreet {
           col("connect_month")
         )
       ))
-
+*/
     } else {
       println("\nUsing the old API")
+      println("\nWriting childitem valyear edges")
       val childitem_valyear_edges = childitem_valyear_df.withColumn("srcLabel", lit("childitem")).withColumn("dstLabel", lit("valyear")).withColumn("edgeLabel", lit("childitem_valyear"))
-      timeIt(g.updateEdges(childitem_valyear_edges.select(
+      timeIt("childitem valyear edges", g.updateEdges(childitem_valyear_edges.select(
         g.idColumn(
           col("srcLabel"),
           col("childitem_id")
@@ -717,7 +547,7 @@ object DataImportStateStreet {
 
       println("\nWriting childnums childitem edges")
       var childnums_childitem_edges = childnums_childitem_df.withColumn("srcLabel", lit("childnums")).withColumn("dstLabel", lit("childitem")).withColumn("edgeLabel", lit("childnums_childitem"))
-      timeIt(g.updateEdges(childnums_childitem_edges.select(
+      timeIt("childnums childitem edges", g.updateEdges(childnums_childitem_edges.select(
         g.idColumn(
           col("srcLabel"),
           col("childnums_id")
@@ -732,7 +562,7 @@ object DataImportStateStreet {
 
       println("\nWriting childnums numsyear edges")
       var childnums_numsyear_edges = childnums_numsyear_df.withColumn("srcLabel", lit("childnums")).withColumn("dstLabel", lit("numsyear")).withColumn("edgelabel", lit("childnums_numsyear"))
-      timeIt(g.updateEdges(childnums_numsyear_edges.select(
+      timeIt("childnums numsyear edges", g.updateEdges(childnums_numsyear_edges.select(
         g.idColumn(
           col("srcLabel"),
           col("childnums_id")
@@ -747,7 +577,7 @@ object DataImportStateStreet {
 
       println("\nWriting numsmonth nums edges")
       var numsmonth_nums_edges = numsmonth_nums_df.withColumn("srcLabel", lit("numsmonth")).withColumn("dstLabel", lit("nums")).withColumn("edgelabel", lit("numsmonth_nums"))
-      timeIt(g.updateEdges(numsmonth_nums_edges.select(
+      timeIt("numsmonth nums edges", g.updateEdges(numsmonth_nums_edges.select(
         g.idColumn(
           col("srcLabel"),
           col("numsmonth_id")
@@ -762,7 +592,7 @@ object DataImportStateStreet {
 
       println("\nWriting numsyear numsmonth edges")
       var numsyear_numsmonth_edges = numsyear_numsmonth_df.withColumn("srcLabel", lit("numsyear")).withColumn("dstLabel", lit("numsmonth")).withColumn("edgeLabel", lit("numsyear_numsmonth"))
-      timeIt(g.updateEdges(numsyear_numsmonth_edges.select(
+      timeIt("numsyear numsmonth edges", g.updateEdges(numsyear_numsmonth_edges.select(
         g.idColumn(
           col("srcLabel"),
           col("numsyear_id")
@@ -777,7 +607,7 @@ object DataImportStateStreet {
 
       println("\nWriting parent semiparent edges")
       val parent_semiparent_edges = parent_semiparent_df.withColumn("srcLabel", lit("parent")).withColumn("dstLabel", lit("semiparent")).withColumn("edgeLabel", lit("parent_semiparent"))
-      timeIt(g.updateEdges(parent_semiparent_edges.select(
+      timeIt("parent semiparent edges", g.updateEdges(parent_semiparent_edges.select(
         g.idColumn(
           col("srcLabel"),
           col("parent_id")
@@ -792,7 +622,7 @@ object DataImportStateStreet {
 
       println("\nWriting semiparent subparent edges")
       val semiparent_subparent_edges = semiparent_subparent_df.withColumn("srcLabel", lit("semiparent")).withColumn("dstLabel", lit("subparent")).withColumn("edgeLabel", lit("semiparent_subparent"))
-      timeIt(g.updateEdges(semiparent_subparent_edges.select(
+      timeIt("semiparent subparent edges", g.updateEdges(semiparent_subparent_edges.select(
         g.idColumn(
           col("srcLabel"),
           col("semiparent_id")
@@ -807,7 +637,7 @@ object DataImportStateStreet {
 
       println("\nWriting subparent topchild edges")
       val subparent_topchild_edges = subparent_topchild_df.withColumn("srcLabel", lit("subparent")).withColumn("dstLabel", lit("topchild")).withColumn("edgeLabel", lit("subparent_topchild"))
-      timeIt(g.updateEdges(subparent_topchild_edges.select(
+      timeIt("subparent topchild edges", g.updateEdges(subparent_topchild_edges.select(
         g.idColumn(
           col("srcLabel"),
           col("subparent_id")
@@ -822,7 +652,7 @@ object DataImportStateStreet {
 
       println("\nWriting superparent parent edges")
       val superparent_parent_edges = superparent_parent_df.withColumn("srcLabel", lit("superparent")).withColumn("dstLabel", lit("parent")).withColumn("edgeLabel", lit("superparent_parent"))
-      timeIt(g.updateEdges(superparent_parent_edges.select(
+      timeIt("superparent parent edges", g.updateEdges(superparent_parent_edges.select(
         g.idColumn(
           col("srcLabel"),
           col("superparent_id")
@@ -837,7 +667,7 @@ object DataImportStateStreet {
 
       println("\nWriting topchild childnums edges")
       val topchild_childnums_edges = topchild_childnums_df.withColumn("srcLabel", lit("topchild")).withColumn("dstLabel", lit("childnums")).withColumn("edgeLabel", lit("topchild_childnums"))
-      timeIt(g.updateEdges(topchild_childnums_edges.select(
+      timeIt("topchild childnums edges", g.updateEdges(topchild_childnums_edges.select(
         g.idColumn(
           col("srcLabel"),
           col("topchild_id")
@@ -852,7 +682,7 @@ object DataImportStateStreet {
 
       println("\nWriting valmonth vals edges")
       var valmonth_vals_edges = valmonth_vals_df.withColumn("srcLabel", lit("valmonth")).withColumn("dstLabel", lit("vals")).withColumn("edgeLabel", lit("valmonth_vals"))
-      timeIt(g.updateEdges(valmonth_vals_edges.select(
+      timeIt("valmonth vals edges", g.updateEdges(valmonth_vals_edges.select(
         g.idColumn(
           col("srclabel"),
           col("childitem_id") as "valmonth_id"
@@ -867,7 +697,7 @@ object DataImportStateStreet {
 
       println("\nWriting valyear valmonth edges")
       var valyear_valmonth_edges = valyear_valmonth_df.withColumn("srcLabel", lit("valyear")).withColumn("dstLabel", lit("valmonth")).withColumn("edgeLabel", lit("valyear_valmonth"))
-      timeIt(g.updateEdges(valyear_valmonth_edges.select(
+      timeIt("valyear valmonth edges", g.updateEdges(valyear_valmonth_edges.select(
         g.idColumn(
           col("srcLabel"),
           col("valyear_id")
@@ -883,6 +713,8 @@ object DataImportStateStreet {
     }
 
     println("\nDone writing edges")
+
+    runtimes.limit(100).write.json("dgf-perf-results.json") // write runtimes to dsefs
 
     System.exit(0)
   }
