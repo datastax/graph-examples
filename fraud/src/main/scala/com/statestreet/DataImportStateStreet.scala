@@ -26,6 +26,17 @@ object DataImportStateStreet {
       }
     }
 
+    val runFullTest = {
+      if (args.size == 0) {
+        true
+      } else {
+        args(1) match {
+          case "full" => true
+          case _ => false
+        }
+      }
+    }
+
     val spark = SparkSession
       .builder
       .appName("Data Import Application")
@@ -171,6 +182,7 @@ object DataImportStateStreet {
     val schema = StructType(List(StructField("Element", StringType, true), StructField("Runtime(sec)", StringType, true)))
 
     var runtimes = spark.createDataFrame(spark.sparkContext.makeRDD(List(Row(null,null))), schema).na.drop
+    val totalTimeStart = System.currentTimeMillis
 
     def timeIt[T](test: String, code: => T): T = {
       val start = System.currentTimeMillis
@@ -187,38 +199,6 @@ object DataImportStateStreet {
     // Write out vertices
     if (useNewAPI) {
       println("\nUsing the new API")
-      println("\nWriting superparent vertices")
-      timeIt("superparent vertices", g.updateVertices("superparent", superparentDF))
-
-      println("\nWriting parent vertices")
-      timeIt("parent vertices", g.updateVertices("parent", parentDF))
-
-      println("\nWriting semiparent vertices")
-      timeIt("semiparent vertices", g.updateVertices("semiparent", semiparentDF))
-
-      println("\nWriting subparent vertices")
-      timeIt("subparent vertices", g.updateVertices("subparent", subparentDF))
-
-      println("\nWriting topchild vertices")
-      timeIt("topchild vertices", g.updateVertices("topchild", topchildDF))
-
-      println("\nWriting childnums vertices")
-      timeIt("childnums vertices", g.updateVertices("childnums", childnumsDF))
-
-      println("\nWriting numsyear vertices")
-      timeIt("numsyear vertices", g.updateVertices("numsyear", numsyearDF))
-
-      println("\nWriting numsmonth vertices")
-      timeIt("numsmonth vertices", g.updateVertices("numsmonth", numsmonthDF))
-
-      println("\nWriting nums vertices")
-      timeIt("nums vertices", g.updateVertices("nums", numsDF))
-
-      println("\nWriting childitem vertices")
-      timeIt("childitem vertices", g.updateVertices("childitem", childitemDF))
-
-      println("\nWriting valyear vertices")
-      timeIt("valyear vertices", g.updateVertices("valyear", valyearDF))
 
       println("\nWriting valmonth vertices")
       timeIt("valmonth vertices", g.updateVertices("valmonth", valmonthDF))
@@ -226,46 +206,87 @@ object DataImportStateStreet {
       println("\nWriting values vertices")
       timeIt("values vertices", g.updateVertices("vals", valsDF))
 
+      if (runFullTest) {
+        println("\nWriting superparent vertices")
+        timeIt("superparent vertices", g.updateVertices("superparent", superparentDF))
+
+        println("\nWriting parent vertices")
+        timeIt("parent vertices", g.updateVertices("parent", parentDF))
+
+        println("\nWriting semiparent vertices")
+        timeIt("semiparent vertices", g.updateVertices("semiparent", semiparentDF))
+
+        println("\nWriting subparent vertices")
+        timeIt("subparent vertices", g.updateVertices("subparent", subparentDF))
+
+        println("\nWriting topchild vertices")
+        timeIt("topchild vertices", g.updateVertices("topchild", topchildDF))
+
+        println("\nWriting childnums vertices")
+        timeIt("childnums vertices", g.updateVertices("childnums", childnumsDF))
+
+        println("\nWriting numsyear vertices")
+        timeIt("numsyear vertices", g.updateVertices("numsyear", numsyearDF))
+
+        println("\nWriting numsmonth vertices")
+        timeIt("numsmonth vertices", g.updateVertices("numsmonth", numsmonthDF))
+
+        println("\nWriting nums vertices")
+        timeIt("nums vertices", g.updateVertices("nums", numsDF))
+
+        println("\nWriting childitem vertices")
+        timeIt("childitem vertices", g.updateVertices("childitem", childitemDF))
+
+        println("\nWriting valyear vertices")
+        timeIt("valyear vertices", g.updateVertices("valyear", valyearDF))
+
+      }
+
     } else {
       println("\nUsing the old API")
-      println("\nWriting superparent vertices")
-      timeIt("superparent vertices", g.updateVertices(superparentDF.withColumn(labelStr, lit("superparent")), Seq("superparent"), cache))
-
-      println("\nWriting parent vertices")
-      timeIt("parent vertices", g.updateVertices(parentDF.withColumn(labelStr, lit("parent")), Seq("parent"), cache))
-
-      println("\nWriting semiparent vertices")
-      timeIt("semiparent vertices", g.updateVertices(semiparentDF.withColumn(labelStr, lit("semiparent")), Seq("semiparent"), cache))
-
-      println("\nWriting subparent vertices")
-      timeIt("subparent vertices", g.updateVertices(subparentDF.withColumn(labelStr, lit("subparent")), Seq("subparent"), cache))
-
-      println("\nWriting topchild vertices")
-      timeIt("topchild vertices", g.updateVertices(topchildDF.withColumn(labelStr, lit("topchild")), Seq("topchild"), cache))
-
-      println("\nWriting childnums vertices")
-      timeIt("childnums vertices", g.updateVertices(childnumsDF.withColumn(labelStr, lit("childnums")), Seq("childnums"), cache))
-
-      println("\nWriting numsyear vertices")
-      timeIt("numsyear vertices", g.updateVertices(numsyearDF.withColumn(labelStr, lit("numsyear")), Seq("numsyear"), cache))
-
-      println("\nWriting numsmonth vertices")
-      timeIt("numsmonth vertices", g.updateVertices(numsmonthDF.withColumn(labelStr, lit("numsmonth")), Seq("numsmonth"), cache))
-
-      println("\nWriting nums vertices")
-      timeIt("nums vertices", g.updateVertices(numsDF.withColumn(labelStr, lit("nums")), Seq("nums"), cache))
-
-      println("\nWriting childitem vertices")
-      timeIt("childitem vertices", g.updateVertices(childitemDF.withColumn(labelStr, lit("childitem")), Seq("childitem"), cache))
-
-      println("\nWriting valyear vertices")
-      timeIt("valyear vertices", g.updateVertices(valyearDF.withColumn(labelStr, lit("valyear")), Seq("valyear"), cache))
 
       println("\nWriting valmonth vertices")
       timeIt("valmonth vertices", g.updateVertices(valmonthDF.withColumn(labelStr, lit("valmonth")), Seq("valmonth"), cache))
 
       println("\nWriting values vertices")
       timeIt("values vertices", g.updateVertices(valsDF.withColumn(labelStr, lit("vals")), Seq("vals"), cache))
+
+      if (runFullTest) {
+        println("\nWriting superparent vertices")
+        timeIt("superparent vertices", g.updateVertices(superparentDF.withColumn(labelStr, lit("superparent")), Seq("superparent"), cache))
+
+        println("\nWriting parent vertices")
+        timeIt("parent vertices", g.updateVertices(parentDF.withColumn(labelStr, lit("parent")), Seq("parent"), cache))
+
+        println("\nWriting semiparent vertices")
+        timeIt("semiparent vertices", g.updateVertices(semiparentDF.withColumn(labelStr, lit("semiparent")), Seq("semiparent"), cache))
+
+        println("\nWriting subparent vertices")
+        timeIt("subparent vertices", g.updateVertices(subparentDF.withColumn(labelStr, lit("subparent")), Seq("subparent"), cache))
+
+        println("\nWriting topchild vertices")
+        timeIt("topchild vertices", g.updateVertices(topchildDF.withColumn(labelStr, lit("topchild")), Seq("topchild"), cache))
+
+        println("\nWriting childnums vertices")
+        timeIt("childnums vertices", g.updateVertices(childnumsDF.withColumn(labelStr, lit("childnums")), Seq("childnums"), cache))
+
+        println("\nWriting numsyear vertices")
+        timeIt("numsyear vertices", g.updateVertices(numsyearDF.withColumn(labelStr, lit("numsyear")), Seq("numsyear"), cache))
+
+        println("\nWriting numsmonth vertices")
+        timeIt("numsmonth vertices", g.updateVertices(numsmonthDF.withColumn(labelStr, lit("numsmonth")), Seq("numsmonth"), cache))
+
+        println("\nWriting nums vertices")
+        timeIt("nums vertices", g.updateVertices(numsDF.withColumn(labelStr, lit("nums")), Seq("nums"), cache))
+
+        println("\nWriting childitem vertices")
+        timeIt("childitem vertices", g.updateVertices(childitemDF.withColumn(labelStr, lit("childitem")), Seq("childitem"), cache))
+
+        println("\nWriting valyear vertices")
+        timeIt("valyear vertices", g.updateVertices(valyearDF.withColumn(labelStr, lit("valyear")), Seq("valyear"), cache))
+
+      }
+
     }
 
     println("\nDone writing vertices")
@@ -384,126 +405,6 @@ object DataImportStateStreet {
     if (useNewAPI) {
       println("\nUsing the new API")
 
-      println("\nWriting childitem valyear edges")
-      timeIt("childitem valyear edges", g.updateEdges(
-        "childitem",
-        "childitem_valyear",
-        "valyear",
-        childitem_valyear_df.select(
-          col("childitem_id") as "out_childitem_id",
-          col("valyear_id") as "in_valyear_id",
-          col("connect_year")
-        )
-      ))
-
-      println("\nWriting childnums childitem edges")
-      timeIt("childnums childitem edges", g.updateEdges(
-        "childnums",
-        "childnums_childitem",
-        "childitem",
-        childnums_childitem_df.select(
-          col("childnums_id") as "out_childnums_id",
-          col("childitem_id") as "in_childitem_id",
-          col("connect_date")
-        )
-      ))
-
-      println("\nWriting childnums numsyear edges")
-      timeIt("childnums numsyear edges", g.updateEdges(
-        "childnums",
-        "childnums_numsyear",
-        "numsyear",
-        childnums_numsyear_df.select(
-          col("childnums_id") as "out_childnums_id",
-          col("numsyear_id") as "in_numsyear_id",
-          col("connect_year")
-        )
-      ))
-
-      println("\nWriting numsmonth nums edges")
-      timeIt("numsmonth nums edges", g.updateEdges(
-        "numsmonth",
-        "numsmonth_nums",
-        "nums",
-        numsmonth_nums_df.select(
-          col("numsmonth_id") as "out_numsmonth_id",
-          col("nums_id") as "in_nums_id",
-          col("connect_date")
-        )
-      ))
-
-      println("\nWriting numsyear numsmonth edges")
-      timeIt("numsyear numsmonth edges", g.updateEdges(
-        "numsyear",
-        "numsyear_numsmonth",
-        "numsmonth",
-        numsyear_numsmonth_df.select(
-          col("numsyear_id") as "out_numsyear_id",
-          col("numsmonth_id") as "in_numsmonth_id",
-          col("connect_month")
-        )
-      ))
-
-      println("\nWriting parent semiparent edges")
-      timeIt("parent semiparent edges", g.updateEdges(
-        "parent",
-        "parent_semiparent",
-        "semiparent",
-        parent_semiparent_df.select(
-          col("parent_id") as "out_parent_id",
-          col("semiparent_id") as "in_semiparent_id",
-          col("connect_date")
-        )
-      ))
-
-      println("\nWriting semiparent subparent edges")
-      timeIt("semiparent subparent edges", g.updateEdges(
-        "semiparent",
-        "semiparent_subparent",
-        "subparent",
-        semiparent_subparent_df.select(
-          col("semiparent_id") as "out_semiparent_id",
-          col("subparent_id") as "in_subparent_id",
-          col("connect_date")
-        )
-      ))
-
-      println("\nWriting subparent topchild edges")
-      timeIt("subparent topchild edges", g.updateEdges(
-        "subparent",
-        "subparent_topchild",
-        "topchild",
-        subparent_topchild_df.select(
-          col("subparent_id") as "out_subparent_id",
-          col("topchild_id") as "in_topchild_id",
-          col("connect_date")
-        )
-      ))
-
-      println("\nWriting superparent parent edges")
-      timeIt("superparent parent edges", g.updateEdges(
-        "superparent",
-        "superparent_parent",
-        "parent",
-        superparent_parent_df.select(
-          col("superparent_id") as "out_superparent_id",
-          col("parent_id") as "in_parent_id",
-          col("connect_date")
-        )
-      ))
-
-      println("\nWriting topchild childnums edges")
-      timeIt("topchild childnums edges", g.updateEdges(
-        "topchild",
-        "topchild_childnums",
-        "childnums",
-        topchild_childnums_df.select(
-          col("topchild_id") as "out_topchild_id",
-          col("childnums_id") as "in_childnums_id",
-          col("connect_date")
-        )
-      ))
-
       println("\nWriting valmonth vals edges")
       timeIt("valmonth vals edges", g.updateEdges(
         "valmonth",
@@ -516,169 +417,143 @@ object DataImportStateStreet {
         )
       ))
 
-      println("\nWriting valyear valmonth edges")
-      timeIt("valyear valmonth edges", g.updateEdges(
-        "valyear",
-        "valyear_valmonth",
-        "valmonth",
-        valyear_valmonth_df.select(
-          col("valyear_id") as "out_valyear_id",
-          col("valmonth_id") as "in_valmonth_id",
-          col("connect_month")
-        )
-      ))
+      if (runFullTest) {
+        println("\nWriting childitem valyear edges")
+        timeIt("childitem valyear edges", g.updateEdges(
+          "childitem",
+          "childitem_valyear",
+          "valyear",
+          childitem_valyear_df.select(
+            col("childitem_id") as "out_childitem_id",
+            col("valyear_id") as "in_valyear_id",
+            col("connect_year")
+          )
+        ))
+
+        println("\nWriting childnums childitem edges")
+        timeIt("childnums childitem edges", g.updateEdges(
+          "childnums",
+          "childnums_childitem",
+          "childitem",
+          childnums_childitem_df.select(
+            col("childnums_id") as "out_childnums_id",
+            col("childitem_id") as "in_childitem_id",
+            col("connect_date")
+          )
+        ))
+
+        println("\nWriting childnums numsyear edges")
+        timeIt("childnums numsyear edges", g.updateEdges(
+          "childnums",
+          "childnums_numsyear",
+          "numsyear",
+          childnums_numsyear_df.select(
+            col("childnums_id") as "out_childnums_id",
+            col("numsyear_id") as "in_numsyear_id",
+            col("connect_year")
+          )
+        ))
+
+        println("\nWriting numsmonth nums edges")
+        timeIt("numsmonth nums edges", g.updateEdges(
+          "numsmonth",
+          "numsmonth_nums",
+          "nums",
+          numsmonth_nums_df.select(
+            col("numsmonth_id") as "out_numsmonth_id",
+            col("nums_id") as "in_nums_id",
+            col("connect_date")
+          )
+        ))
+
+        println("\nWriting numsyear numsmonth edges")
+        timeIt("numsyear numsmonth edges", g.updateEdges(
+          "numsyear",
+          "numsyear_numsmonth",
+          "numsmonth",
+          numsyear_numsmonth_df.select(
+            col("numsyear_id") as "out_numsyear_id",
+            col("numsmonth_id") as "in_numsmonth_id",
+            col("connect_month")
+          )
+        ))
+
+        println("\nWriting parent semiparent edges")
+        timeIt("parent semiparent edges", g.updateEdges(
+          "parent",
+          "parent_semiparent",
+          "semiparent",
+          parent_semiparent_df.select(
+            col("parent_id") as "out_parent_id",
+            col("semiparent_id") as "in_semiparent_id",
+            col("connect_date")
+          )
+        ))
+
+        println("\nWriting semiparent subparent edges")
+        timeIt("semiparent subparent edges", g.updateEdges(
+          "semiparent",
+          "semiparent_subparent",
+          "subparent",
+          semiparent_subparent_df.select(
+            col("semiparent_id") as "out_semiparent_id",
+            col("subparent_id") as "in_subparent_id",
+            col("connect_date")
+          )
+        ))
+
+        println("\nWriting subparent topchild edges")
+        timeIt("subparent topchild edges", g.updateEdges(
+          "subparent",
+          "subparent_topchild",
+          "topchild",
+          subparent_topchild_df.select(
+            col("subparent_id") as "out_subparent_id",
+            col("topchild_id") as "in_topchild_id",
+            col("connect_date")
+          )
+        ))
+
+        println("\nWriting superparent parent edges")
+        timeIt("superparent parent edges", g.updateEdges(
+          "superparent",
+          "superparent_parent",
+          "parent",
+          superparent_parent_df.select(
+            col("superparent_id") as "out_superparent_id",
+            col("parent_id") as "in_parent_id",
+            col("connect_date")
+          )
+        ))
+
+        println("\nWriting topchild childnums edges")
+        timeIt("topchild childnums edges", g.updateEdges(
+          "topchild",
+          "topchild_childnums",
+          "childnums",
+          topchild_childnums_df.select(
+            col("topchild_id") as "out_topchild_id",
+            col("childnums_id") as "in_childnums_id",
+            col("connect_date")
+          )
+        ))
+
+        println("\nWriting valyear valmonth edges")
+        timeIt("valyear valmonth edges", g.updateEdges(
+          "valyear",
+          "valyear_valmonth",
+          "valmonth",
+          valyear_valmonth_df.select(
+            col("valyear_id") as "out_valyear_id",
+            col("valmonth_id") as "in_valmonth_id",
+            col("connect_month")
+          )
+        ))
+
+      }
 
     } else {
       println("\nUsing the old API")
-      println("\nWriting childitem valyear edges")
-      val childitem_valyear_edges = childitem_valyear_df.withColumn("srcLabel", lit("childitem")).withColumn("dstLabel", lit("valyear")).withColumn("edgeLabel", lit("childitem_valyear"))
-      timeIt("childitem valyear edges", g.updateEdges(childitem_valyear_edges.select(
-        g.idColumn(
-          col("srcLabel"),
-          col("childitem_id")
-        ) as "src",
-        g.idColumn(
-          col("dstLabel"),
-          col("valyear_id")
-        ) as "dst",
-        col("edgeLabel") as labelStr,
-        col("connect_year")
-      ), cache))
-
-      println("\nWriting childnums childitem edges")
-      var childnums_childitem_edges = childnums_childitem_df.withColumn("srcLabel", lit("childnums")).withColumn("dstLabel", lit("childitem")).withColumn("edgeLabel", lit("childnums_childitem"))
-      timeIt("childnums childitem edges", g.updateEdges(childnums_childitem_edges.select(
-        g.idColumn(
-          col("srcLabel"),
-          col("childnums_id")
-        ) as "src",
-        g.idColumn(
-          col("dstLabel"),
-          col("childitem_id")
-        ) as "dst",
-        col("edgeLabel") as labelStr,
-        col("connect_date")
-      ), cache))
-
-      println("\nWriting childnums numsyear edges")
-      var childnums_numsyear_edges = childnums_numsyear_df.withColumn("srcLabel", lit("childnums")).withColumn("dstLabel", lit("numsyear")).withColumn("edgelabel", lit("childnums_numsyear"))
-      timeIt("childnums numsyear edges", g.updateEdges(childnums_numsyear_edges.select(
-        g.idColumn(
-          col("srcLabel"),
-          col("childnums_id")
-        ) as "src",
-        g.idColumn(
-          col("dstLabel"),
-          col("numsyear_id")
-        ) as "dst",
-        col("edgeLabel") as labelStr,
-        col("connect_year")
-      ), cache))
-
-      println("\nWriting numsmonth nums edges")
-      var numsmonth_nums_edges = numsmonth_nums_df.withColumn("srcLabel", lit("numsmonth")).withColumn("dstLabel", lit("nums")).withColumn("edgelabel", lit("numsmonth_nums"))
-      timeIt("numsmonth nums edges", g.updateEdges(numsmonth_nums_edges.select(
-        g.idColumn(
-          col("srcLabel"),
-          col("numsmonth_id")
-        ) as "src",
-        g.idColumn(
-          col("dstLabel"),
-          col("nums_id")
-        ) as "dst",
-        col("edgeLabel") as labelStr,
-        col("connect_date")
-      ), cache))
-
-      println("\nWriting numsyear numsmonth edges")
-      var numsyear_numsmonth_edges = numsyear_numsmonth_df.withColumn("srcLabel", lit("numsyear")).withColumn("dstLabel", lit("numsmonth")).withColumn("edgeLabel", lit("numsyear_numsmonth"))
-      timeIt("numsyear numsmonth edges", g.updateEdges(numsyear_numsmonth_edges.select(
-        g.idColumn(
-          col("srcLabel"),
-          col("numsyear_id")
-        ) as "src",
-        g.idColumn(
-          col("dstLabel"),
-          col("numsmonth_id")
-        ) as "dst",
-        col("edgeLabel") as labelStr,
-        col("connect_month")
-      ), cache))
-
-      println("\nWriting parent semiparent edges")
-      val parent_semiparent_edges = parent_semiparent_df.withColumn("srcLabel", lit("parent")).withColumn("dstLabel", lit("semiparent")).withColumn("edgeLabel", lit("parent_semiparent"))
-      timeIt("parent semiparent edges", g.updateEdges(parent_semiparent_edges.select(
-        g.idColumn(
-          col("srcLabel"),
-          col("parent_id")
-        ) as "src",
-        g.idColumn(
-          col("dstLabel"),
-          col("semiparent_id")
-        ) as "dst",
-        col("edgeLabel") as labelStr,
-        col("connect_date")
-      ), cache))
-
-      println("\nWriting semiparent subparent edges")
-      val semiparent_subparent_edges = semiparent_subparent_df.withColumn("srcLabel", lit("semiparent")).withColumn("dstLabel", lit("subparent")).withColumn("edgeLabel", lit("semiparent_subparent"))
-      timeIt("semiparent subparent edges", g.updateEdges(semiparent_subparent_edges.select(
-        g.idColumn(
-          col("srcLabel"),
-          col("semiparent_id")
-        ) as "src",
-        g.idColumn(
-          col("dstLabel"),
-          col("subparent_id")
-        ) as "dst",
-        col("edgeLabel") as labelStr,
-        col("connect_date")
-      ), cache))
-
-      println("\nWriting subparent topchild edges")
-      val subparent_topchild_edges = subparent_topchild_df.withColumn("srcLabel", lit("subparent")).withColumn("dstLabel", lit("topchild")).withColumn("edgeLabel", lit("subparent_topchild"))
-      timeIt("subparent topchild edges", g.updateEdges(subparent_topchild_edges.select(
-        g.idColumn(
-          col("srcLabel"),
-          col("subparent_id")
-        ) as "src",
-        g.idColumn(
-          col("dstLabel"),
-          col("topchild_id")
-        ) as "dst",
-        col("edgeLabel") as labelStr,
-        col("connect_date")
-      ), cache))
-
-      println("\nWriting superparent parent edges")
-      val superparent_parent_edges = superparent_parent_df.withColumn("srcLabel", lit("superparent")).withColumn("dstLabel", lit("parent")).withColumn("edgeLabel", lit("superparent_parent"))
-      timeIt("superparent parent edges", g.updateEdges(superparent_parent_edges.select(
-        g.idColumn(
-          col("srcLabel"),
-          col("superparent_id")
-        ) as "src",
-        g.idColumn(
-          col("dstLabel"),
-          col("parent_id")
-        ) as "dst",
-        col("edgeLabel") as labelStr,
-        col("connect_date")
-      ), cache))
-
-      println("\nWriting topchild childnums edges")
-      val topchild_childnums_edges = topchild_childnums_df.withColumn("srcLabel", lit("topchild")).withColumn("dstLabel", lit("childnums")).withColumn("edgeLabel", lit("topchild_childnums"))
-      timeIt("topchild childnums edges", g.updateEdges(topchild_childnums_edges.select(
-        g.idColumn(
-          col("srcLabel"),
-          col("topchild_id")
-        ) as "src",
-        g.idColumn(
-          col("dstLabel"),
-          col("childnums_id")
-        ) as "dst",
-        col("edgeLabel") as labelStr,
-        col("connect_date")
-      ), cache))
 
       println("\nWriting valmonth vals edges")
       var valmonth_vals_edges = valmonth_vals_df.withColumn("srcLabel", lit("valmonth")).withColumn("dstLabel", lit("vals")).withColumn("edgeLabel", lit("valmonth_vals"))
@@ -695,24 +570,182 @@ object DataImportStateStreet {
         col("connect_date")
       ), cache))
 
-      println("\nWriting valyear valmonth edges")
-      var valyear_valmonth_edges = valyear_valmonth_df.withColumn("srcLabel", lit("valyear")).withColumn("dstLabel", lit("valmonth")).withColumn("edgeLabel", lit("valyear_valmonth"))
-      timeIt("valyear valmonth edges", g.updateEdges(valyear_valmonth_edges.select(
-        g.idColumn(
-          col("srcLabel"),
-          col("valyear_id")
-        ) as "src",
-        g.idColumn(
-          col("dstLabel"),
-          col("valmonth_id")
-        ) as "dst",
-        col("edgeLabel") as labelStr,
-        col("connect_month")
-      ), cache))
+      if (runFullTest) {
+        println("\nWriting childitem valyear edges")
+        val childitem_valyear_edges = childitem_valyear_df.withColumn("srcLabel", lit("childitem")).withColumn("dstLabel", lit("valyear")).withColumn("edgeLabel", lit("childitem_valyear"))
+        timeIt("childitem valyear edges", g.updateEdges(childitem_valyear_edges.select(
+          g.idColumn(
+            col("srcLabel"),
+            col("childitem_id")
+          ) as "src",
+          g.idColumn(
+            col("dstLabel"),
+            col("valyear_id")
+          ) as "dst",
+          col("edgeLabel") as labelStr,
+          col("connect_year")
+        ), cache))
+
+        println("\nWriting childnums childitem edges")
+        var childnums_childitem_edges = childnums_childitem_df.withColumn("srcLabel", lit("childnums")).withColumn("dstLabel", lit("childitem")).withColumn("edgeLabel", lit("childnums_childitem"))
+        timeIt("childnums childitem edges", g.updateEdges(childnums_childitem_edges.select(
+          g.idColumn(
+            col("srcLabel"),
+            col("childnums_id")
+          ) as "src",
+          g.idColumn(
+            col("dstLabel"),
+            col("childitem_id")
+          ) as "dst",
+          col("edgeLabel") as labelStr,
+          col("connect_date")
+        ), cache))
+
+        println("\nWriting childnums numsyear edges")
+        var childnums_numsyear_edges = childnums_numsyear_df.withColumn("srcLabel", lit("childnums")).withColumn("dstLabel", lit("numsyear")).withColumn("edgelabel", lit("childnums_numsyear"))
+        timeIt("childnums numsyear edges", g.updateEdges(childnums_numsyear_edges.select(
+          g.idColumn(
+            col("srcLabel"),
+            col("childnums_id")
+          ) as "src",
+          g.idColumn(
+            col("dstLabel"),
+            col("numsyear_id")
+          ) as "dst",
+          col("edgeLabel") as labelStr,
+          col("connect_year")
+        ), cache))
+
+        println("\nWriting numsmonth nums edges")
+        var numsmonth_nums_edges = numsmonth_nums_df.withColumn("srcLabel", lit("numsmonth")).withColumn("dstLabel", lit("nums")).withColumn("edgelabel", lit("numsmonth_nums"))
+        timeIt("numsmonth nums edges", g.updateEdges(numsmonth_nums_edges.select(
+          g.idColumn(
+            col("srcLabel"),
+            col("numsmonth_id")
+          ) as "src",
+          g.idColumn(
+            col("dstLabel"),
+            col("nums_id")
+          ) as "dst",
+          col("edgeLabel") as labelStr,
+          col("connect_date")
+        ), cache))
+
+        println("\nWriting numsyear numsmonth edges")
+        var numsyear_numsmonth_edges = numsyear_numsmonth_df.withColumn("srcLabel", lit("numsyear")).withColumn("dstLabel", lit("numsmonth")).withColumn("edgeLabel", lit("numsyear_numsmonth"))
+        timeIt("numsyear numsmonth edges", g.updateEdges(numsyear_numsmonth_edges.select(
+          g.idColumn(
+            col("srcLabel"),
+            col("numsyear_id")
+          ) as "src",
+          g.idColumn(
+            col("dstLabel"),
+            col("numsmonth_id")
+          ) as "dst",
+          col("edgeLabel") as labelStr,
+          col("connect_month")
+        ), cache))
+
+        println("\nWriting parent semiparent edges")
+        val parent_semiparent_edges = parent_semiparent_df.withColumn("srcLabel", lit("parent")).withColumn("dstLabel", lit("semiparent")).withColumn("edgeLabel", lit("parent_semiparent"))
+        timeIt("parent semiparent edges", g.updateEdges(parent_semiparent_edges.select(
+          g.idColumn(
+            col("srcLabel"),
+            col("parent_id")
+          ) as "src",
+          g.idColumn(
+            col("dstLabel"),
+            col("semiparent_id")
+          ) as "dst",
+          col("edgeLabel") as labelStr,
+          col("connect_date")
+        ), cache))
+
+        println("\nWriting semiparent subparent edges")
+        val semiparent_subparent_edges = semiparent_subparent_df.withColumn("srcLabel", lit("semiparent")).withColumn("dstLabel", lit("subparent")).withColumn("edgeLabel", lit("semiparent_subparent"))
+        timeIt("semiparent subparent edges", g.updateEdges(semiparent_subparent_edges.select(
+          g.idColumn(
+            col("srcLabel"),
+            col("semiparent_id")
+          ) as "src",
+          g.idColumn(
+            col("dstLabel"),
+            col("subparent_id")
+          ) as "dst",
+          col("edgeLabel") as labelStr,
+          col("connect_date")
+        ), cache))
+
+        println("\nWriting subparent topchild edges")
+        val subparent_topchild_edges = subparent_topchild_df.withColumn("srcLabel", lit("subparent")).withColumn("dstLabel", lit("topchild")).withColumn("edgeLabel", lit("subparent_topchild"))
+        timeIt("subparent topchild edges", g.updateEdges(subparent_topchild_edges.select(
+          g.idColumn(
+            col("srcLabel"),
+            col("subparent_id")
+          ) as "src",
+          g.idColumn(
+            col("dstLabel"),
+            col("topchild_id")
+          ) as "dst",
+          col("edgeLabel") as labelStr,
+          col("connect_date")
+        ), cache))
+
+        println("\nWriting superparent parent edges")
+        val superparent_parent_edges = superparent_parent_df.withColumn("srcLabel", lit("superparent")).withColumn("dstLabel", lit("parent")).withColumn("edgeLabel", lit("superparent_parent"))
+        timeIt("superparent parent edges", g.updateEdges(superparent_parent_edges.select(
+          g.idColumn(
+            col("srcLabel"),
+            col("superparent_id")
+          ) as "src",
+          g.idColumn(
+            col("dstLabel"),
+            col("parent_id")
+          ) as "dst",
+          col("edgeLabel") as labelStr,
+          col("connect_date")
+        ), cache))
+
+        println("\nWriting topchild childnums edges")
+        val topchild_childnums_edges = topchild_childnums_df.withColumn("srcLabel", lit("topchild")).withColumn("dstLabel", lit("childnums")).withColumn("edgeLabel", lit("topchild_childnums"))
+        timeIt("topchild childnums edges", g.updateEdges(topchild_childnums_edges.select(
+          g.idColumn(
+            col("srcLabel"),
+            col("topchild_id")
+          ) as "src",
+          g.idColumn(
+            col("dstLabel"),
+            col("childnums_id")
+          ) as "dst",
+          col("edgeLabel") as labelStr,
+          col("connect_date")
+        ), cache))
+
+        println("\nWriting valyear valmonth edges")
+        var valyear_valmonth_edges = valyear_valmonth_df.withColumn("srcLabel", lit("valyear")).withColumn("dstLabel", lit("valmonth")).withColumn("edgeLabel", lit("valyear_valmonth"))
+        timeIt("valyear valmonth edges", g.updateEdges(valyear_valmonth_edges.select(
+          g.idColumn(
+            col("srcLabel"),
+            col("valyear_id")
+          ) as "src",
+          g.idColumn(
+            col("dstLabel"),
+            col("valmonth_id")
+          ) as "dst",
+          col("edgeLabel") as labelStr,
+          col("connect_month")
+        ), cache))
+
+      }
 
     }
 
     println("\nDone writing edges")
+
+    val totalTimeEnd = System.currentTimeMillis
+    val totalRuntimeInSec = (totalTimeEnd - totalTimeStart)/1000.0
+    val totalRuntimeRow = spark.createDataFrame(spark.sparkContext.makeRDD(List(Row("Total Runtime", totalRuntimeInSec.toString))), schema)
+    runtimes = runtimes.union(totalRuntimeRow)
 
     runtimes.limit(100).write.json("dgf-perf-results.json") // write runtimes to dsefs
 
