@@ -42,7 +42,7 @@ object DataImport {
 
       // Create Schemas for DataSets where explicit types are necessary
       // (Sometimes inferring the schema doesn't yield the correct type)
-      def customerSchema():StructType = {
+      val customerSchema:StructType = {
         StructType(Array(
           StructField("customerid", StringType, true),
           StructField("firstname", StringType, true),
@@ -58,7 +58,7 @@ object DataImport {
         ))
       }
 
-      def sessionSchema():StructType = {
+      val sessionSchema:StructType = {
         StructType(Array(
           StructField("sessionid", StringType, true),
           StructField("deviceid", StringType, true),
@@ -67,7 +67,7 @@ object DataImport {
         ))
       }
 
-      def orderSchema():StructType = {
+      val orderSchema:StructType = {
         StructType(Array(
           StructField("orderid", StringType, true),
           StructField("createdtime", TimestampType, true),
@@ -79,7 +79,7 @@ object DataImport {
         ))
       }
 
-      def chargebackSchema():StructType = {
+      val chargebackSchema:StructType = {
         StructType(Array(
           StructField("chargebacknumber", IntegerType, true),
           StructField("amount", DoubleType, true),
@@ -89,7 +89,7 @@ object DataImport {
       }
 
       // If we try to infer the schema, it thinks the postal code should be an integer
-      def addressSchema():StructType = {
+      val addressSchema:StructType = {
         StructType(Array(
           StructField("customerid", StringType, true),
           StructField("address", StringType, true),
@@ -219,7 +219,7 @@ object DataImport {
         col("address"),
         col("postalcode")
       ) as "dst",
-      col("edgeLabel") as "~label")
+        col("edgeLabel") as "~label")
     )
 
     System.exit(0)
