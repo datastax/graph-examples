@@ -7,33 +7,11 @@ echo "Loading fraud data"
 $ROOTDIR/dse-graph-loader*/graphloader -graph fraud -address `hostname --ip-address` fraud/fraud-mapping.groovy -inputpath fraud/data
 
 echo "Configuring Studio"
+tar -xzf $ROOTDIR/graph-examples/fraud/studio/studio-data.tar.gz --directory $ROOTDIR/graph-examples/fraud/studio
+sed -i "s%baseDirectory: null%baseDirectory: $ROOTDIR/graph-examples/fraud/studio/studio-data%g" $ROOTDIR/studio/conf/configuration.yaml
 
-set -x
+echo "Restarting Studio"
+for pid in `ps -aef | grep [s]tudio-server | awk '{print $2}'`; do kill -9 $pid; done
+sleep 5
 
-IP=$(ifconfig | awk '/inet/ { print $2 }' | egrep -v '^fe|^127|^192|^172|::' | head -1)
-IP=${IP#addr:}
-
-DL_SUFFIX=Linux-64bit
-INNER_SUFFIX=linux_amd64
-HUGO_VERSION=0.27
-
-if [[ $HOSTNAME == "node"* ]] ; then
-    #rightscale
-    IP=$(grep $(hostname)_ext /etc/hosts | awk '{print $1}')
-    export WORK_DIR=/tmp
-fi
-
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    # Mac OSX
-    IP=localhost
-    DL_SUFFIX=macOS-64bit
-    INNER_SUFFIX=macos-64bit
-fi
-
-echo "Importing Notebooks...."
-
-curl -H "Accept-Encoding: gzip" -X POST -F 'file=@./fraud/studio/1_of_4_Creating_DSE_Graph_and_Graph_Schema.studio-nb.tar' http://$IP:9091/api/v1/notebooks/import &> /dev/null
-curl -H "Accept-Encoding: gzip" -X POST -F 'file=@./fraud/studio/2_of_4_Populating_and_Traversing_the_Graph.studio-nb.tar' http://$IP:9091/api/v1/notebooks/import &> /dev/null
-curl -H "Accept-Encoding: gzip" -X POST -F 'file=@./fraud/studio/3_of_4_Indexing_and_Traversing_Graph_Data.studio-nb.tar' http://$IP:9091/api/v1/notebooks/import &> /dev/null
-curl -H "Accept-Encoding: gzip" -X POST -F 'file=@./fraud/studio/4_of_4_Fraud_Scenarios.studio-nb.tar' http://$IP:9091/api/v1/notebooks/import &> /dev/null
-
+nohup $ROOTDIR/studio/bin/server.sh &
