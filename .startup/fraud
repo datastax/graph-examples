@@ -36,3 +36,12 @@ curl -H "Accept-Encoding: gzip" -X POST -F 'file=@./fraud/studio/4_of_4_Fraud_Sc
 curl -H "Accept-Encoding: gzip" -X POST -F 'file=@./fraud/studio/3_of_4_Indexing_and_Traversing_Graph_Data.studio-nb.tar' http://$IP:9091/api/v1/notebooks/import &> /dev/null
 curl -H "Accept-Encoding: gzip" -X POST -F 'file=@./fraud/studio/2_of_4_Populating_and_Traversing_the_Graph.studio-nb.tar' http://$IP:9091/api/v1/notebooks/import &> /dev/null
 curl -H "Accept-Encoding: gzip" -X POST -F 'file=@./fraud/studio/1_of_4_Creating_DSE_Graph_and_Graph_Schema.studio-nb.tar' http://$IP:9091/api/v1/notebooks/import &> /dev/null
+
+echo "Updating default connection to node0"
+
+export CONNECTION_DIRECTORY=/root/.datastax_studio/connections/admin
+export DEFAULT_CONNECTION_NAME="default cluster"
+export DEFAULT_CONNECTION_HOST=node0
+
+sed -i -e "s/default localhost/$DEFAULT_CONNECTION_NAME/g" $CONNECTION_DIRECTORY/418ed742-cd61-4df8-abd8-07bc56a62e8d
+sed -i -e "s/127.0.0.1/$DEFAULT_CONNECTION_HOST/g" $CONNECTION_DIRECTORY/418ed742-cd61-4df8-abd8-07bc56a62e8d
