@@ -32,8 +32,7 @@ fi
 
 echo "Importing Notebooks...."
 
-curl -H "Accept-Encoding: gzip" -X POST -F 'file=@./fraud/studio/1_of_4_Creating_DSE_Graph_and_Graph_Schema.studio-nb.tar' http://$IP:9091/api/v1/notebooks/import &> /dev/null
-curl -H "Accept-Encoding: gzip" -X POST -F 'file=@./fraud/studio/2_of_4_Populating_and_Traversing_the_Graph.studio-nb.tar' http://$IP:9091/api/v1/notebooks/import &> /dev/null
-curl -H "Accept-Encoding: gzip" -X POST -F 'file=@./fraud/studio/3_of_4_Indexing_and_Traversing_Graph_Data.studio-nb.tar' http://$IP:9091/api/v1/notebooks/import &> /dev/null
 curl -H "Accept-Encoding: gzip" -X POST -F 'file=@./fraud/studio/4_of_4_Fraud_Scenarios.studio-nb.tar' http://$IP:9091/api/v1/notebooks/import &> /dev/null
-
+curl -H "Accept-Encoding: gzip" -X POST -F 'file=@./fraud/studio/3_of_4_Indexing_and_Traversing_Graph_Data.studio-nb.tar' http://$IP:9091/api/v1/notebooks/import &> /dev/null
+curl -H "Accept-Encoding: gzip" -X POST -F 'file=@./fraud/studio/2_of_4_Populating_and_Traversing_the_Graph.studio-nb.tar' http://$IP:9091/api/v1/notebooks/import &> /dev/null
+curl -H "Accept-Encoding: gzip" -X POST -F 'file=@./fraud/studio/1_of_4_Creating_DSE_Graph_and_Graph_Schema.studio-nb.tar' http://$IP:9091/api/v1/notebooks/import &> /dev/null
