@@ -98,10 +98,9 @@ public class App {
                 // How far we can go without triggering the blocking fetch:
                 int remainingInPage = rs.getAvailableWithoutFetching();
 
-                for (GraphNode node : rs) {
-                    //Process the results here
-                    if (--remainingInPage == 0)
-                        break;
+                while (--remainingInPage >= 0) {
+                    GraphNode node = rs.iterator().next();
+                    // process the results here
                 }
                 if (rs.isFullyFetched()) {
                     System.out.println("Finished Processing Asynchronously Paged Results");
@@ -116,16 +115,11 @@ public class App {
         };
     }
 
-    // Synchronous
- /* statement.setPagingEnabled(true).setPagingOptions(options);
-    GraphResultSet rs = session.executeGraph(statement);
-  for (GraphNode node : rs)  System.out.println(node);
-
-    // Asynchronous
-  statement.setPagingEnabled(true).setPagingOptions(options);
-    ListenableFuture<GraphResultSet> future = session.executeGraphAsync(statement);
-    fetchNextPage(future); // consume as usual (attach callback, etc.) */
-
+    /**
+     * Sets up the DseSession connection to the cluster
+     * @param contactPoint  The contact point(s) for the cluster connection
+     * @param graphName The name of the graph to connect to
+     */
     public static void setUp(String contactPoint, String graphName) {
         DseCluster dseCluster = DseCluster.builder()
                 .addContactPoint(contactPoint)
