@@ -38,8 +38,7 @@ public class App {
      *
      * @param node The GraphNode to process
      */
-    private static void processNode(GraphNode node)
-    {
+    private static void processNode(GraphNode node) {
         //This is where you would handle processing the node information
     }
 
@@ -79,7 +78,7 @@ public class App {
             // processing all  of records to process and small enough to not require keeping many pending results in memory.
             // This number will depend on the page size, results being requested, and the complexity of the traversal
             // being processed so some trial and error should be expected to get this number correct.
-            if (rs.getAvailableWithoutFetching() == pageSize/2 && !rs.isFullyFetched()) {
+            if (rs.getAvailableWithoutFetching() == pageSize / 2 && !rs.isFullyFetched()) {
                 rs.fetchMoreResults(); // this is non-blocking
             }
 
@@ -99,9 +98,7 @@ public class App {
         //Here is also where you set the page size for the vertices retrieved
         ContinuousPagingOptions options = ContinuousPagingOptions.builder().withPageSize(pageSize, ContinuousPagingOptions.PageUnit.ROWS).build();
         statement.setPagingEnabled(true).setPagingOptions(options); //This enables continuous paging
-       Futures.transform(
-                session.executeGraphAsync(statement),
-                processAsyncResults());
+        Futures.transform(session.executeGraphAsync(statement), processAsyncResults());
     }
 
     /**
@@ -111,7 +108,7 @@ public class App {
      */
     private static AsyncFunction<GraphResultSet, GraphResultSet> processAsyncResults() {
         return new AsyncFunction<GraphResultSet, GraphResultSet>() {
-            public ListenableFuture<GraphResultSet> apply(GraphResultSet rs){
+            public ListenableFuture<GraphResultSet> apply(GraphResultSet rs) {
                 // How far we can go without triggering the blocking fetch:
                 int remainingInPage = rs.getAvailableWithoutFetching();
 
@@ -134,8 +131,9 @@ public class App {
 
     /**
      * Sets up the DseSession connection to the cluster
-     * @param contactPoint  The contact point(s) for the cluster connection
-     * @param graphName The name of the graph to connect to
+     *
+     * @param contactPoint The contact point(s) for the cluster connection
+     * @param graphName    The name of the graph to connect to
      */
     public static void setUp(String contactPoint, String graphName) {
         DseCluster dseCluster = DseCluster.builder()
