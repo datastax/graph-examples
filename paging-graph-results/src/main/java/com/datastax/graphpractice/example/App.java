@@ -11,13 +11,11 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
-
-import java.util.List;
 
 public class App {
     private static DseSession session;
     private static GraphTraversalSource g;
+    private static Integer pageSize = 20;
 
     //This expects the contact point for the cluster as the first arg and the graph name as the second arg
     public static void main(String[] args) {
@@ -36,15 +34,25 @@ public class App {
     }
 
     /**
+     * This function handles processing the node returned from the result set
+     *
+     * @param node The GraphNode to process
+     */
+    private static void processNode(GraphNode node) {
+        //This is where you would handle processing the node information
+    }
+
+    /**
      * This function demonstrates how to process unpaged graph results for DSE using the Gremlin Language Variant
      *
      * @param t The traversal to run
      */
     private static void unpagedResults(GraphTraversal t) {
-        List<Vertex> vertices = t.toList();
+        GraphStatement statement = DseGraph.statementFromTraversal(t);
+        GraphResultSet rs = session.executeGraph(statement);
 
-        for (Vertex v : vertices) {
-            // Process the row ...
+        for (GraphNode node : rs) {
+            processNode(node);
         }
     }
 
@@ -58,15 +66,23 @@ public class App {
 
         //Currently you can only use the ContinuousPagingOptions.PageUnit of Rows not Bytes
         //Here is also where you set the page size for the vertices retrieved
-        ContinuousPagingOptions options = ContinuousPagingOptions.builder().withPageSize(15, ContinuousPagingOptions.PageUnit.ROWS).build();
+        ContinuousPagingOptions options = ContinuousPagingOptions.builder().withPageSize(pageSize, ContinuousPagingOptions.PageUnit.ROWS).build();
         statement.setPagingEnabled(true).setPagingOptions(options); //This enables continuous paging
         GraphResultSet rs = session.executeGraph(statement);
 
         for (GraphNode node : rs) {
-            if (rs.getAvailableWithoutFetching() == 10 && !rs.isFullyFetched()) {
-                rs.fetchMoreResults(); // this is asynchronous
+            //This next block of code is responsible for sending a non-blocking request to retrieve the next set of results
+            // while the current set is being processed.  In this case it will wait until there are pageSize/2 records left
+            // in the current page and as long as the result set is not fully fetched it will send off the non-blocking
+            //request.  The number chosen should be large enough to allow the non-blocking request to finish prior to
+            // processing all  of records to process and small enough to not require keeping many pending results in memory.
+            // This number will depend on the page size, results being requested, and the complexity of the traversal
+            // being processed so some trial and error should be expected to get this number correct.
+            if (rs.getAvailableWithoutFetching() == pageSize / 2 && !rs.isFullyFetched()) {
+                rs.fetchMoreResults(); // this is non-blocking
             }
-            // Process the row ...
+
+            processNode(node);
         }
     }
 
@@ -80,11 +96,9 @@ public class App {
 
         //Currently you can only use the ContinuousPagingOptions.PageUnit of Rows not Bytes
         //Here is also where you set the page size for the vertices retrieved
-        ContinuousPagingOptions options = ContinuousPagingOptions.builder().withPageSize(15, ContinuousPagingOptions.PageUnit.ROWS).build();
+        ContinuousPagingOptions options = ContinuousPagingOptions.builder().withPageSize(pageSize, ContinuousPagingOptions.PageUnit.ROWS).build();
         statement.setPagingEnabled(true).setPagingOptions(options); //This enables continuous paging
-       Futures.transform(
-                session.executeGraphAsync(statement),
-                processAsyncResults());
+        Futures.transform(session.executeGraphAsync(statement), processAsyncResults());
     }
 
     /**
@@ -94,13 +108,13 @@ public class App {
      */
     private static AsyncFunction<GraphResultSet, GraphResultSet> processAsyncResults() {
         return new AsyncFunction<GraphResultSet, GraphResultSet>() {
-            public ListenableFuture<GraphResultSet> apply(GraphResultSet rs){
+            public ListenableFuture<GraphResultSet> apply(GraphResultSet rs) {
                 // How far we can go without triggering the blocking fetch:
                 int remainingInPage = rs.getAvailableWithoutFetching();
 
                 while (--remainingInPage >= 0) {
                     GraphNode node = rs.iterator().next();
-                    // process the results here
+                    processNode(node);
                 }
                 if (rs.isFullyFetched()) {
                     System.out.println("Finished Processing Asynchronously Paged Results");
@@ -117,8 +131,9 @@ public class App {
 
     /**
      * Sets up the DseSession connection to the cluster
-     * @param contactPoint  The contact point(s) for the cluster connection
-     * @param graphName The name of the graph to connect to
+     *
+     * @param contactPoint The contact point(s) for the cluster connection
+     * @param graphName    The name of the graph to connect to
      */
     public static void setUp(String contactPoint, String graphName) {
         DseCluster dseCluster = DseCluster.builder()
