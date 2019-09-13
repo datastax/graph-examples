@@ -9,7 +9,7 @@
     <version>1.0.0</version>
 
     <properties>
-        <driver.version>1.8.2</driver.version>
+        <driver.version>2.2.0</driver.version>
         <jline.version>3.12.1</jline.version>
         <tinkerpop.version>3.4.3</tinkerpop.version>
     </properties>
@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>com.datastax.dse</groupId>
-            <artifactId>dse-java-driver-graph</artifactId>
+            <artifactId>dse-java-driver-core</artifactId>
             <version>${driver.version}</version>
         </dependency>
         <dependency>

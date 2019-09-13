@@ -1,11 +1,12 @@
 package com.datastax.examples.builder;
 
-import com.datastax.driver.dse.DseCluster;
-import com.datastax.driver.dse.DseSession;
-import com.datastax.dse.graph.api.DseGraph;
-import com.google.common.collect.ImmutableMap;
+import com.datastax.dse.driver.api.core.DseSession;
+import com.datastax.dse.driver.api.core.config.DseDriverOption;
+import com.datastax.dse.driver.api.core.graph.DseGraph;
+import com.datastax.dse.driver.api.core.graph.ScriptGraphStatement;
 import groovy.util.Eval;
 import org.apache.tinkerpop.gremlin.groovy.jsr223.GroovyTranslator;
+import org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
@@ -28,6 +29,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.regex.Matcher;
@@ -42,13 +44,15 @@ public class App implements Runnable, Closeable {
 
     private final static String APP_NAME = "Shortest Path Traversal Builder";
 
-    private DseCluster cluster;
     private DseSession session;
     private GraphTraversalSource g, tg;
 
     private AppState state = AppState.MAIN;
     private GraphTraversal traversal;
-    private String host, graphName, title, errorMessage;
+    private String host;
+    private String graphName;
+    private String title;
+    private String errorMessage;
 
     private App() throws IOException {
         g = tg = TinkerGraph.open().traversal();
@@ -186,31 +190,33 @@ public class App implements Runnable, Closeable {
     }
 
     private void connect(LineReader reader) throws IOException {
-        host =      reader.readLine("Host (default: localhost)    : ").trim();
-        graphName = reader.readLine("Graph name (default: modern) : ").trim();
+        host =          reader.readLine("Host (default: localhost)    : ").trim();
+        String port =   reader.readLine("Port (default: 9042)         : ").trim();
+        String dcName = reader.readLine("DC name (default: Graph)     : ").trim();
+        graphName =     reader.readLine("Graph name (default: modern) : ").trim();
         if (host.isEmpty()) host = "localhost";
+        if (port.isEmpty()) port = "9042";
+        if (dcName.isEmpty()) dcName = "Graph";
         if (graphName.isEmpty()) graphName = "modern";
         disconnect();
-        cluster = DseCluster.builder()
-                .addContactPoint(host)
-                .build();
-        session = cluster.connect();
-        session.executeGraph("system.graph(graphName).ifNotExists().create()",
-                ImmutableMap.<String, Object> builder().put("graphName", graphName).build());
-        cluster.getConfiguration().getGraphOptions().setGraphName(graphName);
-        session.executeGraph(resource("schema.groovy"));
-        session.executeGraph(resource("graph.groovy"));
-        g = DseGraph.traversal(session);
+        InetSocketAddress contactPoint = new InetSocketAddress(host, Integer.parseInt(port));
+        session = DseSession.builder()
+                .addContactPoint(contactPoint)
+                .withLocalDatacenter(dcName).build();
+        session.execute(ScriptGraphStatement
+                .builder("system.graph(graphName).ifNotExists().create()")
+                .setQueryParam("graphName", graphName).build());
+        session.execute(ScriptGraphStatement.newInstance(resource("schema.groovy")).setGraphName(graphName));
+        session.execute(ScriptGraphStatement.newInstance(resource("graph.groovy")).setGraphName(graphName));
+        g = AnonymousTraversalSource.traversal().withRemote(DseGraph.remoteConnectionBuilder(session)
+                .withExecutionProfile(session.getContext().getConfig().getDefaultProfile()
+                        .withString(DseDriverOption.GRAPH_NAME, graphName)).build());
     }
 
     private void disconnect() {
         if (session != null) {
             session.closeAsync();
             session = null;
-        }
-        if (cluster != null) {
-            cluster.closeAsync();
-            cluster = null;
         }
         g = tg;
     }
