@@ -1,4 +1,4 @@
-system.graph("test").create()
+system.graph("test").engine(Classic).create()
 
 :remote config alias g test.g
 //define properties
