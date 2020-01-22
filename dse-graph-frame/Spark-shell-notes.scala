@@ -49,8 +49,8 @@ object Notes extends App {
   df.show
 
   // export graph to JSON
-  g.V.write.json("dsefs:///tmp/v_json")
-  g.E.write.json("dsefs:///tmp/e_json")
+  g.V.df.write.json("dsefs:///tmp/v_json")
+  g.E.df.write.json("dsefs:///tmp/e_json")
 
   //import graph from json to local copy
   val g2 = DseGraphFrameBuilder.dseGraph("test", spark.read.json("/tmp/v.json"), spark.read.json("/tmp/e.json"))
