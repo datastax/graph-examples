@@ -24,7 +24,14 @@ View the live schema visualization <a href="https://s3.amazonaws.com/datastax-gr
 Included is a `schema.groovy` file.  You can create your graph in Studio and copy and paste the schema statements
 to run there.  Alternately, the statements can be run from the gremlin console.
 
+* If using studio, then set the mode to `graph` instead of `cql`. 
+* If you create the graph in Studio then you should create the "classic" graph engine for the is example
+* You can have the graphloader create the schema by editing the `northwind-mapping.groovy` file.
+
 ## Example loading
+
+`graphloader` must be downloaded separately. 
+* See https://downloads.datastax.com/#graph-loader to download the version that matches your DSE/graph version. 
 
 If you load the Kryo file from within the northwind directory, you don't need to specify the path.  It will
 default to the data subdirectory to get the northwind.kryo file.  Otherwise, specify the full path with the
@@ -44,7 +51,7 @@ graphloader -graph northwind -address localhost northwind-mapping.groovy -inputp
 
 ## Supplemental data
 
-### Supplemental data is not currently working as we change to custom vertex ids
+** Supplemental data is not currently working as we change to custom vertex ids **
 
 Some supplemental data has been added in csv files to provide some more connectivity within the data.  It is generated data,
 that includes things like relationships between customers (isRelatedTo and isFriendsWith), customer product ratings (rated),
@@ -61,4 +68,10 @@ graphloader -graph northwind -address localhost supplemental-data-mapping.groovy
 ```
 # Alternatively, explicitly specify where the data files are
 graphloader -graph northwind -address localhost supplemental-data-mapping.groovy -inputpath ~/graph-examples/northwind/data/
+```
+
+## Dropping the Schema
+You can drop the schema to reset the environment
+```
+schema.drop()
 ```

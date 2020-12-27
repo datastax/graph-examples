@@ -33,7 +33,7 @@ public class Northwind {
 
         dseSession.executeGraph(
                 new SimpleGraphStatement(
-                        "g.addV(label, 'networkMember', 'name', name, 'age', age)")
+                        "g.addV('networkMember').property('name',name).property('age',age)")
                         .set("name", name)
                         .set("age", String.valueOf(age))
         );
@@ -43,7 +43,7 @@ public class Northwind {
                 new SimpleGraphStatement(
                         "customer = g.V().has('customer', 'name', name).next();" +
                                 "networkMember = g.V().has('networkMember', 'name', name).next();" +
-                                "customer.addEdge('isMember', networkMember);")
+                                "g.addE('isMember').from(customer).to(networkMember);")
                         .set("name", name)
         );
 
