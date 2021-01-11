@@ -1,3 +1,6 @@
+| :exclamation: This example only works for classic graph databases   |
+|----------------------------------------|
+
 # Northwind
 
 The Northwind graph example is a subset of Microsoft's Northwind dataset found [here](https://northwinddatabase.codeplex.com).
@@ -20,15 +23,40 @@ View the live schema visualization <a href="https://s3.amazonaws.com/datastax-gr
 [![datamodel screenshot](datamodel-screenshot.png)](https://s3.amazonaws.com/datastax-graph-schema-viewer/index.html#/?schema=northwind.json)<br/>
 
 ## Create the schema
+You can create the schema several different ways both explicitly and implcitly
 
-Included is a `schema.groovy` file.  You can create your graph in Studio and copy and paste the schema statements
-to run there.  Alternately, the statements can be run from the gremlin console.
+### Explicit - Design Time
+The schema is defined in `schema.groovy`.
+* You can create your graph in Studio and copy and paste the schema statements to run there.  
+* Alternately, the statements can be run from the gremlin console.
 
-## Example loading
+Notes
+* If using studio, then set the notebook cell mode to `graph` instead of `cql`. 
+* If you create the graph inside DSE Studio then you should create the graph DB with the "classic" engine.
+
+### Implicit - Load Time via graphloader
+| :exclamation: graphloader only works for classic graph databases   |
+|----------------------------------------|
+
+The `northwind-mapping.groovy` config file has automated schema creation disabled. The assumption is that you will create the schema with `schema.groovy` or something like it.
+
+The data loading utility [graphloader](https://downloads.datastax.com/#graph-loader) can create the schema as part of the data load. 
+1 Edit the `northwind-mapping.groovy` file.  Change the following line.
+  * `config create_schema: false` 
+to 
+  * `config create_schema: true`
+
+## Load Exmaple Data
+| :exclamation:  graphloader only works for classic graph databases   |
+|-----------------------------------------|
+
+
+(graphloader)[https://docs.datastax.com/en/dse/6.7/dse-dev/datastax_enterprise/graph/dgl/graphloaderTOC.html] must be downloaded separately from this example. Download the version that matches your DSE/graph version. 
+* Via (Datastax graphloader downloads)[https://downloads.datastax.com/#graph-loader] . 
+* Via `curl https://downloads.datastax.com/enterprise/dse-graph-loader-6.8.1-bin.tar.gz -o dse-graph-loader-6.8.1-bin.tar.gz`
 
 If you load the Kryo file from within the northwind directory, you don't need to specify the path.  It will
-default to the data subdirectory to get the northwind.kryo file.  Otherwise, specify the full path with the
-`inputfile` parameter.
+default to the data subdirectory to get the northwind.kryo file.  Otherwise, specify the full path with the `inputfile` parameter.
 
 Examples of loading the northwind data:
 
@@ -44,7 +72,7 @@ graphloader -graph northwind -address localhost northwind-mapping.groovy -inputp
 
 ## Supplemental data
 
-### Supplemental data is not currently working as we change to custom vertex ids
+** Supplemental data is not currently working as we change to custom vertex ids **
 
 Some supplemental data has been added in csv files to provide some more connectivity within the data.  It is generated data,
 that includes things like relationships between customers (isRelatedTo and isFriendsWith), customer product ratings (rated),
@@ -61,4 +89,10 @@ graphloader -graph northwind -address localhost supplemental-data-mapping.groovy
 ```
 # Alternatively, explicitly specify where the data files are
 graphloader -graph northwind -address localhost supplemental-data-mapping.groovy -inputpath ~/graph-examples/northwind/data/
+```
+
+## Dropping the Schema
+You can drop the schema to reset the environment
+```
+schema.drop()
 ```
