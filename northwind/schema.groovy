@@ -1,3 +1,4 @@
+// Works with graphs of type "classic"
 system.graph('northwind').ifNotExists().create()
 :remote config alias g northwind.g
 
