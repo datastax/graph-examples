@@ -2,7 +2,7 @@ name := "entity-resolution"
 
 version := "0.1"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.11.12"
 
 // Please make sure that following DSE version matches your DSE cluster version.
 val dseVersion = "5.1.2"
