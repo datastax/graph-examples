@@ -16,6 +16,23 @@ Impacted Repositories:
 - https://github.com/datastax/native-protocol[]
 - https://github.com/datastax/pulsar-sink[]
 
+Developers should review their environments for the following Indicators of Compromise in conjunction with downloading the impacted repositories:
+- File SHA1 Hashes:
+  - def338ee2fbc6f84b4a22ead67471824fe1a565f
+  - 78be1ea752622c75fd5c636abc2e6e7a51484323
+- File names:
+  - .vscode/tasks.json
+  - temp_auto_push.bat
+- Domain names:
+  - vscode-extension-260120.vercel[.]app
+  - fullnode.mainnet.aptoslabs[.]com
+  - api.trongrid[.]io
+  - bsc-dataseed.binance[.]org
+- IP addresses:
+  - 23.27.20[.]143
+  - 136.0.9[.]8
+- The user agent for the git pushes was git/2.51.0.vfs.0.3-Windows
+
 # graph-examples
 
 This repo contains a collection of graph examples.  The intent is to provide more complete and extensive examples than what is reasonable to include in DataStax documentation or blogposts.  This will include DataStax Graph Loader mapping scripts, schemas, example traversals, things to try in DataStax Studio, and application code examples.  Feel free to use and modify any of these for your own purposes.  There is no warranty or implied official support, but hopefully the examples will be useful as a starting point to show various ways of loading and experimenting with graph data.  And if you see anything that could be improved or added, issue reports and pull requests are always welcome!
